@@ -1,5 +1,5 @@
 package entities;
 
-public class Instructor {
+public class Instructor extends Employee{
 
 }
