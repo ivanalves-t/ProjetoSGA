@@ -9,7 +9,15 @@ public class Instructor extends Employee{
 		super(name, cPF, gymName);
 		this.students = students;
 		this.wage = wage;
+		
 	}
-	
+
+	public double getWage() {
+		return wage;
+	}
+
+	public void setWage(double wage) {
+		this.wage = wage;
+	}
 	
 }
