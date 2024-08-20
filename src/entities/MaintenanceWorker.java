@@ -8,6 +8,16 @@ public class MaintenanceWorker extends Employee{
 		super(name, cPF, gymName);
 		this.dailyPayment = dailyPayment;
 	}
+
+	public double getDailyPayment() {
+		return dailyPayment;
+	}
+
+	public void setDailyPayment(double dailyPayment) {
+		this.dailyPayment = dailyPayment;
+	}
+	
+	
 	
 	
 }
