@@ -2,13 +2,14 @@ package entities;
 
 public class Administrator {
 	private String name;
-	private String CNPJ;
+	private int CPF;
 	private Gym[] gyms;
+	private final int password;
 
-	public Administrator(String name, String cNPJ, Gym[] gyms) {
+	public Administrator(String name,int CPF, int password) {
 		this.name = name;
-		this.CNPJ = cNPJ;
-		this.gyms = gyms;
+		this.CPF = CPF;
+		this.password = password;
 	}
 
 	public String getName() {
@@ -19,12 +20,20 @@ public class Administrator {
 		this.name = name;
 	}
 
-	public String getCNPJ() {
-		return CNPJ;
+	public int getCPF() {
+		return CPF;
 	}
 
 	public Gym[] getGyms() {
 		return gyms;
 	}
 
+	public void setGyms(Gym[] gyms) {
+		this.gyms = gyms;
+	}
+
+	public int getPassword() {
+		return password;
+	}
+	
 }
