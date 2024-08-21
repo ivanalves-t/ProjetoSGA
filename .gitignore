@@ -5,6 +5,8 @@ bin
 /bin
 # Log file
 *.log
+bin/
+*bin
 
 # BlueJ files
 *.ctxt
