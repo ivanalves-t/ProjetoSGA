@@ -1,9 +1,9 @@
-package main;
+package application;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import entities.Administrator;
+import model.entities.Administrator;
 
 public class Menu {
 	
