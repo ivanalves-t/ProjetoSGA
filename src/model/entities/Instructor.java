@@ -5,8 +5,8 @@ public class Instructor extends Employee{
 	public double wage;
 	public GymMembership[] students;
 	
-	public Instructor(String name, String cPF, String gymName, double wage, GymMembership[] students) {
-		super(name, cPF, gymName);
+	public Instructor(String name, String cpf, String gymName, double wage, GymMembership[] students) {
+		super(name, cpf, gymName);
 		this.students = students;
 		this.wage = wage;
 		

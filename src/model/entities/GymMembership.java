@@ -3,14 +3,14 @@ package model.entities;
 public class GymMembership {
 
 	private String name;
-	private String CPF;
+	private String cpf;
 	private String instructorName;
 	private String[][] trainList;
 	private String gymName;
 
-	public GymMembership(String name, String cPF, String instructorName, String[][] trainList, String gymName) {
+	public GymMembership(String name, String cpf, String instructorName, String[][] trainList, String gymName) {
 		this.name = name;
-		CPF = cPF;
+		cpf = cpf;
 		this.instructorName = instructorName;
 		this.trainList = trainList;
 		this.gymName = gymName;
@@ -24,8 +24,8 @@ public class GymMembership {
 		this.name = name;
 	}
 
-	public String getCPF() {
-		return CPF;
+	public String getcpf() {
+		return cpf;
 	}
 
 	public String getInstructorName() {

@@ -4,8 +4,8 @@ public class MaintenanceWorker extends Employee{
 
 	private double dailyPayment;
 
-	public MaintenanceWorker(String name, String cPF, String gymName) {
-		super(name, cPF, gymName);
+	public MaintenanceWorker(String name, String cpf, String gymName) {
+		super(name, cpf, gymName);
 		this.dailyPayment = dailyPayment;
 	}
 
