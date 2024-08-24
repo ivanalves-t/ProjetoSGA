@@ -27,6 +27,9 @@ public class Program {
 			case 1: 
 					Menu.menuAdm();
 					break;
+			case 3:
+				Menu.menuGymMember();
+				break;
 			case 0:
 				running = false;
 				break;

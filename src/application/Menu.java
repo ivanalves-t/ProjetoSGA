@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import model.entities.Administrator;
+import model.entities.GymMembership;
 
 public class Menu {
 
@@ -63,8 +64,8 @@ public class Menu {
 		int password = readInt(); // Leitura direta com Scanner
 
 		boolean found = false;
-		for (Administrator administrator : listAdm) {
-			if (administrator.getCpf() == cpf && administrator.getPassword() == password) {
+		for (Administrator administrador : listAdm) {
+			if (administrador.getCpf() == cpf && administrador.getPassword() == password) {
 				System.out.println("Entrando na conta...");
 				found = true;
 				menuAdm2();
@@ -119,5 +120,58 @@ public class Menu {
 			}
 		}
 	}
+	
+	static ArrayList<Administrator> listGymMember = new ArrayList<>();
+	
+	public static void menuGymMember() {
+		boolean running3 = true;
 
+		while (running3) {
+			System.out.println("-=-=-=-=-=-=-=-=-=-=\nConta do aluno:");
+			System.out.println("1 - Entrar na conta.");
+			System.out.println("0 - Menu Anterior\n-=-=-=-=-=-=-=-=-=-=\n");
+
+			System.out.print("Escolha uma opção: ");
+			int choice = readInt(); // Leitura direta com Scanner
+
+			switch (choice) {
+			case 1:
+				System.out.println("Entrando na conta...");
+				accessAccountGymMember();
+				break;
+			case 0:
+				running3 = false;
+				System.out.println("Saindo...");
+				break;
+			default:
+				System.out.println("Opção inválida! Tente novamente.");
+			}
+		}
+	}
+	
+	private static void accessAccountGymMember() {
+		System.out.print("Digite o seu CPF: ");
+		int cpf = readInt(); // Leitura direta com Scanner
+
+		System.out.print("Digite a sua senha: ");
+		int password = readInt(); // Leitura direta com Scanner
+
+		boolean found = false;
+		for (Administrator administrador : listAdm) {
+			if (administrador.getCpf() == cpf && administrador.getPassword() == password) {
+				System.out.println("Entrando na conta...");
+				found = true;
+				menuGymMember();
+				break;
+			}
+		}
+		
+		if (!found) {
+			System.out.println("CPF ou senha incorretos.");
+		}
+	}	
 }
+			
+
+		
+

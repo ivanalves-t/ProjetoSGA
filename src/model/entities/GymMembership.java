@@ -1,5 +1,7 @@
 package model.entities;
 
+import java.util.ArrayList;
+
 public class GymMembership {
 
 	private String name;
@@ -10,7 +12,7 @@ public class GymMembership {
 
 	public GymMembership(String name, String cpf, String instructorName, String[][] trainList, String gymName) {
 		this.name = name;
-		cpf = cpf;
+		this.cpf = cpf;
 		this.instructorName = instructorName;
 		this.trainList = trainList;
 		this.gymName = gymName;
@@ -51,5 +53,4 @@ public class GymMembership {
 	public void setGymName(String gymName) {
 		this.gymName = gymName;
 	}
-
 }
