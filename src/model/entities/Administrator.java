@@ -2,13 +2,13 @@ package model.entities;
 
 public class Administrator {
 	private String name;
-	private int CPF;
+	private int cpf;
 	private Gym[] gyms;
 	private final int password;
 
-	public Administrator(String name,int CPF, int password) {
+	public Administrator(String name,int cpf, int password) {
 		this.name = name;
-		this.CPF = CPF;
+		this.cpf = cpf;
 		this.password = password;
 	}
 
@@ -20,8 +20,8 @@ public class Administrator {
 		this.name = name;
 	}
 
-	public int getCPF() {
-		return CPF;
+	public int getCpf() {
+		return cpf;
 	}
 
 	public Gym[] getGyms() {

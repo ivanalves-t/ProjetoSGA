@@ -64,7 +64,7 @@ public class Menu {
 
 		boolean found = false;
 		for (Administrator administrator : listAdm) {
-			if (administrator.getCPF() == cpf && administrator.getPassword() == password) {
+			if (administrator.getCpf() == cpf && administrator.getPassword() == password) {
 				System.out.println("Entrando na conta...");
 				found = true;
 				menuAdm2();
