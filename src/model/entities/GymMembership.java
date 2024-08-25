@@ -1,17 +1,21 @@
 package model.entities;
 
+import java.util.ArrayList;
+
 public class GymMembership {
 
 	private String name;
-	private String CPF;
+	private String cpf;
 	private String instructorName;
 	private String[][] trainList;
 	private String gymName;
-	private String plane;
+	private String plain;
 
-	public GymMembership(String name, String CPF, String instructorName, String[][] trainList, String gymName, String plane) {
+
+	public GymMembership(String name, String cpf, String instructorName, String[][] trainList, String gymName, String plain) {
 		this.name = name;
-		this.CPF = CPF;
+		this.cpf = cpf;
+    this.plain = plain;
 		this.instructorName = instructorName;
 		this.trainList = trainList;
 		this.gymName = gymName;
@@ -25,8 +29,8 @@ public class GymMembership {
 		this.name = name;
 	}
 
-	public String getCPF() {
-		return CPF;
+	public String getCpf() {
+		return cpf;
 	}
 
 	public String getInstructorName() {
@@ -53,12 +57,13 @@ public class GymMembership {
 		this.gymName = gymName;
 	}
 
-	public String getPlane() {
-		return plane;
+
+	public String getPlain() {
+		return plain;
 	}
 
-	public void setPlane(String plane) {
-		this.plane = plane;
+	public void setPlain(String plain) {
+		this.plain = plain;
 	}
 	
 }

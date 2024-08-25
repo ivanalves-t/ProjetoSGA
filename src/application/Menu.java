@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import model.entities.Administrator;
+import model.entities.GymMembership;
 
 public class Menu {
 
@@ -71,8 +72,8 @@ public class Menu {
 		int password = readInt(); // Leitura direta com Scanner
 
 		boolean found = false;
-		for (Administrator administrator : listAdm) {
-			if (administrator.getCPF() == cpf && administrator.getPassword() == password) {
+		for (Administrator administrador : listAdm) {
+			if (administrador.getCpf() == cpf && administrador.getPassword() == password) {
 				System.out.println("Entrando na conta...");
 				found = true;
 				menuAdm2();
@@ -187,7 +188,9 @@ public class Menu {
 
 		boolean found = false;
 		for (Administrator administrador : listAdm) {
-			if (administrador.getCPF() == cpf && administrador.getPassword() == password) {
+
+			if (administrador.getCpf() == cpf && administrador.getPassword() == password) {
+
 				System.out.println("Entrando na conta...");
 				found = true;
 				menuGymMember();
@@ -195,9 +198,13 @@ public class Menu {
 			}
 		}
 
+		
 		if (!found) {
 			System.out.println("CPF ou senha incorretos.");
 		}
-	}
-	
+	}	
 }
+			
+
+		
+

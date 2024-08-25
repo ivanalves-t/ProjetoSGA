@@ -23,10 +23,10 @@ public class Program {
 			int opt = sc.nextInt();
 
 			switch (opt) {
-			case 1:
-				Menu.menuAdm();
-				break;
 
+			case 1: 
+					Menu.menuAdm();
+					break;
 			case 3:
 				Menu.menuGymMember();
 				break;

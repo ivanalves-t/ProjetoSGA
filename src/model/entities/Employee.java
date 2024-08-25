@@ -3,12 +3,12 @@ package model.entities;
 public abstract class Employee {
 
 	private String name;
-	private String CPF;
+	private String cpf;
 	private String gymName;
 
-	public Employee(String name, String cPF, String gymName) {
+	public Employee(String name, String cpf, String gymName) {
 		this.name = name;
-		this.CPF = cPF;
+		this.cpf = cpf;
 		this.gymName = gymName;
 	}
 
@@ -20,8 +20,8 @@ public abstract class Employee {
 		this.name = name;
 	}
 
-	public String getCPF() {
-		return CPF;
+	public String getcpf() {
+		return cpf;
 	}
 
 	public String getGymName() {
