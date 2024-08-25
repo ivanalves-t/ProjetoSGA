@@ -7,10 +7,11 @@ public class GymMembership {
 	private String instructorName;
 	private String[][] trainList;
 	private String gymName;
+	private String plane;
 
-	public GymMembership(String name, String cPF, String instructorName, String[][] trainList, String gymName) {
+	public GymMembership(String name, String CPF, String instructorName, String[][] trainList, String gymName, String plane) {
 		this.name = name;
-		CPF = cPF;
+		this.CPF = CPF;
 		this.instructorName = instructorName;
 		this.trainList = trainList;
 		this.gymName = gymName;
@@ -52,4 +53,12 @@ public class GymMembership {
 		this.gymName = gymName;
 	}
 
+	public String getPlane() {
+		return plane;
+	}
+
+	public void setPlane(String plane) {
+		this.plane = plane;
+	}
+	
 }
