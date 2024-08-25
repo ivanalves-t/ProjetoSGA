@@ -1,19 +1,21 @@
 package application;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import model.entities.Administrator;
 import model.entities.Gym;
+import util.ScanUtil;
 
 public class Program {
-	static Gym gym;
-	static Administrator administrator;
-	
+
+	static Gym gym = new Gym();
+	static ArrayList<Administrator> listAdm = new ArrayList<>();
+
+	private static Scanner sc = new Scanner(System.in);
+
 	public static void main(String[] args) {
-		
-		Scanner sc = new Scanner(System.in);
-		
-		
+
 		System.out.println("Digite o que você é: ");
 		boolean running = true;
 
@@ -26,21 +28,24 @@ public class Program {
 
 			System.out.println("Escolha uma opção: ");
 
-			int opt = sc.nextInt();
+			byte opt = (byte) ScanUtil.readOpt();
 
 			switch (opt) {
 
-			case 1: 
-					Menu.menuAdm();
-					break;
-			case 3:
-				Menu.menuGymMember();
+			case 1:
+				MenuAdm.displayMenu();
+				break;
+			case 2:
+				MenuGymMember.displayMenu();
 				break;
 			case 0:
 				running = false;
+				sc.close();
 				break;
 			}
 
 		}
+
 	}
+
 }

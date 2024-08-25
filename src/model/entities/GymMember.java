@@ -1,8 +1,6 @@
 package model.entities;
 
-import java.util.ArrayList;
-
-public class GymMembership {
+public class GymMember {
 
 	private String name;
 	private String cpf;
@@ -10,13 +8,15 @@ public class GymMembership {
 	private String[][] trainList;
 	private String gymName;
 	private String plain;
+	private String password;
 
 
-	public GymMembership(String name, String cpf, String gymName, String plain) {
+	public GymMember(String name, String cpf, String gymName, String plain, String password) {
 		this.name = name;
 		this.cpf = cpf;
 		this.plain = plain;
 		this.gymName = gymName;
+		this.password = password;
 	}
 
 	public String getName() {
@@ -63,5 +63,11 @@ public class GymMembership {
 	public void setPlain(String plain) {
 		this.plain = plain;
 	}
+
+	public String getPassword() {
+		return password;
+	}
+	
+	
 	
 }

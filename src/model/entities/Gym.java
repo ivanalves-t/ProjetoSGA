@@ -7,16 +7,20 @@ public class Gym {
 	private String OwnerCNPJ;
 	private String GymName;
 	private ArrayList<Employee> employees;
-	private ArrayList<GymMembership> memberships;
-	private double[] planValues;
+	private ArrayList<GymMember> members;
+	private String[] planValues;
 	
-	public Gym(String GymName, String ownerCNPJ, ArrayList<Employee> employees, ArrayList<GymMembership> memberships,
-			double[] planValues) {
+	public Gym() {
+		this.members = new ArrayList<>();
+		this.employees = new ArrayList<>();
+	}
+	
+	public Gym(String GymName, String ownerCNPJ,  String[] planValues) {
 		this.GymName = GymName;
 		this.OwnerCNPJ = ownerCNPJ;
-		this.employees = employees;
-		this.memberships = memberships;
 		this.planValues = planValues;
+		this.employees = new ArrayList<>();
+		this.members = new ArrayList<>();
 	}
 
 	public String getOwnerCNPJ() {
@@ -39,15 +43,19 @@ public class Gym {
 		return employees;
 	}
 
-	public ArrayList<GymMembership> getMemberships() {
-		return memberships;
+	public ArrayList<GymMember> getMembers() {
+		return members;
 	}
 	
-	public void addMemberships(GymMembership gm) {
-		memberships.add(gm);
+	public void addMembers(GymMember gm) {
+		members.add(gm);
+	}
+	
+	public void deleteMembers(GymMember gm) {
+		members.remove(gm);
 	}
 
-	public double[] getPlanValues() {
+	public String[] getPlanValues() {
 		return planValues;
 	}
 }
