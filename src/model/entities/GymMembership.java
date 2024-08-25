@@ -9,10 +9,13 @@ public class GymMembership {
 	private String instructorName;
 	private String[][] trainList;
 	private String gymName;
+	private String plain;
 
-	public GymMembership(String name, String cpf, String instructorName, String[][] trainList, String gymName) {
+
+	public GymMembership(String name, String cpf, String instructorName, String[][] trainList, String gymName, String plain) {
 		this.name = name;
 		this.cpf = cpf;
+    this.plain = plain;
 		this.instructorName = instructorName;
 		this.trainList = trainList;
 		this.gymName = gymName;
@@ -26,7 +29,7 @@ public class GymMembership {
 		this.name = name;
 	}
 
-	public String getcpf() {
+	public String getCpf() {
 		return cpf;
 	}
 
@@ -53,4 +56,14 @@ public class GymMembership {
 	public void setGymName(String gymName) {
 		this.gymName = gymName;
 	}
+
+
+	public String getPlain() {
+		return plain;
+	}
+
+	public void setPlain(String plain) {
+		this.plain = plain;
+	}
+	
 }
