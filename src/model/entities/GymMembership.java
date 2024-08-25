@@ -12,12 +12,10 @@ public class GymMembership {
 	private String plain;
 
 
-	public GymMembership(String name, String cpf, String instructorName, String[][] trainList, String gymName, String plain) {
+	public GymMembership(String name, String cpf, String gymName, String plain) {
 		this.name = name;
 		this.cpf = cpf;
-    this.plain = plain;
-		this.instructorName = instructorName;
-		this.trainList = trainList;
+		this.plain = plain;
 		this.gymName = gymName;
 	}
 

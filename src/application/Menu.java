@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import model.entities.Administrator;
+import model.entities.Gym;
 import model.entities.GymMembership;
 
 public class Menu {
@@ -112,13 +113,15 @@ public class Menu {
 				System.out.println("-=-=-=-=-=-=-=-=-=-=\\nCadastrar novo aluno");
 				System.out.println("\nAcademia: ");
 				String gymName = sc.nextLine();
-				System.out.println("\nInforme o seu nome: ");
+				System.out.println("Informe o seu nome: ");
 				String name = sc.nextLine();
-				System.out.println("\nInforme o seu CPF: ");
-				int CPF = readInt();
-				sc.nextLine();
-				System.out.println("\nInforme o plano do aluno: ");
-				String plane = sc.nextLine();
+				System.out.println("Informe o seu CPF: ");
+				String cpf = sc.nextLine();
+				System.out.println("Informe o plano do aluno: ");
+				String plain = sc.nextLine();
+				System.out.println("\nAluno cadastrado com sucesso! ");
+				GymMembership gm = new GymMembership(name, cpf, gymName, plain);
+				Program.gym.addMemberships(gm);
 				break;
 				
 			case 3:
