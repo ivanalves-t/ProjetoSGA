@@ -1,6 +1,5 @@
 package application;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import model.entities.Administrator;
@@ -10,7 +9,7 @@ import util.ScanUtil;
 public class Program {
 
 	static Gym gym = new Gym();
-	static ArrayList<Administrator> listAdm = new ArrayList<>();
+	static Administrator administrator = new Administrator();
 
 	private static Scanner sc = new Scanner(System.in);
 

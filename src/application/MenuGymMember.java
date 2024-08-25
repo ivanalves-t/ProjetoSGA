@@ -51,9 +51,9 @@ public class MenuGymMember{
 		String password = sc.nextLine();
 
 		boolean found = false;
-		for (Administrator administrador : Program.listAdm) {
+		for (GymMember g : Program.gym.getMembers()) {
 
-			if (administrador.getCpf().equals(cpf) && administrador.getPassword().equals(password)) {
+			if (g.getCpf().equals(cpf) && g.getPassword().equals(password)) {
 
 				System.out.println("Entrando na conta...");
 				found = true;

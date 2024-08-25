@@ -6,16 +6,15 @@ public class GymMember {
 	private String cpf;
 	private String instructorName;
 	private String[][] trainList;
-	private String gymName;
+
 	private String plain;
 	private String password;
 
 
-	public GymMember(String name, String cpf, String gymName, String plain, String password) {
+	public GymMember(String name, String cpf, String plain, String password) {
 		this.name = name;
 		this.cpf = cpf;
 		this.plain = plain;
-		this.gymName = gymName;
 		this.password = password;
 	}
 
@@ -46,15 +45,6 @@ public class GymMember {
 	public void setTrainList(String[][] trainList) {
 		this.trainList = trainList;
 	}
-
-	public String getGymName() {
-		return gymName;
-	}
-
-	public void setGymName(String gymName) {
-		this.gymName = gymName;
-	}
-
 
 	public String getPlain() {
 		return plain;
