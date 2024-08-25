@@ -2,12 +2,18 @@ package application;
 
 import java.util.Scanner;
 
+import model.entities.Administrator;
+import model.entities.Gym;
+
 public class Program {
-
+	static Gym gym;
+	static Administrator administrator;
+	
 	public static void main(String[] args) {
-
+		
 		Scanner sc = new Scanner(System.in);
-
+		
+		
 		System.out.println("Digite o que você é: ");
 		boolean running = true;
 

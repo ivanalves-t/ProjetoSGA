@@ -9,7 +9,7 @@ public class Gym {
 	private ArrayList<Employee> employees;
 	private ArrayList<GymMembership> memberships;
 	private double[] planValues;
-
+	
 	public Gym(String GymName, String ownerCNPJ, ArrayList<Employee> employees, ArrayList<GymMembership> memberships,
 			double[] planValues) {
 		this.GymName = GymName;
@@ -41,6 +41,10 @@ public class Gym {
 
 	public ArrayList<GymMembership> getMemberships() {
 		return memberships;
+	}
+	
+	public void addMemberships(GymMembership gm) {
+		memberships.add(gm);
 	}
 
 	public double[] getPlanValues() {
