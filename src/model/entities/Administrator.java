@@ -1,20 +1,25 @@
 package model.entities;
 
 public class Administrator {
-	private String name;
-	private int cpf;
-	private final int password;
-	private String nameGym;
-	private int cnpj;
 	
-	public Administrator(String name,int cpf, int password, String nameGym, int cnpj) {
-
-		this.name = name;
-		this.cpf = cpf;
-		this.password = password;
-		this.nameGym = nameGym;
-		this.cnpj = cnpj;
+	private String name;
+	private String cpf;
+	private String password;
+	private String nameGym;
+	private String cnpj;
+	
+	public Administrator() {
+		
 	}
+	
+	public Administrator(String name, String cpf, String password, String nameGym, String cnpj) {
+	    this.name = name;
+	    this.password = password;
+	    this.nameGym = nameGym;
+	    this.cnpj = cnpj;
+	    this.cpf = cpf;
+	}
+
 
 	public String getName() {
 		return name;
@@ -24,7 +29,7 @@ public class Administrator {
 		this.name = name;
 	}
 
-	public int getCpf() {
+	public String getCpf() {
 		return cpf;
 	}
 
@@ -32,7 +37,7 @@ public class Administrator {
 		return nameGym;
 	}
 	
-	public int getPassword() {
+	public String getPassword() {
 		return password;
 	}
 
@@ -40,11 +45,11 @@ public class Administrator {
 		this.nameGym = nameGym;
 	}
 
-	public int getCnpj() {
+	public String getCnpj() {
 		return cnpj;
 	}
 
-	public void setCnpj(int cnpj) {
+	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
 	}
 }
