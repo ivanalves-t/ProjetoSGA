@@ -8,14 +8,14 @@ public class Gym {
 	private String GymName;
 	private ArrayList<Employee> employees;
 	private ArrayList<GymMember> members;
-	private String[] planValues;
+	private double[] planValues;
 	
 	public Gym() {
 		this.members = new ArrayList<>();
 		this.employees = new ArrayList<>();
 	}
 	
-	public Gym(String GymName, String ownerCNPJ,  String[] planValues) {
+	public Gym(String GymName, String ownerCNPJ,  double[] planValues) {
 		this.GymName = GymName;
 		this.OwnerCNPJ = ownerCNPJ;
 		this.planValues = planValues;
@@ -55,7 +55,12 @@ public class Gym {
 		members.remove(gm);
 	}
 
-	public String[] getPlanValues() {
+	public double[] getPlanValues() {
 		return planValues;
 	}
+
+	public void setPlanValues(double[] planValues) {
+		this.planValues = planValues;
+	}
+
 }
