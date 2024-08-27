@@ -1,6 +1,6 @@
 package model.entities;
 
-public class Administrator {
+public class Administrator{
 	
 	private String name;
 	private String cpf;
@@ -52,4 +52,10 @@ public class Administrator {
 	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
 	}
+	
+	@Override
+	public String toString() {
+		return "Dados administrativos:\n" + "Nome: " + getName() + "\nCPF: " + getCpf() + "\nNome da academia: " + getNameGym() + "\nCnpj da academia: " + getCnpj();
+	}
+
 }
