@@ -6,6 +6,7 @@ import model.entities.Administrator;
 import model.entities.Gym;
 import model.entities.GymMember;
 import util.ScanUtil;
+import util.ValidDocumentsScan;
 
 public class MenuAdm{
 
@@ -46,7 +47,7 @@ public class MenuAdm{
 
     private static void createAccountAdm() {
         System.out.print("Digite o seu CPF: ");
-        String cpf = ScanUtil.readCpf();
+        String cpf = ValidDocumentsScan.readCpf();
 
         System.out.print("Escreva o seu nome: ");
         String name = sc.nextLine();
@@ -58,7 +59,7 @@ public class MenuAdm{
         String nameGym = sc.nextLine();
 
         System.out.print("Digite o CNPJ: ");
-        String CNPJ = ScanUtil.readCnpj();
+        String CNPJ = ValidDocumentsScan.readCnpj();
 
         Program.administrator = new Administrator(name, cpf, password, nameGym, CNPJ);
         System.out.println("Conta criada com sucesso!");
@@ -103,10 +104,10 @@ public class MenuAdm{
                 case 1:
                     System.out.println("-=-=-=-=-=-=-=-=-=-=\nCadastrar nova academia");
                     System.out.print("Nome da Academia: ");
-                    String gymName = ScanUtil.readNameVal(Program.administrator.getNameGym()); // Usa o método com validação
+                    String gymName = ValidDocumentsScan.readNameVal(Program.administrator.getNameGym()); // Usa o método com validação
 
                     System.out.print("Informe o CNPJ da academia: ");
-                    String ownerCnpj = ScanUtil.readCnpjVal(Program.administrator.getCnpj());
+                    String ownerCnpj = ValidDocumentsScan.readCnpjVal(Program.administrator.getCnpj());
 
                     System.out.print("Informe o valor mensal: ");
                     double[] planValue = Program.gym.generatePlan(ScanUtil.readDouble());
@@ -123,7 +124,7 @@ public class MenuAdm{
                     String name = sc.nextLine();
 
                     System.out.print("Informe o CPF do aluno: ");
-                    String cpf = ScanUtil.readCpf();
+                    String cpf = ValidDocumentsScan.readCpf();
 
                     sc.nextLine();  // Limpa o buffer após a leitura do CPF
 
@@ -136,14 +137,15 @@ public class MenuAdm{
                     System.out.println("Aluno cadastrado com sucesso!");
                     for (GymMember g : Program.gym.getMembers()) {
 						if (g.getCpf().equals(cpf)) {
-							
+							System.out.println("Cpf já registrado no sistema!");
+							break;
 						}
 					}
                     Program.gym.addMembers(new GymMember(name, cpf, plain, password));
                     break;
 
                 case 3:
-                    System.out.println("Cadastrar novo funcionário");
+                    
                     break;
                 case 4:
                     generateReports();
@@ -188,7 +190,7 @@ public class MenuAdm{
     			String name = sc.nextLine();
     			
     			System.out.println("Informe o seu CPF do aluno: ");
-    			String cpf = ScanUtil.readCpf();
+    			String cpf = ValidDocumentsScan.readCpf();
     			
     			sc.nextLine();  // Limpa o buffer após a leitura do CPF
     			

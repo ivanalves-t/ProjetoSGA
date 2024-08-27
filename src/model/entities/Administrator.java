@@ -1,6 +1,8 @@
 package model.entities;
 
-public class Administrator{
+import util.DocumentsRepository;
+
+public class Administrator implements DocumentsRepository{
 	
 	private String name;
 	private String cpf;
