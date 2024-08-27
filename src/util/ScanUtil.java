@@ -4,6 +4,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import model.exceptions.CnpjDoesntMatchException;
+import model.exceptions.CnpjRangeException;
 import model.exceptions.CpfRangeException;
 import model.exceptions.NameDoesntMatchException;
 
@@ -42,10 +43,10 @@ public class ScanUtil {
             try {
                 String cnpj = sc.next();
                 if (cnpj.length() != 14 || !cnpj.matches("\\d+")) {
-                    throw new CpfRangeException("Cnpj deve ter exatamente 14 dígitos numéricos.");
+                    throw new CnpjRangeException("Cnpj deve ter exatamente 14 dígitos numéricos.");
                 }
                 return cnpj;
-            } catch (CpfRangeException e) {
+            } catch (CnpjRangeException e) {
                 System.out.println("Erro: " + e.getMessage());
                 sc.nextLine(); // Limpa o buffer da linha
             }
@@ -69,11 +70,11 @@ public class ScanUtil {
                 String cnpj = sc.next();
                 if (cnpj.length() != 14 || !cnpj.matches("\\d+")) {
                     throw new CpfRangeException("Cnpj deve ter exatamente 14 dígitos numéricos.");
-                }if (cnpj != comp) {
+                }if (!cnpj.equals(comp)) {
                 	throw new CnpjDoesntMatchException("Cnpj incorreto, tente novamente.");
                 }
                 return cnpj;
-            } catch (CpfRangeException e) {
+            } catch (CnpjDoesntMatchException e) {
                 System.out.println("Erro: " + e.getMessage());
                 sc.nextLine(); // Limpa o buffer da linha
             }
@@ -81,17 +82,20 @@ public class ScanUtil {
     }
     
     public static String readNameVal(String comp) {
-        while (true) {
+    	boolean val = false;
+    	String nome = "l";
+        while (!val) {
             try {
-                String cnpj = sc.next();
-                if (cnpj != comp) {
-                	throw new NameDoesntMatchException("Erro! Digite o mesmo nome que utilizou ao registrar sua conta de administrador");
+                nome = sc.next();
+                if (!nome.equals(comp)) {
+                	throw new NameDoesntMatchException("Nome incorreto, tente novamente.");
                 }
-                return cnpj;
-            } catch (CpfRangeException e) {
+               val = true;
+            } catch (NameDoesntMatchException e) {
                 System.out.println("Erro: " + e.getMessage());
                 sc.nextLine(); // Limpa o buffer da linha
             }
         }
+        return nome;
     }
 }
