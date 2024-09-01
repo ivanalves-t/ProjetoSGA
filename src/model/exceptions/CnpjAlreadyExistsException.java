@@ -1,10 +1,10 @@
 package model.exceptions;
 
-public class CpfAlreadyExcistsException extends RuntimeException {
+public class CnpjAlreadyExistsException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	public CpfAlreadyExcistsException(String message) {
+	public CnpjAlreadyExistsException(String message) {
 		super(message);
 	}
 

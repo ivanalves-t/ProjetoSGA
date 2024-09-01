@@ -5,36 +5,36 @@ import java.util.ArrayList;
 public class Instructor extends Employee{
 
 	private double wage;
+	private String password;
 	private ArrayList<GymMember> listMembers = new ArrayList<>();
 	
 
 	public Instructor(String name, String cpf, String gymName, double wage, ArrayList<GymMember> listMembers) {
-		super(name, cpf, gymName);
+		super(name, cpf);
 		this.listMembers = listMembers;
 		this.wage = wage;
 		
 	}
-
-	public double getWage() {
+	
+	public Instructor (String name,String cpf, String password, double wage) {
+		super(name, cpf);
+		this.password = password;
+		this.wage = wage;
+		this.listMembers = new ArrayList<GymMember>();
+	}
+	
+	@Override
+	public double payment() {
 		return wage;
 	}
 
-	public void setWage(double wage) {
-		this.wage = wage;
+	public String getPassword() {
+		return password;
 	}
 
-	public ArrayList<GymMember> getListMember() {
+	public ArrayList<GymMember> getListMembers() {
 		return listMembers;
 	}
-
-	public void setListMember(ArrayList<GymMember> listMembers) {
-		this.listMembers = listMembers;
-	}
-
-	@Override
-	public double payment() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	
 	
 }

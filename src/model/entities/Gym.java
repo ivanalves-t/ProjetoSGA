@@ -1,80 +1,102 @@
 package model.entities;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class Gym{
+public class Gym {
+    private static Gym instance;
+    private String ownerCNPJ;
+    private String gymName;
+    private ArrayList<GymMember> members;
+    private ArrayList<Employee> employees;
+    private List<Device> devices;
+	private double monthlyValue;
+    
+    // Construtor privado
+    private Gym(String gymName, String ownerCNPJ) {
+        this.gymName = gymName;
+        this.ownerCNPJ = ownerCNPJ;
+        this.members = new ArrayList<>();
+        this.employees = new ArrayList<>();
+    }
 
-	private String OwnerCNPJ;
-	private String GymName;
-	private ArrayList<Employee> employees;
-	private ArrayList<GymMember> members;
-	private double[] planValues;
-	static int currentlyMembers = 0;
-	static int currentlyInstructors = 0;
-	
-	public Gym() {
-		this.members = new ArrayList<>();
-		this.employees = new ArrayList<>();
-	}
-	
-	public Gym(String GymName, String ownerCNPJ,  double[] planValues) {
-		this.GymName = GymName;
-		this.OwnerCNPJ = ownerCNPJ;
-		this.planValues = planValues;
-		this.employees = new ArrayList<>();
-		this.members = new ArrayList<>();
-	}
-	
-	
+    // Método para criar a academia
+    public static Gym createGym(String gymName, String ownerCNPJ, double monthlyValue) {
+        if (instance == null) {
+            instance = new Gym(gymName, ownerCNPJ);
+        } else {
+            System.out.println("A academia já foi criada.");
+        }
+        return instance;
+    }
 
-	public String getOwnerCNPJ() {
-		return OwnerCNPJ;
-	}
+    // Método para obter a instância única da academia
+    public static Gym getInstance() {
+        if (instance == null) {
+            System.out.println("A academia ainda não foi criada.");
+        }
+        return instance;
+    }
 
-	public void setOwnerCNPJ(String ownerCNPJ) {
-		OwnerCNPJ = ownerCNPJ;
-	}
+    // Métodos de acesso
+    public String getGymName() {
+        return gymName;
+    }
 
-	public String getGymName() {
-		return GymName;
-	}
+    public String getOwnerCNPJ() {
+        return ownerCNPJ;
+    }
 
-	public void setGymName(String gymName) {
-		GymName = gymName;
-	}
+    public ArrayList<GymMember> getMembers() {
+        return new ArrayList<>(members);
+    }
 
-	public ArrayList<Employee> getEmployees() {
-		return employees;
-	}
+    public void addMember(GymMember member) {
+        members.add(member);
+    }
 
-	public ArrayList<GymMember> getMembers() {
-		return members;
-	}
-	
-	public void addMembers(GymMember gm) {
-		members.add(gm);
-	}
-	
-	public void deleteMembers(GymMember gm) {
-		members.remove(gm);
-	}
+    public ArrayList<Employee> getEmployees() {
+        return employees;
+    }
 
-	public double[] getPlanValues() {
-		return planValues;
-	}
-
-	public void setPlanValues(double[] planValues) {
-		this.planValues = planValues;
-	}
-	
-	public double[] generatePlan(double monthlyValue) {
+    public void addInstructor(Instructor instructor) {
+        employees.add(instructor);
+    }
+    
+    public void addMaintenanceWorker(MaintenanceEmployee mE) {
+    	employees.add(mE);
+    }
+    
+	public double[] generatePlan() {
 		double[] plan = new double[3];
-		plan[0] = monthlyValue;
-		plan[1] = (monthlyValue * 3) - (monthlyValue * 3 * 0.1);
-		plan[1] = (monthlyValue * 12) - (monthlyValue * 12 * 0.3);
+		plan[0] = this.monthlyValue;
+		plan[1] = (this.monthlyValue * 3) - (this.monthlyValue * 3 * 0.1);
+		plan[2] = (this.monthlyValue * 12) - (this.monthlyValue * 12 * 0.3);
 		return plan;
 	}
 	
+	public double getMonthlyValue() {
+		return monthlyValue;
+	}
 	
+	public void removeEmployee(Employee e) {
+		employees.remove(e);
+	}
+    
+    public void removeGymMember(GymMember gm) {
+    	members.remove(gm);
+    }
+    
+    public void addDevice(Device d) {
+    	devices.add(d);
+    }
+    
+    public void removeDevice(Device d) {
+    	devices.remove(d);
+    }
 
+    public List<Device> getDevices() {
+    	return devices;
+    }
+    
 }

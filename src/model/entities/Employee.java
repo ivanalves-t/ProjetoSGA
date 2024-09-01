@@ -4,11 +4,9 @@ public abstract class Employee {
 
 	private String name;
 	private String cpf;
-	private String gymName;
 
-	public Employee(String name, String cpf, String gymName) {
+	public Employee(String name, String cpf) {
 		this.name = name;
-		this.gymName = gymName;
 		this.cpf = cpf;
 		
 	}
@@ -23,16 +21,8 @@ public abstract class Employee {
 		this.name = name;
 	}
 
-	public String getcpf() {
+	public String getCpf() {
 		return cpf;
-	}
-
-	public String getGymName() {
-		return gymName;
-	}
-
-	public void setGymName(String gymName) {
-		this.gymName = gymName;
 	}
 
 }

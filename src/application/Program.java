@@ -2,18 +2,16 @@ package application;
 
 import java.util.Scanner;
 
-import model.entities.Administrator;
-import model.entities.Gym;
-import model.services.FrequencyReport;
 import util.ScanUtil;
 
 public class Program {
-	static Gym gym = new Gym();
-	static Administrator administrator = new Administrator();
 	private static Scanner sc = new Scanner(System.in);
-
+	private static MenuAdm menuAdm;
+	private static MenuGymMember menuGymMember;
+	private static MenuInstructor menuInstructor;
+	
 	public static void main(String[] args) {
-
+		menuAdm = null;
 		System.out.println("Digite o que você é: ");
 		boolean running = true;
 
@@ -30,16 +28,19 @@ public class Program {
 			switch (opt) {
 
 			case 1:
-				MenuAdm.displayMenu();
+				menuAdm.displayMenu();
 				break;
 			case 2:
-				MenuEmployee.displayMenu();
+				menuInstructor.displayMenu();
 				break;
 			case 3:
-				MenuGymMember.displayMenu();
+				menuGymMember.displayMenu();
 			case 0:
 				running = false;
 				sc.close();
+				break;
+			default:
+				System.out.println("Digite uma opção acima!");
 				break;
 			}
 
