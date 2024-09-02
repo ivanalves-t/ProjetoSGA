@@ -1,13 +1,11 @@
 package model.services;
 
-public abstract class Report {
+import java.time.LocalDate;
+
+public interface Report {
 	
-	protected String message;
-	
-	public Report(String message) {
-		this.message = message;
-	}
+
+	public static final LocalDate date = LocalDate.now();
 	
 	public abstract String generateReport();
-	public abstract String mergeReport(String meta);
 }

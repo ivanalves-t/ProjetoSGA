@@ -93,5 +93,11 @@ public class GymMember {
 
         timer.scheduleAtFixedRate(task, 0, 1000);
     }
+
+	public MembershipPlan getMembershipPlan() {
+		return membershipPlan;
+	}
 	
+    
+    
 }
