@@ -14,6 +14,7 @@ import util.ScanUtil;
 import util.ValidDocumentsScan;
 
 public class MenuAdm {
+    private static MenuAdm instance;
 	private static Scanner sc = new Scanner(System.in);
 	private static Gym gym;
 	private static Administrator adm;
@@ -21,6 +22,13 @@ public class MenuAdm {
 	private MenuAdm() {
 		
 	}
+	
+    public static MenuAdm getInstance() {
+        if (instance == null) {
+            instance = new MenuAdm();
+        }
+        return instance;
+    }
     
 	public void displayMenu() {
 		boolean running = true;

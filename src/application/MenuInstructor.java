@@ -6,12 +6,20 @@ import util.ScanUtil;
 
 public class MenuInstructor {
 
+    private static MenuInstructor instance;
 	private static Scanner sc = new Scanner(System.in);
 
 	private MenuInstructor() {
 
 	}
 
+    public static MenuInstructor getInstance() {
+        if (instance == null) {
+            instance = new MenuInstructor();
+        }
+        return instance;
+    }
+	
 	public void displayMenu() {
 		System.out.println("Digite o que você é: ");
 		boolean running = true;
