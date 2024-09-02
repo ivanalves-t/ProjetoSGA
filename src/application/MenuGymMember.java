@@ -7,13 +7,20 @@ import model.entities.GymMember;
 import util.ScanUtil;
 
 public class MenuGymMember{
-
+    private static MenuGymMember instance;
 	private static Scanner sc = new Scanner(System.in);
 	private Gym gym;
 	
 	private MenuGymMember() {
 		
 	}
+	
+    public static MenuGymMember getInstance() {
+        if (instance == null) {
+            instance = new MenuGymMember();
+        }
+        return instance;
+    }
 	
 	public void displayMenu() {
 		boolean running = true;

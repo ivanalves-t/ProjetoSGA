@@ -6,12 +6,15 @@ import util.ScanUtil;
 
 public class Program {
 	private static Scanner sc = new Scanner(System.in);
-	private static MenuAdm menuAdm;
-	private static MenuGymMember menuGymMember;
-	private static MenuInstructor menuInstructor;
+    private static MenuAdm menuAdm;
+    private static MenuGymMember menuGymMember;
+    private static MenuInstructor menuInstructor;
 	
 	public static void main(String[] args) {
-		menuAdm = null;
+        menuAdm = MenuAdm.getInstance();  // Inicializa a instância Singleton
+        menuGymMember = MenuGymMember.getInstance();  // Inicializa a instância Singleton, se necessário
+        menuInstructor = MenuInstructor.getInstance();  // Inicializa a instância Singleton, se necessário
+        
 		System.out.println("Digite o que você é: ");
 		boolean running = true;
 
