@@ -4,11 +4,15 @@ import java.util.Scanner;
 
 import util.ScanUtil;
 
-public class MenuEmployee {
+public class MenuInstructor {
 
-	private static Scanner sc = new Scanner (System.in);
-	
-	public static void displayMenu() {
+	private static Scanner sc = new Scanner(System.in);
+
+	private MenuInstructor() {
+
+	}
+
+	public void displayMenu() {
 		System.out.println("Digite o que você é: ");
 		boolean running = true;
 
@@ -25,13 +29,13 @@ public class MenuEmployee {
 			switch (opt) {
 
 			case 1:
-				MenuAdm.displayMenu();
+//				MenuAdm.displayMenu();
 				break;
 			case 2:
-				MenuEmployee.displayMenu();
+//				MenuInstructor.displayMenu();
 				break;
 			case 3:
-				MenuGymMember.displayMenu();
+//				MenuGymMember.displayMenu();
 			case 0:
 				running = false;
 				sc.close();

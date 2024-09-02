@@ -2,21 +2,26 @@ package application;
 
 import java.util.Scanner;
 
-import model.entities.Administrator;
+import model.entities.Gym;
 import model.entities.GymMember;
 import util.ScanUtil;
 
 public class MenuGymMember{
 
-	public static Scanner sc = new Scanner(System.in);
+	private static Scanner sc = new Scanner(System.in);
+	private Gym gym;
 	
-	public static void displayMenu() {
+	private MenuGymMember() {
+		
+	}
+	
+	public void displayMenu() {
 		boolean running = true;
 
 		while (running) {
 			System.out.println("-=-=-=-=-=-=-=-=-=-=\nConta do aluno:");
 			System.out.println("1 - Entrar na conta.");
-			System.out.println("2 - Excluir conta.");
+			System.out.println("2 - Exibir quantidade de membros atuais");
 			System.out.println("0 - Menu Anterior\n-=-=-=-=-=-=-=-=-=-=\n");
 
 			System.out.print("Escolha uma opção: ");
@@ -28,8 +33,13 @@ public class MenuGymMember{
 				accessValidateAccountGymMember();
 				break;
 			case 2:
-				deleteAccountGymMember();
-				System.out.println();
+				int sum = 0;
+				for (GymMember gm : gym.getMembers()) {
+					if(gm.getCheckin() == true) {
+						sum ++;
+					}
+				}
+				System.out.println("total de membros atualmente na academia: " + sum);
 			case 0:
 				running = false;
 				System.out.println("Saindo...");
@@ -43,7 +53,7 @@ public class MenuGymMember{
 	
 
 
-	private static void accessValidateAccountGymMember() {
+	private void accessValidateAccountGymMember() {
 		System.out.print("Digite o seu CPF: ");
 		String cpf = sc.nextLine();
 
@@ -51,7 +61,7 @@ public class MenuGymMember{
 		String password = sc.nextLine();
 
 		boolean found = false;
-		for (GymMember g : Program.gym.getMembers()) {
+		for (GymMember g : gym.getMembers()) {
 
 			if (g.getCpf().equals(cpf) && g.getPassword().equals(password)) {
 
@@ -67,34 +77,8 @@ public class MenuGymMember{
 		}
 	}
 	
-	private static void deleteAccountGymMember() {
-		System.out.print("Digite o seu CPF: ");
-		String cpf = sc.nextLine();
+	private void accessAccountGymMember() {
 
-		System.out.print("Digite a sua senha: ");
-		String password = sc.nextLine();
-
-		boolean found = false;
-		for (GymMember gm : Program.gym.getMembers()) {
-
-			if (gm.getCpf().equals(cpf) && gm.getPassword().equals(password)) {
-
-				System.out.println("Deletando a conta...");
-				found = true;
-				Program.gym.deleteMembers(gm);
-				displayMenu();
-				break;
-			}
-		}
-
-		if (!found) {
-			System.out.println("CPF ou senha incorretos.");
-		}
-	}
-	
-	private static void accessAccountGymMember() {
-
-		System.out.println("Digite o que você é: ");
 		boolean running = true;
 
 		while (running == true) {
@@ -111,10 +95,10 @@ public class MenuGymMember{
 			switch (opt) {
 
 			case 1:
-				MenuAdm.displayMenu();
+				
 				break;
 			case 2:
-				MenuGymMember.displayMenu();
+
 				break;
 			case 0:
 				running = false;
