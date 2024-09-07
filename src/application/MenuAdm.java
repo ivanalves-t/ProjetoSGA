@@ -25,6 +25,7 @@ public class MenuAdm {
 	private MenuAdm() {
 
 	}
+
 	// Background colors
 	public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
 	public static final String ANSI_RESET = "\u001B[0m";
@@ -37,6 +38,7 @@ public class MenuAdm {
 		}
 		return instance;
 	}
+
 	// Adm main menu
 	public void displayMenu() {
 		boolean running = true;
@@ -45,7 +47,7 @@ public class MenuAdm {
 			System.out.println(ANSI_CYAN_BACKGROUND);
 			System.out.println("=============== MENU ADM ===============");
 			System.out.println("|  1 - Create an admin account         |");
-			System.out.println("|  2 - Sign in the admin accoun        |");
+			System.out.println("|  2 - Sign in the admin account       |");
 			System.out.println("|  0 - Back to previous menu           |");
 			System.out.println("========================================");
 			System.out.println(ANSI_RESET);
@@ -79,12 +81,13 @@ public class MenuAdm {
 			}
 		}
 	}
+
 	// create admin account
 	private void createAccountAdm() {
 		System.out.print("Type your CPF: ");
 		String cpf = ValidDocumentsScan.readNewCpf();
 		if (cpf == null) {
-			System.out.println("Going to previous menu...");
+			System.out.println("Please try again later.");
 			return;
 		}
 
@@ -98,9 +101,9 @@ public class MenuAdm {
 		System.out.println(ANSI_GREEN_BACKGROUND);
 		System.out.println("Admin account created successfully!");
 		System.out.println(ANSI_RESET);
-		
+
 		System.out.println("Now register your Gym");
-		
+
 		System.out.println(ANSI_CYAN_BACKGROUND);
 		System.out.println("=============== NEW GYM ===============");
 		System.out.println(ANSI_RESET);
@@ -116,19 +119,20 @@ public class MenuAdm {
 		System.out.println("Gym registered successfully!");
 		System.out.println(ANSI_RESET);
 	}
-	//access adm account logic
+
+	// access adm account logic
 	private void accessAccountAdm() {
 		try {
-			
+
 			System.out.print("Type your CPF: ");
 			String cpf = ValidDocumentsScan.readCpfVal();
-			
-			if (cpf == null) 
+
+			if (cpf == null)
 				return;
-			
+
 			System.out.print("Type your password: ");
 			String password = sc.nextLine();
-			
+
 			if (!adm.getCpf().equals(cpf)) {
 				throw new CpfDoesntMatchException(" Wrong cpf!");
 			}
@@ -136,7 +140,7 @@ public class MenuAdm {
 				throw new IllegalArgumentException(" Wrong Password!");
 			}
 			menuAdm2();
-		}catch(CpfDoesntMatchException | IllegalArgumentException e) {
+		} catch (CpfDoesntMatchException | IllegalArgumentException e) {
 			System.out.println(ANSI_RED_BACKGROUND);
 			System.out.println("Error: " + e.getMessage());
 			System.out.println(ANSI_RESET);
@@ -144,6 +148,7 @@ public class MenuAdm {
 		}
 
 	}
+
 	// second adm menu
 	private void menuAdm2() {
 		boolean running = true;
@@ -151,85 +156,79 @@ public class MenuAdm {
 		while (running) {
 			System.out.println(ANSI_CYAN_BACKGROUND);
 			System.out.println("=============== ADM ACCOUNT ===============");
-			System.out.println("|  0 - Menu Anterior                      |");
+			System.out.println("|  0 - Previous menu                      |");
 			System.out.println("|  1 - Manager member                     |");
 			System.out.println("|  2 - Manage employees                   |");
-			System.out.println("|  3 - Manage Reports                     |");			
-			System.out.println("|  8 - Exibe dados do adm                 |");
+			System.out.println("|  3 - Manage Reports                     |");
+			System.out.println("|  4 - Exibe dados do adm                 |");
 			System.out.println("===========================================");
 			System.out.println(ANSI_RESET);
 
 			System.out.print("Escolha uma opção: ");
 			byte choice = (byte) ScanUtil.readOpt();
-			try {
 
-				switch (choice) {
-				case 1:
-					memberManagement();
-					break;
-				case 2:
-					employeeManagement();
-					break;
-				case 3:
-					reportManagement();
-					break;
-				case 0:
-					running = false;
-					System.out.println("Saindo...");
-					break;
-				default:
-					System.out.println("Erro: Digite um número dentre as opções listadas!");
-				}
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
+			switch (choice) {
+			case 1:
+				memberManagement();
+				break;
+			case 2:
+				employeeManagement();
+				break;
+			case 3:
+				reportManagement();
+				break;
+			case 0:
+				running = false;
+				System.out.println("Going to previous menu...");
+				break;
+			default:
+				System.out.println("Error: Type a listed option!");
 			}
+
 		}
 	}
-	
-	private void reportManagement() {
-		System.out.println(ANSI_CYAN_BACKGROUND);
-		System.out.println("=============== REPORT MANAGEMENT ===============");
-		System.out.println("|  0 - Menu Anterior                            |");
-		System.out.println("|  1 - Manager member                           |");
-		System.out.println("|  2 - Manage employees                         |");
-		System.out.println("|  3 - Manage Reports                           |");			
-		System.out.println("|  7 - Deletar tudo                             |");
-		System.out.println("|  8 - Exibe dados do adm                       |");
-		System.out.println("=================================================");
-		System.out.println(ANSI_RESET);
-	}
-	
-	private void memberManagement() {
-		System.out.println(ANSI_CYAN_BACKGROUND);
-		System.out.println("=============== MEMBER MANAGEMENT ===============");
-		System.out.println("|  0 - Previous menu                            |");
-		System.out.println("|  1 - Create new member                        |");
-		System.out.println("|  2 - Remove a member                          |");
-		System.out.println("|  3 - List all members                         |");
-		System.out.println("|  4 - Alter a member                           |");
-		System.out.println("==================================================");
-		System.out.println(ANSI_RESET);
-		
-		System.out.print("Escolha uma opção: ");
-		byte choice = (byte) ScanUtil.readOpt();
 
-	}
-	
-	private void employeeManagement() {
-		System.out.println(ANSI_CYAN_BACKGROUND);
-		System.out.println("=============== EMPLOYEE MANAGEMENT ===============");
-		System.out.println("|  0 - Previous menu                              |");
-		System.out.println("|  1 - Register new instructor                    |");
-		System.out.println("|  2 - Register new maintenance employee          |");
-		System.out.println("|  3 - Remove a maintenance employee              |");
-		System.out.println("|  4 - Remove an instructor                       |");
-		System.out.println("|  5 - List all employees                         |");
-		System.out.println("|  6 - Alter an employee                          |");
-		System.out.println("===================================================");
-		System.out.println(ANSI_RESET);
-		
-		System.out.print("Escolha uma opção: ");
-		byte choice = (byte) ScanUtil.readOpt();
+	// MEMBER MANAGEMENT
+
+	private void memberManagement() {
+		boolean running = true;
+
+		while (running) {
+			System.out.println(ANSI_CYAN_BACKGROUND);
+			System.out.println("=============== MEMBER MANAGEMENT ===============");
+			System.out.println("|  0 - Previous menu                            |");
+			System.out.println("|  1 - Create new member                        |");
+			System.out.println("|  2 - Remove a member                          |");
+			System.out.println("|  3 - List all members                         |");
+			System.out.println("|  4 - Alter a member                           |");
+			System.out.println("==================================================");
+			System.out.println(ANSI_RESET);
+
+			System.out.print("Escolha uma opção: ");
+			byte choice = (byte) ScanUtil.readOpt();
+
+			switch (choice) {
+			case 1:
+				addMember();
+				break;
+			case 2:
+				removeMember();
+				break;
+			case 3:
+				listAllMembers();
+			case 4:
+				alterMember();
+				break;
+			case 0:
+				running = false;
+				System.out.println("Going to previous menu...");
+				break;
+			default:
+				System.out.println("Error: Type a listed option!");
+			}
+
+		}
+
 	}
 	
 	private void addMember() {
@@ -264,6 +263,108 @@ public class MenuAdm {
 		System.out.println("Aluno cadastrado com sucesso!");
 		gym.addMember(new GymMember(name, cpf, mp, password));
 	}
+	
+	private void removeMember() {
+		System.out.println("=============== REMOVE MEMBER ===============");
+		System.out.print("Informe o cpf do membro");
+		String cpf = ValidDocumentsScan.deleteCpf();
+		if (cpf == null) {
+			System.out.println("Going to previous menu...");
+			return;
+		}
+		for (GymMember gm : gym.getMembers()) {
+			if (gm.getCpf().equals(cpf)) {
+				gym.removeGymMember(gm);
+				return;
+			}
+		}
+		System.out.println(ANSI_RED_BACKGROUND);
+		System.out.println("Member not found! ");
+		System.out.println(ANSI_RESET);
+	}
+	
+	private void listAllMembers() {
+		StringBuilder sb = new StringBuilder();
+		try {
+			for (GymMember gm : gym.getMembers()) {
+				sb.append(gm);
+			}
+		} catch (NullPointerException e) {
+			System.out.println("Erro: cadastre alguns membros antes");
+			return;
+		}
+	}
+	
+	private void alterMember() {
+		System.out.println(ANSI_CYAN_BACKGROUND);
+		System.out.println("=============== REPORT MANAGEMENT ===============");
+		System.out.println("|  0 - Previous menu                            |");
+		System.out.println("|  1 - Modify member name                       |");
+		System.out.println("|  2 - Modify membership plan                   |");
+		System.out.println("|  3 - Manage Reports                           |");
+		System.out.println("|  7 - Deletar tudo                             |");
+		System.out.println("|  8 - Exibe dados do adm                       |");
+		System.out.println("=================================================");
+		System.out.println(ANSI_RESET);
+		System.out.print("Escolha uma opção: ");
+	}
+
+
+	private void reportManagement() {
+		boolean running = true;
+
+		while (running) {
+			System.out.println(ANSI_CYAN_BACKGROUND);
+			System.out.println("=============== REPORT MANAGEMENT ===============");
+			System.out.println("|  0 - Menu Anterior                            |");
+			System.out.println("|  1 - Manager member                           |");
+			System.out.println("|  2 - Manage employees                         |");
+			System.out.println("|  3 - Manage Reports                           |");
+			System.out.println("|  7 - Deletar tudo                             |");
+			System.out.println("|  8 - Exibe dados do adm                       |");
+			System.out.println("=================================================");
+			System.out.println(ANSI_RESET);
+			System.out.print("Escolha uma opção: ");
+			byte choice = (byte) ScanUtil.readOpt();
+
+			switch (choice) {
+			case 1:
+				memberManagement();
+				break;
+			case 2:
+				employeeManagement();
+				break;
+			case 3:
+				reportManagement();
+				break;
+			case 0:
+				running = false;
+				System.out.println("Going to previous menu...");
+				break;
+			default:
+				System.out.println("Error: Type a listed option!");
+			}
+
+		}
+	}
+
+	private void employeeManagement() {
+		System.out.println(ANSI_CYAN_BACKGROUND);
+		System.out.println("=============== EMPLOYEE MANAGEMENT ===============");
+		System.out.println("|  0 - Previous menu                              |");
+		System.out.println("|  1 - Register new instructor                    |");
+		System.out.println("|  2 - Register new maintenance employee          |");
+		System.out.println("|  3 - Remove a maintenance employee              |");
+		System.out.println("|  4 - Remove an instructor                       |");
+		System.out.println("|  5 - List all employees                         |");
+		System.out.println("|  6 - Alter an employee                          |");
+		System.out.println("==================================================");
+		System.out.println(ANSI_RESET);
+
+		System.out.print("Escolha uma opção: ");
+		byte choice = (byte) ScanUtil.readOpt();
+	}
+
 
 	private void addEmployee() {
 		System.out.println("=============== NEW EMPLOYEE ===============");
@@ -294,9 +395,9 @@ public class MenuAdm {
 		}
 
 	}
-	
+
 	// ADD METHODS
-	
+
 	private void addInstructor() {
 
 		System.out.print("Informe o nome do Instrutor");
@@ -333,18 +434,6 @@ public class MenuAdm {
 		gym.addInstructor(new Instructor(name, cpf, password, wage));
 	}
 
-	private void listAllMembers() {
-		StringBuilder sb = new StringBuilder();
-		try {
-			for (GymMember gm : gym.getMembers()) {
-				sb.append(gm);
-			}
-		} catch (NullPointerException e) {
-			System.out.println("Erro: cadastre alguns membros antes");
-			return;
-		}
-	}
-
 	private void listAllEmployees() {
 		StringBuilder sb = new StringBuilder();
 		try {
@@ -355,25 +444,6 @@ public class MenuAdm {
 			System.out.println("Error: cadastre alguns empregados antes");
 			return;
 		}
-	}
-
-	private void removeMember() {
-		System.out.println("=============== REMOVE MEMBER ===============");
-		System.out.print("Informe o cpf do membro");
-		String cpf = ValidDocumentsScan.deleteCpf();
-		if (cpf == null) {
-			System.out.println("Going to previous menu...");
-			return;
-		}
-		for (GymMember gm : gym.getMembers()) {
-			if (gm.getCpf().equals(cpf)) {
-				gym.removeGymMember(gm);
-				return;
-			}
-		}
-		System.out.println(ANSI_RED_BACKGROUND);
-		System.out.println("Member not found! ");
-		System.out.println(ANSI_RESET);
 	}
 
 	private void removeEmployee() {
@@ -467,7 +537,7 @@ public class MenuAdm {
 				System.out.println("Saindo...");
 				break;
 			default:
-				System.out.println("Erro: Digite um número dentre as opções listadas!");
+				System.out.println("Error: Type a listed option!");
 			}
 		}
 	}
