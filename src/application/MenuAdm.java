@@ -8,28 +8,31 @@ import model.entities.Gym;
 import model.entities.GymMember;
 import model.entities.Instructor;
 import model.entities.MaintenanceEmployee;
+import model.services.CashReport;
 import model.services.MaintenanceReport;
 import model.services.MembershipPlan;
+import model.services.Report;
 import util.ScanUtil;
 import util.ValidDocumentsScan;
 
 public class MenuAdm {
-    private static MenuAdm instance;
+	private static MenuAdm instance;
 	private static Scanner sc = new Scanner(System.in);
 	private static Gym gym;
 	private static Administrator adm;
-	
+	private Report report;
+
 	private MenuAdm() {
-		
+
 	}
-	
-    public static MenuAdm getInstance() {
-        if (instance == null) {
-            instance = new MenuAdm();
-        }
-        return instance;
-    }
-    
+
+	public static MenuAdm getInstance() {
+		if (instance == null) {
+			instance = new MenuAdm();
+		}
+		return instance;
+	}
+
 	public void displayMenu() {
 		boolean running = true;
 
@@ -117,14 +120,15 @@ public class MenuAdm {
 			System.out.println("1 - Criar academia");
 			System.out.println("2 - Cadastrar novo aluno");
 			System.out.println("3 - Cadastrar novo instrutor");
-			System.out.println("4 - Gerar relatórios de finanças");
-			System.out.println("5 - Exibir todos os alunos");
-			System.out.println("6 - Exibir todos os funcionarios");
-			System.out.println("7 - Registrar um novo aparelho");
-			System.out.println("8 - Remover um membro");
-			System.out.println("9 - Remover um instrtor");
-			System.out.println("10 - Registrar uma manutencao");
-			System.out.println("11 - Deletar tudo");
+			System.out.println("4 - Exibir todos os alunos");
+			System.out.println("5 - Exibir todos os funcionarios");
+			System.out.println("6 - Registrar um novo aparelho");
+			System.out.println("7 - Remover um membro");
+			System.out.println("8 - Remover um instrtor");
+			System.out.println("9 - Registrar uma manutencao");
+			System.out.println("10 - Gerar relatórios Financeiros");
+			System.out.println("11 - Gerar relatórios de Presença dos membros");
+			System.out.println("12 - Deletar tudo");
 			System.out.println("0 - Menu Anterior\n-=-=-=-=-=-=-=-=-=-=\n");
 
 			System.out.print("Escolha uma opção: ");
@@ -210,25 +214,6 @@ public class MenuAdm {
 				break;
 
 			case 4:
-				if (gym == null) {
-					System.out.println("Erro: Nenhuma academia cadastrada. Por favor, cadastre uma academia primeiro.");
-					break;
-				}
-				System.out.println("-=-=-=-=-=-=-=-=-=-=\\nRelatório de financas");
-				double sum = 0;
-				try {
-					for (Employee e : gym.getEmployees()) {
-						System.out.println("Name: " + e.getName() + "\nAmmount: R$ " + e.payment() + "\nEmployee type: "
-								+ e.getClass().getSimpleName());
-						sum += e.payment();
-					}
-					System.out.println("\nTotal: " + sum);
-					break;
-				}catch (NullPointerException e) {
-					System.out.println("Error: cadastre alguns funcionarios antes");
-					break;
-				}
-			case 5:
 
 				try {
 					for (GymMember gm : gym.getMembers()) {
@@ -239,7 +224,7 @@ public class MenuAdm {
 					System.out.println("Erro: cadastre alguns membros antes");
 				}
 				break;
-			case 6:
+			case 5:
 				if (gym == null) {
 					System.out.println("Erro: Nenhuma academia cadastrada. Por favor, cadastre uma academia primeiro.");
 					break;
@@ -249,11 +234,11 @@ public class MenuAdm {
 						System.out.println(e);
 					}
 					break;
-				}catch (NullPointerException e) {
+				} catch (NullPointerException e) {
 					System.out.println("Error: cadastre alguns empregados antes");
 					break;
 				}
-			case 7:
+			case 6:
 				if (gym == null) {
 					System.out.println("Erro: Nenhuma academia cadastrada. Por favor, cadastre uma academia primeiro.");
 					break;
@@ -265,7 +250,7 @@ public class MenuAdm {
 				String status = sc.nextLine();
 
 				break;
-			case 8:
+			case 7:
 				if (gym == null) {
 					System.out.println("Erro: Nenhuma academia cadastrada. Por favor, cadastre uma academia primeiro.");
 					break;
@@ -285,7 +270,7 @@ public class MenuAdm {
 				}
 				System.out.println("Aluno não encontrado! ");
 				break;
-			case 9:
+			case 8:
 				if (gym == null) {
 					System.out.println("Erro: Nenhuma academia cadastrada. Por favor, cadastre uma academia primeiro.");
 					break;
@@ -305,7 +290,7 @@ public class MenuAdm {
 				}
 				System.out.println("Instrutor não encontrado! ");
 				break;
-			case 10:
+			case 9:
 				if (gym == null) {
 					System.out.println("Erro: Nenhuma academia cadastrada. Por favor, cadastre uma academia primeiro.");
 					break;
@@ -327,7 +312,13 @@ public class MenuAdm {
 				MaintenanceReport mr = new MaintenanceReport(message, new MaintenanceEmployee(name, cpf, daily));
 				System.out.println("Finalizado!");
 				break;
-			case 11:
+			case 10: //Gerar relatorio financeiro
+				adm.addReport(new CashReport());
+				
+
+			case 11: 
+				//Gerar relatorio de presença dos membros
+			case 12:
 				adm = null;
 				gym = null;
 				running = false;
@@ -341,65 +332,4 @@ public class MenuAdm {
 			}
 		}
 	}
-
-	private void generateReports() {
-		boolean running = true;
-
-		while (running) {
-			System.out.println("-=-=-=-=-=-=-=-=-=-=\nConta Administrativa/ Relatorios:");
-			System.out.println("1 - Mostrar dados do administrador");
-			System.out.println("2 - Relatórios de pagamentos");
-			System.out.println("3 - Relatório de frequência atual");
-			System.out.println("4 - Mostrar todos os alunos");
-			System.out.println("5 - Mostrar todos os funcionários");
-			System.out.println("0 - Menu Anterior\n-=-=-=-=-=-=-=-=-=-=\n");
-
-			System.out.print("Escolha uma opção: ");
-			byte choice = (byte) ScanUtil.readOpt();
-
-			switch (choice) {
-			case 1:
-				System.out.println(adm);
-				break;
-
-			case 2:
-				System.out.println("-=-=-=-=-=-=-=-=-=-=\nCadastrar novo aluno");
-//
-//				System.out.println("Informe o nome do aluno: ");
-//				String name = sc.nextLine();
-//
-//				System.out.println("Informe o seu CPF do aluno: ");
-//				String cpf = ValidDocumentsScan.readCpf();
-//
-//				sc.nextLine(); // Limpa o buffer após a leitura do CPF
-//
-//				System.out.println("Informe o plano do aluno: ");
-//				String plan = sc.nextLine();
-//
-//				System.out.println("Digite uma senha para o aluno:");
-//				String password = sc.nextLine();
-//
-//				System.out.println("Aluno cadastrado com sucesso!");
-//				Program.gym.addMembers(new GymMember(name, cpf, plan, password));
-				break;
-
-			case 3:
-				System.out.println("Cadastrar novo funcionário");
-				break;
-			case 4:
-				System.out.println("Gerar relatórios");
-				break;
-			case 5:
-				System.out.println("Funcionalidade de excluir conta");
-				break;
-			case 0:
-				running = false;
-				System.out.println("Saindo...");
-				break;
-			default:
-				System.out.println("Erro: Digite um número dentre as opções listadas!");
-			}
-		}
-	}
-
 }
