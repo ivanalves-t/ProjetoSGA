@@ -9,53 +9,56 @@ import model.entities.GymMember;
 
 public class CashReport implements Report {
 
-    private String message;
-    private List<Employee> employees;
-    private List<GymMember> members;
-    private String reportDate; // Armazena a data de geração do relatório
+	private String message;
+	private String reportDate; // Armazena a data de geração do relatório
+	private static Gym gym;
 
-    public CashReport(Gym gym) {
-        this.message = "\n=-=-=-=-=-=-=-=-=-=-\nRelatório de Caixa";
-        this.employees = gym.getEmployees(); // Obtém a lista de funcionários da academia
-        this.members = gym.getMembers();     // Obtém a lista de membros da academia
+	
+	
+	public CashReport() {
 
-        // Captura a data e hora atuais
-        LocalDateTime now = LocalDateTime.now();
-        // Formata a data e hora como uma string legível
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        this.reportDate = now.format(formatter);
-    }
+		// Obtém a lista de membros da academia
+		this.message = generateReport();
 
-    @Override
-    public String generateReport() {
-        double totalPayments = 0.0;
-        double totalMemberships = 0.0;
-        StringBuilder report = new StringBuilder();
-        
-        // Cabeçalho do relatório com a data de geração
-        report.append(message).append("\n");
-        report.append("Data de Geração: ").append(reportDate).append("\n\n");
+		// Captura a data e hora atuais
+		LocalDateTime now = LocalDateTime.now();
+		// Formata a data e hora como uma string legível
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+		this.reportDate = now.format(formatter);
 
-        // Relatório de pagamentos dos funcionários
-        report.append("Pagamentos dos Funcionários:\n");
-        for (Employee employee : employees) {
-            double payment = employee.payment();
-            totalPayments += payment;
-            report.append("Funcionário: ").append(employee.getName())
-                  .append(", Pagamento: R$ ").append(payment).append("\n");
-        }
-        report.append("Total de Pagamentos: R$ ").append(totalPayments).append("\n\n");
+	}
 
-        // Relatório das mensalidades dos membros
-        report.append("Mensalidades dos Membros:\n");
-        for (GymMember member : members) {
-            double payment = member.getMembershipPlan().getMonthly();
-            totalMemberships += payment;
-            report.append("Membro: ").append(member.getName())
-                  .append(", Mensalidade: R$ ").append(payment).append("\n");
-        }
-        report.append("Total de Mensalidades: R$ ").append(totalMemberships).append("\n");
+	@Override
+	public String generateReport() {
+		double totalPayments = 0.0;
+		double totalMemberships = 0.0;
+		StringBuilder report = new StringBuilder();
 
-        return report.toString();
-    }
+		// Cabeçalho do relatório com a data de geração
+		report.append(message).append("\n");
+		report.append("Data de Geração: ").append(reportDate).append("\n\n");
+
+		// Relatório de pagamentos dos funcionários
+		report.append("Pagamentos dos Funcionários:\n");
+		for (Employee employee : gym.getEmployees()) {
+			double payment = employee.payment();
+			totalPayments += payment;
+			report.append("Funcionário: ").append(employee.getName()).append(", Pagamento: R$ ").append(payment)
+					.append("\n");
+		}
+		report.append("Total de Pagamentos: R$ ").append(totalPayments).append("\n\n");
+
+		// Relatório das mensalidades dos membros
+		report.append("Mensalidades dos Membros:\n");
+		for (GymMember member : gym.getMembers()) {
+			double payment = member.getMembershipPlan().getMonthly();
+			totalMemberships += payment;
+			report.append("Membro: ").append(member.getName()).append(", Mensalidade: R$ ").append(payment)
+					.append("\n");
+		}
+		report.append("Total de Mensalidades: R$ ").append(totalMemberships).append("\n");
+
+		return report.toString();
+	}
+
 }
