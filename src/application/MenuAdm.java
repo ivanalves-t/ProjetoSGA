@@ -8,19 +8,25 @@ import model.entities.Gym;
 import model.entities.GymMember;
 import model.entities.Instructor;
 import model.entities.MaintenanceEmployee;
+
 import model.exceptions.CpfDoesntMatchException;
 import model.services.MaintenanceReport;
 import model.services.MembershipPlan;
 import util.DocumentsRepository;
+
 import util.ScanUtil;
 import util.ValidDocumentsScan;
 
 public class MenuAdm {
+
 	// Singleton instances. Unique multi instances
+
+
 	private static MenuAdm instance;
 	private static Scanner sc = new Scanner(System.in);
 	private static Gym gym;
 	private static Administrator adm;
+
 
 	private MenuAdm() {
 
@@ -38,6 +44,7 @@ public class MenuAdm {
 		return instance;
 	}
 	// Adm main menu
+
 	public void displayMenu() {
 		boolean running = true;
 
@@ -149,6 +156,7 @@ public class MenuAdm {
 		boolean running = true;
 
 		while (running) {
+
 			System.out.println(ANSI_CYAN_BACKGROUND);
 			System.out.println("=============== ADM ACCOUNT ===============");
 			System.out.println("|  0 - Menu Anterior                      |");
@@ -158,6 +166,7 @@ public class MenuAdm {
 			System.out.println("|  8 - Exibe dados do adm                 |");
 			System.out.println("===========================================");
 			System.out.println(ANSI_RESET);
+
 
 			System.out.print("Escolha uma opção: ");
 			byte choice = (byte) ScanUtil.readOpt();
@@ -312,6 +321,7 @@ public class MenuAdm {
 		System.out.print("Informe o salário do Instrutor");
 		double wage = ScanUtil.readDouble();
 
+
 		gym.addInstructor(new Instructor(name, cpf, password, wage));
 	}
 
@@ -393,7 +403,9 @@ public class MenuAdm {
 					return;
 				default:
 					throw new IllegalArgumentException("Type only 'i' or 'm' character!");
+
 				}
+
 
 			} catch (IllegalArgumentException e) {
 				System.out.println(ANSI_RED_BACKGROUND);
@@ -471,5 +483,6 @@ public class MenuAdm {
 			}
 		}
 	}
+
 
 }
