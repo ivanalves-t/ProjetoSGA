@@ -3,14 +3,16 @@ package model.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.services.Report;
+
 public class Gym {
     private static Gym instance;
     private String ownerCNPJ;
     private String gymName;
     private ArrayList<GymMember> members;
     private ArrayList<Employee> employees;
-    private List<Device> devices;
 	private double monthlyValue;
+    private ArrayList<Report> reports;
     
     // Construtor privado
     private Gym(String gymName, String ownerCNPJ) {
@@ -25,7 +27,7 @@ public class Gym {
         if (instance == null) {
             instance = new Gym(gymName, ownerCNPJ);
         } else {
-            System.out.println("A academia já foi criada.");
+            System.out.println("Gym already registered!");
         }
         return instance;
     }
@@ -33,7 +35,7 @@ public class Gym {
     // Método para obter a instância única da academia
     public static Gym getInstance() {
         if (instance == null) {
-            System.out.println("A academia ainda não foi criada.");
+            System.out.println("Gym was not registered yet.");
         }
         return instance;
     }
@@ -63,7 +65,7 @@ public class Gym {
         employees.add(instructor);
     }
     
-    public void addMaintenanceWorker(MaintenanceEmployee mE) {
+    public void addMaintenanceEmployee(MaintenanceEmployee mE) {
     	employees.add(mE);
     }
     
@@ -87,16 +89,16 @@ public class Gym {
     	members.remove(gm);
     }
     
-    public void addDevice(Device d) {
-    	devices.add(d);
+    public void addReport(Report report) {
+    	reports.add(report);
     }
     
-    public void removeDevice(Device d) {
-    	devices.remove(d);
+    public void removeReport(Report report) {
+    	reports.remove(report);
     }
-
-    public List<Device> getDevices() {
-    	return devices;
+    
+    public List<Report> getReports(){
+    	return reports;
     }
     
 }

@@ -1,11 +1,12 @@
 package model.entities;
 
+import model.services.MaintenanceReport;
+
 public class MaintenanceEmployee extends Employee{
-	
 	private double dailyPayment;
 	
-	public MaintenanceEmployee(String name, String cpf, double dailyPayment) {
-		super(name, cpf);
+	public MaintenanceEmployee(String name, String cpf, String password, double dailyPayment) {
+		super(name, cpf, password);
 		this.dailyPayment = dailyPayment;
 	}
 	
@@ -13,5 +14,9 @@ public class MaintenanceEmployee extends Employee{
 	public double payment() {
 		return dailyPayment;
 	}
-
+	
+	public MaintenanceReport generateMaintenanceReport(String message) {
+		return new MaintenanceReport(message);
+	}
+	
 }

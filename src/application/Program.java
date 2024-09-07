@@ -9,7 +9,7 @@ public class Program {
     private static MenuAdm menuAdm;
     private static MenuGymMember menuGymMember;
     private static MenuInstructor menuInstructor;
-	
+    
 	public static void main(String[] args) {
         menuAdm = MenuAdm.getInstance();  // Inicializa a instância Singleton
         menuGymMember = MenuGymMember.getInstance();  // Inicializa a instância Singleton, se necessário
@@ -20,10 +20,12 @@ public class Program {
 		boolean running = true;
 
 		while (running == true) {
-			System.out.println("=-=-=-=-=-=-=-=-=-=-\n1- Administrator");
-			System.out.println("2- Employee");
-			System.out.println("3- Member");
-			System.out.println("0- End program\n=-=-=-=-=-=-=-=-=-=-");
+			System.out.println("=============== MAIN MENU ==============");
+			System.out.println("|  1 - Admininstrator                  |");
+			System.out.println("|  2 - Instructor                      |");
+			System.out.println("|  3 - Gym Member                      |");
+			System.out.println("|  0 - Back to previous menu           |");
+			System.out.println("========================================");
 			System.out.println("Type your option:");
 			byte opt = (byte) ScanUtil.readOpt();
 
