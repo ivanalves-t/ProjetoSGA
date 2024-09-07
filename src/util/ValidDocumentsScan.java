@@ -6,6 +6,7 @@ import model.exceptions.CnpjAlreadyExistsException;
 import model.exceptions.CnpjDoesntMatchException;
 import model.exceptions.CnpjRangeException;
 import model.exceptions.CpfAlreadyExistsException;
+import model.exceptions.CpfDoesntMatchException;
 import model.exceptions.CpfRangeException;
 
 public class ValidDocumentsScan implements DocumentsRepository {
@@ -13,77 +14,46 @@ public class ValidDocumentsScan implements DocumentsRepository {
 	private static Scanner sc = new Scanner(System.in);
 
 	public static String readNewCpf() {
-		int tries = 4;
+		boolean valid = false;
 		String cpf;
-		while (tries > 0) {
+		while (!valid) {
 			try {
 				cpf = sc.next();
 				if (cpf.length() != 11 || !cpf.matches("\\d+")) {
-					throw new CpfRangeException("CPF deve ter exatamente 11 dígitos numéricos.");
+					throw new CpfRangeException("CPF must be exatly 11 numerical digits.");
 				}
 				if (DocumentsRepository.documents.contains(cpf)) {
-					throw new CpfAlreadyExistsException("CPF já registrado no sistema!");
+					throw new CpfAlreadyExistsException("CPF already registered on system!");
 				}
 				DocumentsRepository.documents.add(cpf);
-				System.out.println("Sucesso!");
 				return cpf;
 			} catch (CpfRangeException | CpfAlreadyExistsException e) {
-	        	if(tries > 1) {
-	        		System.out.println("Erro: " + e.getMessage() + "\nVocê tem " + (tries - 1) + " tentativa(s) restante(s)");	        		
-	        	}
-	            tries--;
+				System.out.println("Error: " + e.getMessage());
 			}
 		}
 		return null;
 	}
 
 	public static String readNewCnpj() {
-		int tries = 4;
+		boolean valid = false;
 		String cnpj;
-		while (tries > 0) {
+		while (!valid) {
 			try {
 				cnpj = sc.next();
 				if (cnpj.length() != 14 || !cnpj.matches("\\d+")) {
-					throw new CnpjRangeException("Cnpj deve ter exatamente 14 dígitos numéricos.");
+					throw new CnpjRangeException("Cnpj must be exactly 14 numerical digits.");
 				}
 				if (DocumentsRepository.documents.contains(cnpj)) {
-					throw new CnpjAlreadyExistsException("Cnpj já registrado no sistema!");
+					throw new CnpjAlreadyExistsException("Cnpj already registered on system!");
 				}
 				DocumentsRepository.documents.add(cnpj);
-				System.out.println("Sucesso!");
+
 				return cnpj;
 			} catch (CnpjRangeException | CnpjAlreadyExistsException e) {
-	        	if(tries > 1) {
-	        		System.out.println("Erro: " + e.getMessage() + "\nVocê tem " + (tries - 1) + " tentativa(s) restante(s)");	        		
-	        	}
-	            tries--;
+				System.out.println("Error: " + e.getMessage());
 			}
 		}
 		return null;
-	}
-
-	public static String readCnpjVal() {
-		int tries = 4;
-		String cnpj;
-		while (tries > 0) {
-			try {
-				cnpj = sc.nextLine();
-				if (cnpj.length() != 14 || !cnpj.matches("\\d+")) {
-					throw new CnpjRangeException("Cnpj deve ter exatamente 14 dígitos numéricos.");
-				}
-				if (!DocumentsRepository.documents.contains(cnpj)) {
-					throw new CnpjDoesntMatchException("Cnpj não registrado no sistema");
-				}
-				return cnpj;
-			} catch (CnpjRangeException | CnpjDoesntMatchException e) {
-	        	if(tries > 1) {
-	        		System.out.println("Erro: " + e.getMessage() + "\nVocê tem " + (tries - 1) + " tentativa(s) restante(s)");	        		
-	        	}
-	            tries--;
-			}
-		}
-	    System.out.println("Número máximo de tentativas excedido.");
-	    return null;
 	}
 
 	public static String readCpfVal() {
@@ -91,25 +61,26 @@ public class ValidDocumentsScan implements DocumentsRepository {
 		String cpf;
 		while (tries > 0) {
 			try {
-				cpf = sc.nextLine();
+				cpf = sc.next();
 				if (cpf.length() != 11 || !cpf.matches("\\d+")) {
-					throw new CnpjRangeException("Cpf deve ter exatamente 11 dígitos numéricos.");
+					throw new CpfRangeException("Cpf must be exactly 11 numerical digits!");
 				}
 				if (!DocumentsRepository.documents.contains(cpf)) {
-					throw new CnpjDoesntMatchException("Cpf não registrado no sistema");
+					throw new CpfDoesntMatchException("Cpf doesn't registered on system yet!");
 				}
 				return cpf;
-			} catch (CnpjRangeException | CnpjDoesntMatchException e) {
-	        	if(tries > 1) {
-	        		System.out.println("Erro: " + e.getMessage() + "\nVocê tem " + (tries - 1) + " tentativa(s) restante(s)");	        		
-	        	}
-	            tries--;
+			} catch (CpfRangeException | CpfDoesntMatchException e) {
+				if (tries > 1) {
+					System.out.println(
+							"Erro: " + e.getMessage() + "\nYou got " + (tries - 1) + " tryies remaining");
+				}
+				tries--;
 			}
 		}
-	    System.out.println("Número máximo de tentativas excedido.");
-	    return null;
+		System.out.println("Number of tryes excepted, please try again!");
+		return null;
 	}
-	
+
 	public static String readPlan() {
 		Scanner sc = new Scanner(System.in);
 		boolean valid = false;
@@ -134,61 +105,63 @@ public class ValidDocumentsScan implements DocumentsRepository {
 
 		return String.valueOf(opt);
 	}
-	
+
 	public static String deleteCpf() {
-	    int tries = 4;
-	    String cpf;
+		int tries = 4;
+		String cpf;
 
-	    while (tries > 0) {
-	        try {
-	            cpf = sc.nextLine();
-	            if (cpf.length() != 14 || !cpf.matches("\\d+")) {
-	                throw new CnpjRangeException("CPF deve ter exatamente 11 dígitos numéricos.");
-	            }
-	            if (!DocumentsRepository.documents.contains(cpf)) {
-	                throw new CnpjDoesntMatchException("CPF não registrado no sistema");
-	            }
-	            DocumentsRepository.documents.remove(cpf);
-	            System.out.println("Sucesso!");
-	            return cpf;
-	        } catch (CnpjRangeException | CnpjDoesntMatchException e) {
-	        	if(tries > 1) {
-	        		System.out.println("Erro: " + e.getMessage() + "\nVocê tem " + (tries - 1) + " tentativa(s) restante(s)");	        		
-	        	}
-	            tries--;
-	        }
-	    }
+		while (tries > 0) {
+			try {
+				cpf = sc.next();
+				if (cpf.length() != 14 || !cpf.matches("\\d+")) {
+					throw new CnpjRangeException("CPF must be exactly 11 numerical digits!");
+				}
+				if (!DocumentsRepository.documents.contains(cpf)) {
+					throw new CnpjDoesntMatchException("CPF doesn't registered on system yet!");
+				}
+				DocumentsRepository.documents.remove(cpf);
 
-	    System.out.println("Número máximo de tentativas excedido.");
-	    return null;
+				return cpf;
+			} catch (CnpjRangeException | CnpjDoesntMatchException e) {
+				if (tries > 1) {
+					System.out.println(
+							"Erro: " + e.getMessage() + "\nYou got " + (tries - 1) + " tryies remaining");
+				}
+				tries--;
+			}
+		}
+
+		System.out.println("Number of tryes excepted, please try again!");
+		return null;
 	}
-	
+
 	public static String deleteCnpj() {
-	    int tries = 4;
-	    String cnpj;
+		int tries = 4;
+		String cnpj;
 
-	    while (tries > 0) {
-	        try {
-	            cnpj = sc.nextLine();
-	            if (cnpj.length() != 14 || !cnpj.matches("\\d+")) {
-	                throw new CnpjRangeException("CNPJ deve ter exatamente 14 dígitos numéricos.");
-	            }
-	            if (!DocumentsRepository.documents.contains(cnpj)) {
-	                throw new CnpjDoesntMatchException("CNPJ não registrado no sistema");
-	            }
-	            DocumentsRepository.documents.remove(cnpj);
-	            System.out.println("Sucesso!");
-	            return cnpj;
-	        } catch (CnpjRangeException | CnpjDoesntMatchException e) {
-	        	if(tries > 1) {
-	        		System.out.println("Erro: " + e.getMessage() + "\nVocê tem " + (tries - 1) + " tentativa(s) restante(s)");	        		
-	        	}
-	            tries--;
-	        }
-	    }
+		while (tries > 0) {
+			try {
+				cnpj = sc.next();
+				if (cnpj.length() != 14 || !cnpj.matches("\\d+")) {
+					throw new CnpjRangeException("CNPJ must be exactly 14 numerical digits.");
+				}
+				if (!DocumentsRepository.documents.contains(cnpj)) {
+					throw new CnpjDoesntMatchException("CNPJ doesn't registered on system yet!");
+				}
+				DocumentsRepository.documents.remove(cnpj);
 
-	    System.out.println("Número máximo de tentativas excedido.");
-	    return null;
+				return cnpj;
+			} catch (CnpjRangeException | CnpjDoesntMatchException e) {
+				if (tries > 1) {
+					System.out.println(
+							"Erro: " + e.getMessage() + "\nYou got " + (tries - 1) + " tryies remaining");
+				}
+				tries--;
+			}
+		}
+
+		System.out.println("Number of tryes excepted, please try again!");
+		return null;
 	}
-	
+
 }

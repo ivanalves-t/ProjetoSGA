@@ -15,17 +15,16 @@ public class Program {
         menuGymMember = MenuGymMember.getInstance();  // Inicializa a instância Singleton, se necessário
         menuInstructor = MenuInstructor.getInstance();  // Inicializa a instância Singleton, se necessário
         
-		System.out.println("Digite o que você é: ");
+        System.out.println("Welcome to GymManagement System!");
+        System.out.println("Please, type what you are: ");
 		boolean running = true;
 
 		while (running == true) {
-			System.out.println("=-=-=-=-=-=-=-=-=-=-\n1- Administrador");
-			System.out.println("2- Funcionário");
-			System.out.println("3- Aluno");
-			System.out.println("0- sair\n=-=-=-=-=-=-=-=-=-=-");
-
-			System.out.println("Escolha uma opção: ");
-
+			System.out.println("=-=-=-=-=-=-=-=-=-=-\n1- Administrator");
+			System.out.println("2- Employee");
+			System.out.println("3- Member");
+			System.out.println("0- End program\n=-=-=-=-=-=-=-=-=-=-");
+			System.out.println("Type your option:");
 			byte opt = (byte) ScanUtil.readOpt();
 
 			switch (opt) {
@@ -43,7 +42,7 @@ public class Program {
 				sc.close();
 				break;
 			default:
-				System.out.println("Digite uma opção acima!");
+				System.out.println("");
 				break;
 			}
 
