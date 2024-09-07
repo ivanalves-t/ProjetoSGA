@@ -1,5 +1,8 @@
 package model.entities;
 
+import java.util.List;
+
+import model.services.Report;
 import util.DocumentsRepository;
 
 public class Administrator implements DocumentsRepository {
@@ -7,7 +10,8 @@ public class Administrator implements DocumentsRepository {
 	private String name;
 	private String cpf;
 	private String password;
-
+	private List<Report> reports;
+	
 	public Administrator() {
 
 	}
@@ -38,5 +42,9 @@ public class Administrator implements DocumentsRepository {
 	public String toString() {
 		return "Dados administrativos:\n" + "Nome: " + getName() + "\nCPF: " + getCpf();
 
+	}
+	
+	public void addReport(Report report) {
+		reports.add(report);
 	}
 }

@@ -44,14 +44,14 @@ public class MenuAdm {
 
 			switch (choice) {
 			case 1:
-				if (adm.getCpf() == null) {
+				if (adm == null) {
 					createAccountAdm();
 					break;
 				}
 				System.out.println("Conta já criada! ");
 				break;
 			case 2:
-				if (adm.getCpf() == null) {
+				if (adm == null) {
 					System.out.println("Erro: crie uma conta antes de acessa-la!");
 					break;
 				}
