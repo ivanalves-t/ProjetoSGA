@@ -1,13 +1,9 @@
 package model.entities;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import model.services.MembershipPlan;
 
 public class GymMember {
 
-	private Timer timer;
 	private String name;
 	private String cpf;
 	private String instructorName;
@@ -65,37 +61,16 @@ public class GymMember {
 		return password;
 	}
 	
-	public boolean getCheckin() {
-		return checkIn;
-	}
-	
 	public void setCheckIn() {
 		this.checkIn = true;
 	}
-	
-
-    public void train(int durationInSeconds) {
-        timer = new Timer();
-        long endTime = System.currentTimeMillis() + durationInSeconds * 1000;
-
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                long remainingTime = (endTime - System.currentTimeMillis()) / 1000;
-                if (remainingTime > 0) {
-                    System.out.println("Tempo restante: " + remainingTime + " segundos");
-                } else {
-                    System.out.println("Treino concluído!");
-                    timer.cancel();
-                }
-            }
-        };
-
-        timer.scheduleAtFixedRate(task, 0, 1000);
-    }
 
 	public MembershipPlan getMembershipPlan() {
 		return membershipPlan;
+	}
+
+	public boolean getCheckIn() {
+		return checkIn;
 	}
 	
     

@@ -4,11 +4,12 @@ public abstract class Employee {
 
 	private String name;
 	private String cpf;
+	private String password;
 
-	public Employee(String name, String cpf) {
+	public Employee(String name, String cpf, String password) {
 		this.name = name;
 		this.cpf = cpf;
-		
+		this.password = password;
 	}
 
 	public abstract double payment();
@@ -17,12 +18,13 @@ public abstract class Employee {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getCpf() {
 		return cpf;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	
 }

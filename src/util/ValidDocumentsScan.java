@@ -13,6 +13,31 @@ public class ValidDocumentsScan implements DocumentsRepository {
 
 	private static Scanner sc = new Scanner(System.in);
 
+	public static String readNewCpfOpt() {
+		int tries = 4;
+		String cpf;
+		while (tries > 0) {
+			try {
+				cpf = sc.next();
+				if (cpf.length() != 11 || !cpf.matches("\\d+")) {
+					throw new CpfRangeException("CPF must be exatly 11 numerical digits.");
+				}
+				if (DocumentsRepository.documents.contains(cpf)) {
+					throw new CpfAlreadyExistsException("CPF already registered on system!");
+				}
+				DocumentsRepository.documents.add(cpf);
+				return cpf;
+			} catch (CpfRangeException | CpfAlreadyExistsException e) {
+				if (tries > 1) {
+					System.out.println(
+							"Erro: " + e.getMessage() + "\nYou got " + (tries - 1) + " tryies remaining");
+				}
+				tries--;
+			}
+		}
+		return null;
+	}
+	
 	public static String readNewCpf() {
 		boolean valid = false;
 		String cpf;
@@ -77,7 +102,6 @@ public class ValidDocumentsScan implements DocumentsRepository {
 				tries--;
 			}
 		}
-		System.out.println("Number of tryes excepted, please try again!");
 		return null;
 	}
 
@@ -85,16 +109,15 @@ public class ValidDocumentsScan implements DocumentsRepository {
 		Scanner sc = new Scanner(System.in);
 		boolean valid = false;
 		char opt = ' ';
-		char[] expectedChars = { 'm', 't', 'a' };
+		char[] expectedChars = { 'm', 'q', 'a' };
 
 		while (!valid) {
 			try {
-				System.out.print("Digite uma opção: ");
 				opt = sc.next().toLowerCase().charAt(0);
 				sc.nextLine();
 
 				if (new String(expectedChars).indexOf(opt) == -1) {
-					throw new IllegalArgumentException("Digite somente 'm', 't' ou 'a'.");
+					throw new IllegalArgumentException("Type only 'm', 'q' or 'a'.");
 				}
 
 				valid = true;
@@ -131,7 +154,6 @@ public class ValidDocumentsScan implements DocumentsRepository {
 			}
 		}
 
-		System.out.println("Number of tryes excepted, please try again!");
 		return null;
 	}
 
@@ -159,8 +181,6 @@ public class ValidDocumentsScan implements DocumentsRepository {
 				tries--;
 			}
 		}
-
-		System.out.println("Number of tryes excepted, please try again!");
 		return null;
 	}
 
