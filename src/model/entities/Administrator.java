@@ -11,7 +11,7 @@ public class Administrator implements DocumentsRepository {
 	private String cpf;
 	private String password;
 	private List<Report> reports;
-	
+	private static Gym gym;
 	public Administrator() {
 
 	}
@@ -40,8 +40,29 @@ public class Administrator implements DocumentsRepository {
 
 	@Override
 	public String toString() {
-		return "Dados administrativos:\n" + "Nome: " + getName() + "\nCPF: " + getCpf();
-
+		StringBuilder sb = new StringBuilder();
+		sb.append("Administrator data: \n" + "Admin Name: " + name + "\nAdmin CPF: " + cpf + "\nAdmin password: " + password);
+		
+		List<Employee> employees = gym.getEmployees();
+		List<GymMember> members = gym.getMembers();
+		sb.append("\n======= MEMBERS DATA =======\n");
+		if (gym.getMembers().isEmpty()) {
+			sb.append("No members data");
+		}else {
+			for (GymMember gm : members) {
+				sb.append(gm + "\n");
+			}	
+		}
+		sb.append("\n======= EMPLOYEES DATA =======\n");
+		if (gym.getEmployees().isEmpty()) {
+			sb.append("No employees data");
+		}else {
+			for (Employee e : employees) {
+				sb.append(e + "\n");
+			}	
+		}
+		
+		return sb.toString();
 	}
 	
 	public void addReport(Report report) {

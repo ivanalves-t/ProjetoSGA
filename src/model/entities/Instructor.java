@@ -23,4 +23,9 @@ public class Instructor extends Employee{
 		return listMembers;
 	}
 	
+	@Override
+	public String toString() {
+		return "Instructor\n" + "Name: " + getName() + "\nCPF: " + getCpf() + "\nPassword: " + getPassword() + "\nWage: " + payment();
+	}
+	
 }

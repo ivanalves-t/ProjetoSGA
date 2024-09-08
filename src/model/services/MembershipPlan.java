@@ -19,5 +19,13 @@ public class MembershipPlan {
 		return value;
 	}
 	
-	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(kind + "\n");
+		sb.append("R$: " + value + "\n");
+		
+		return sb.toString();
+	}
 }
