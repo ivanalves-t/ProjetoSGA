@@ -1,6 +1,6 @@
 package application;
 
-import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,9 +15,8 @@ import model.services.CashReport;
 import model.services.FrequencyReport;
 import model.services.MembershipPlan;
 import model.services.Report;
-import util.ScanUtil;
 import util.ValidDocumentsScan;
-
+// done
 public class MenuAdm {
 
 	// Singleton instances. Unique multi instances
@@ -32,6 +31,7 @@ public class MenuAdm {
 	}
 
 	// Background colors
+	public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
 	public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
 	public static final String ANSI_RESET = "\u001B[0m";
 	public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
@@ -51,16 +51,17 @@ public class MenuAdm {
 
 		while (running) {
 			System.out.println(ANSI_CYAN_BACKGROUND);
-			System.out.println("=============== MENU ADM ===============");
+			System.out.println("=============== ADM MENU ===============");
 			System.out.println("|  1 - Create an admin account         |");
 			System.out.println("|  2 - Sign in the admin account       |");
 			System.out.println("|  0 - Back to previous menu           |");
 			System.out.println("========================================");
 			System.out.println(ANSI_RESET);
-			System.out.println("Type your option:");
-			byte choice = (byte) ScanUtil.readOpt();
+			System.out.println("Type your option: ");
 			try {
-				switch (choice) {
+				int opt = sc.nextInt();
+				sc.nextLine();
+				switch (opt) {
 				case 1:
 					if (adm != null) {
 						throw new IllegalArgumentException("Admin account was already registered!");
@@ -75,17 +76,22 @@ public class MenuAdm {
 					break;
 				case 0:
 					running = false;
-					System.out.println("Going to previous menu...");
+					System.out.println("Going to main menu...");
 					break;
 				default:
-					System.out.println(ANSI_RED_BACKGROUND);
-					System.out.println("Error: Type a number between the valid options!");
-					System.out.println(ANSI_RESET);
+					System.out.println("\u001B[41m");
+					System.out.println("Error: Invalid value! Type a number between the valid options!");
+					System.out.println("\u001B[0m");
+					break;
 				}
 
 			} catch (NullPointerException | IllegalArgumentException e) {
 				System.out.println(ANSI_RED_BACKGROUND);
 				System.out.println("Error: " + e.getMessage());
+				System.out.println(ANSI_RESET);
+			} catch (InputMismatchException e) {
+				System.out.println(ANSI_RED_BACKGROUND);
+				System.out.println("Error: Please, enter a number inside the range of options!");
 				System.out.println(ANSI_RESET);
 			}
 		}
@@ -98,10 +104,8 @@ public class MenuAdm {
 		System.out.println(ANSI_RESET);
 		System.out.print("Enter your CPF: ");
 		String cpf = ValidDocumentsScan.readNewCpf();
-
 		System.out.print("Type your name: ");
 		String name = sc.nextLine();
-
 		System.out.print("Create an password: ");
 		String password = sc.nextLine();
 
@@ -115,16 +119,38 @@ public class MenuAdm {
 		System.out.println(ANSI_CYAN_BACKGROUND);
 		System.out.println("=============== NEW GYM ===============");
 		System.out.println(ANSI_RESET);
-		System.out.print("Enter the name of your gym: ");
-		String gymName = sc.nextLine();
 
 		System.out.print("Enter gym CNPJ: ");
 		String ownerCnpj = ValidDocumentsScan.readNewCnpj();
+		System.out.print("Enter the name of your gym: ");
+		String gymName = sc.nextLine();
 		System.out.print("Enter the monthly value: ");
-		double monthly = ScanUtil.readDouble();
+		Double monthly = null;
+
+		boolean valid = false;
+		while (!valid) {
+			try {
+				monthly = sc.nextDouble();
+				if (monthly < 110.50) {
+					throw new IllegalArgumentException(
+							"Please enter a bigger value, we suggest you put at least R$ 110.50 for monthly value.");
+				}
+				valid = true;
+			} catch (InputMismatchException e) {
+				System.out.println(ANSI_RED_BACKGROUND);
+				System.out.println("Error: Please, enter a numerical value!");
+				System.out.println(ANSI_RESET);
+				sc.nextLine();
+			} catch (IllegalArgumentException e) {
+				System.out.println(ANSI_YELLOW_BACKGROUND);
+				System.out.println("Error: " + e.getMessage());
+				System.out.println(ANSI_RESET);
+				sc.nextLine();
+			}
+		}
 		gym = Gym.createGym(gymName, ownerCnpj, monthly);
 		System.out.println(ANSI_GREEN_BACKGROUND);
-		System.out.printf("Gym %s was registered successfully!\n", gymName);
+		System.out.printf("%s's Gym was registered successfully!\n", gymName);
 		System.out.println(ANSI_RESET);
 	}
 
@@ -136,7 +162,6 @@ public class MenuAdm {
 			System.out.println(ANSI_RESET);
 			System.out.print("Type your CPF: ");
 			String cpf = ValidDocumentsScan.readCpfVal();
-
 			if (cpf == null) {
 				System.out.println("Try again later.");
 				return;
@@ -177,36 +202,43 @@ public class MenuAdm {
 			System.out.println("===========================================");
 			System.out.println(ANSI_RESET);
 
-			System.out.println("Type your option:");
-			byte choice = (byte) ScanUtil.readOpt();
+			System.out.print("Type your option: ");
+			try {
+				int opt = sc.nextInt();
+				sc.nextLine();
 
-			switch (choice) {
-			case 1:
-				memberManagement();
-				break;
-			case 2:
-				employeeManagement();
-				break;
-			case 3:
-				reportManagement();
-				break;
-			case 4:
-				System.out.println(adm);
-				break;
-			case 0:
-				running = false;
-				System.out.println("Going to previous menu...");
-				break;
-			default:
+				switch (opt) {
+				case 1:
+					memberManagement();
+					break;
+				case 2:
+					employeeManagement();
+					break;
+				case 3:
+					reportManagement();
+					break;
+				case 4:
+					System.out.println(adm);
+					break;
+				case 0:
+					running = false;
+					System.out.println("Going to previous menu...");
+					break;
+				default:
+					System.out.println(ANSI_RED_BACKGROUND);
+					System.out.println("Error: Type a number between the valid options!");
+					System.out.println(ANSI_RESET);
+					break;
+				}
+			} catch (InputMismatchException e) {
 				System.out.println(ANSI_RED_BACKGROUND);
-				System.out.println("Error: Type a number between the valid options!");
+				System.out.println("Error: Please, enter a number inside the range of options.");
 				System.out.println(ANSI_RESET);
 			}
-
 		}
 	}
 
-	// MEMBER MANAGEMENT
+	// MEMBER MANAGEMENT LOGIC
 
 	private void memberManagement() {
 		boolean running = true;
@@ -221,29 +253,36 @@ public class MenuAdm {
 			System.out.println("=================================================");
 			System.out.println(ANSI_RESET);
 
-			System.out.println("Type your option:");
-			byte choice = (byte) ScanUtil.readOpt();
+			System.out.println("Type your option: ");
+			try {
+				int opt = sc.nextInt();
+				sc.nextLine();
 
-			switch (choice) {
-			case 1:
-				addMember();
-				break;
-			case 2:
-				removeMember();
-				break;
-			case 3:
-				listAllMembers();
-				break;
-			case 0:
-				running = false;
-				System.out.println("Going to previous menu...");
-				break;
-			default:
+				switch (opt) {
+				case 1:
+					addMember();
+					break;
+				case 2:
+					removeMember();
+					break;
+				case 3:
+					listAllMembers();
+					break;
+				case 0:
+					running = false;
+					System.out.println("Going to previous menu...");
+					break;
+				default:
+					System.out.println(ANSI_RED_BACKGROUND);
+					System.out.println("Error: Type a number between the valid options!");
+					System.out.println(ANSI_RESET);
+					break;
+				}
+			} catch (InputMismatchException e) {
 				System.out.println(ANSI_RED_BACKGROUND);
-				System.out.println("Error: Type a number between the valid options!");
+				System.out.println("Error: Please, enter a number inside the range of options.");
 				System.out.println(ANSI_RESET);
 			}
-
 		}
 
 	}
@@ -274,7 +313,7 @@ public class MenuAdm {
 			mp = new MembershipPlan("Annual, 30% off", gym.generatePlan()[2]);
 		}
 
-		System.out.print("Create an password to the new member:");
+		System.out.print("Create an password to the new member: ");
 		String password = sc.nextLine();
 
 		System.out.println(ANSI_GREEN_BACKGROUND);
@@ -288,7 +327,7 @@ public class MenuAdm {
 		System.out.println("=============== REMOVE MEMBER ===============");
 		System.out.println(ANSI_RESET);
 		System.out.print("Enter member CPF: ");
-		String cpf = ValidDocumentsScan.deleteCpf();
+		String cpf = ValidDocumentsScan.readCpfVal();
 		if (cpf == null) {
 			System.out.println("Try again later.");
 			return;
@@ -298,8 +337,9 @@ public class MenuAdm {
 			if (gm.getCpf().equals(cpf)) {
 				gym.removeGymMember(gm);
 				System.out.println(ANSI_GREEN_BACKGROUND);
-				System.out.printf("Member %s was removed successfully!\n" + gm.getName());
+				System.out.printf("Member %s was removed successfully!\n", gm.getName());
 				System.out.println(ANSI_RESET);
+				cpf = ValidDocumentsScan.deleteCpf();
 				return;
 			}
 		}
@@ -309,21 +349,27 @@ public class MenuAdm {
 	}
 
 	private void listAllMembers() {
+		System.out.println(ANSI_CYAN_BACKGROUND);
+		System.out.println("=============== LIST MEMBERS ===============");
+		System.out.println(ANSI_RESET);
 		StringBuilder sb = new StringBuilder();
 		try {
 			List<GymMember> members = gym.getMembers();
+			if (members.isEmpty()) {
+				throw new NullPointerException("Register some members");
+			}
 			for (GymMember gm : members) {
 				sb.append(gm + "\n");
 			}
 			System.out.println("Gym Member List:\n" + sb);
 		} catch (NullPointerException e) {
 			System.out.println(ANSI_RED_BACKGROUND);
-			System.out.println("Error: register some members!");
+			System.out.println("Error: No one members registered yet. " + e.getMessage());
 			System.out.println(ANSI_RESET);
 			return;
 		}
 	}
-
+	// EMPLOYEE MANAGEMENT LOGIC
 	private void employeeManagement() {
 		boolean running = true;
 
@@ -340,31 +386,39 @@ public class MenuAdm {
 			System.out.println(ANSI_RESET);
 
 			System.out.print("Type your option: ");
-			byte choice = (byte) ScanUtil.readOpt();
+			try {
+				int opt = sc.nextInt();
+				sc.nextLine();
 
-			switch (choice) {
-			case 1:
-				addInstructor();
-				break;
-			case 2:
-				removeInstructor();
-				break;
-			case 3:
-				addMaintenanceEmployee();
-				break;
-			case 4:
-				removeMaintenanceEmployee();
-				break;
-			case 5:
-				listAllEmployees();
-			case 0:
-				running = false;
-				System.out.println("Going to previous menu...");
-				break;
-			default:
-				System.out.println(ANSI_RED_BACKGROUND);
-				System.out.println("Error: Type a number between the valid options!");
-				System.out.println(ANSI_RESET);
+				switch (opt) {
+				case 1:
+					addInstructor();
+					break;
+				case 2:
+					removeInstructor();
+					break;
+				case 3:
+					addMaintenanceEmployee();
+					break;
+				case 4:
+					removeMaintenanceEmployee();
+					break;
+				case 5:
+					listAllEmployees();
+				case 0:
+					running = false;
+					System.out.println("Going to previous menu...");
+					break;
+				default:
+					System.out.println(ANSI_RED_BACKGROUND);
+					System.out.println("Error: Type a number between the valid options!");
+					System.out.println(ANSI_RESET);
+					break;
+				}
+			} catch (InputMismatchException e) {
+				System.out.println("\u001B[41m");
+				System.out.println("Error: Please, enter a number inside the range of options.");
+				System.out.println("\u001B[0m");
 			}
 
 		}
@@ -374,7 +428,7 @@ public class MenuAdm {
 		System.out.println(ANSI_CYAN_BACKGROUND);
 		System.out.println("=============== ADD INSTRUCTOR ===============");
 		System.out.println(ANSI_RESET);
-		System.out.print("Enter instructor name:");
+		System.out.print("Enter instructor name: ");
 		String name = sc.nextLine();
 		System.out.print("Enter instructor CPF: ");
 		String cpf = ValidDocumentsScan.readNewCpfOpt();
@@ -385,11 +439,27 @@ public class MenuAdm {
 		System.out.print("Create a passwod to the new instructor");
 		String password = sc.nextLine();
 		System.out.print("Enter instructor's wage");
-		double wage = ScanUtil.readDouble();
+		Double wage = null;
+		boolean valid = false;
+		while (!valid) {
+			try {
+				wage = sc.nextDouble();
+				if (wage < 0) {
+					throw new IllegalArgumentException("Please enter a bigger value than 0!");
+				}
+				valid = true;
+			} catch (InputMismatchException e) {
+				System.out.println("\u001B[43mError: Please, enter a numerical value!\u001B[0m");
+				sc.nextLine();
+			} catch (IllegalArgumentException e) {
+				System.out.println("\u001B[43mError: " + e.getMessage() + "\u001B[0m");
+				sc.nextLine();
+			}
+		}
 		gym.addInstructor(new Instructor(name, cpf, password, wage));
 
 		System.out.println(ANSI_GREEN_BACKGROUND);
-		System.out.printf("Instructor %s was added successfully!\n" + name);
+		System.out.printf("Instructor %s was added successfully!\n", name);
 		System.out.println(ANSI_RESET);
 	}
 
@@ -408,7 +478,23 @@ public class MenuAdm {
 		System.out.print("Enter password of maintenance employee");
 		String password = sc.nextLine();
 		System.out.print("Enter daily payment of the maintenance employee");
-		double wage = ScanUtil.readDouble();
+		Double wage = null;
+		boolean valid = false;
+		while (!valid) {
+			try {
+				wage = sc.nextDouble();
+				if (wage < 0) {
+					throw new IllegalArgumentException("Please enter a bigger value than 0!");
+				}
+				valid = true;
+			} catch (InputMismatchException e) {
+				System.out.println("\u001B[43mError: Please, enter a numerical value!\u001B[0m");
+				sc.nextLine();
+			} catch (IllegalArgumentException e) {
+				System.out.println("\u001B[43mError: " + e.getMessage() + "\u001B[0m");
+				sc.nextLine();
+			}
+		}
 		gym.addMaintenanceEmployee(new MaintenanceEmployee(name, cpf, password, wage));
 		System.out.println(ANSI_GREEN_BACKGROUND);
 		System.out.printf("Maintenance Employee %s was added successfully!\n", name);
@@ -416,6 +502,9 @@ public class MenuAdm {
 	}
 
 	private void listAllEmployees() {
+		System.out.println(ANSI_CYAN_BACKGROUND);
+		System.out.println("=============== LIST EMPLOYEES ===============");
+		System.out.println(ANSI_RESET);
 		StringBuilder sb = new StringBuilder();
 		try {
 			List<Employee> employees = gym.getEmployees();
@@ -435,7 +524,7 @@ public class MenuAdm {
 		System.out.println(ANSI_RESET);
 
 		System.out.print("Enter instructor's CPF");
-		String cpf = ValidDocumentsScan.deleteCpf();
+		String cpf = ValidDocumentsScan.readCpfVal();
 
 		if (cpf == null) {
 			System.out.println("Try again later.");
@@ -448,6 +537,7 @@ public class MenuAdm {
 				System.out.println(ANSI_GREEN_BACKGROUND);
 				System.out.printf("Instructor %s was removed successfully!\n", e.getName());
 				System.out.println(ANSI_RESET);
+				cpf = ValidDocumentsScan.deleteCpf();
 				return;
 			}
 		}
@@ -460,7 +550,7 @@ public class MenuAdm {
 		System.out.println(ANSI_RESET);
 
 		System.out.print("Enter maintenance employee's CPF");
-		String cpf = ValidDocumentsScan.deleteCpf();
+		String cpf = ValidDocumentsScan.readCpfVal();
 
 		if (cpf == null) {
 			System.out.println("Try again later.");
@@ -473,12 +563,14 @@ public class MenuAdm {
 				System.out.println(ANSI_GREEN_BACKGROUND);
 				System.out.printf("Maintenance employee %s was removed successfully!\n", e.getName());
 				System.out.println(ANSI_RESET);
+				cpf = ValidDocumentsScan.deleteCpf();
 				return;
 			}
 		}
 		System.out.println("Employee doesn't exists on system.");
 	}
-
+	
+	// REPORT MANAGEMENT LOGIC
 	private void reportManagement() {
 		boolean running = true;
 
@@ -493,31 +585,38 @@ public class MenuAdm {
 			System.out.println("=================================================");
 			System.out.println(ANSI_RESET);
 			System.out.print("Escolha uma opção: ");
-			byte choice = (byte) ScanUtil.readOpt();
+			try {
+				int opt = sc.nextInt();
+				sc.nextLine();
 
-			switch (choice) {
-			case 1:
-				createCashReport();
-				break;
-			case 2:
-				createFrequencyReport();
-				break;
-			case 3:
-				showAllReports();
-				break;
-			case 0:
-				running = false;
-				System.out.println("Going to previous menu...");
-				break;
-			default:
+				switch (opt) {
+				case 1:
+					createCashReport();
+					break;
+				case 2:
+					createFrequencyReport();
+					break;
+				case 3:
+					showAllReports();
+					break;
+				case 0:
+					running = false;
+					System.out.println("Going to previous menu...");
+					break;
+				default:
+					System.out.println(ANSI_RED_BACKGROUND);
+					System.out.println("Error: Type a number between the valid options!");
+					System.out.println(ANSI_RESET);
+					break;
+				}
+			} catch (InputMismatchException e) {
 				System.out.println(ANSI_RED_BACKGROUND);
-				System.out.println("Error: Type a number between the valid options!");
+				System.out.println("Error: Please, enter a number!");
 				System.out.println(ANSI_RESET);
 			}
-
 		}
 	}
-	
+
 	private void createCashReport() {
 		System.out.println(ANSI_CYAN_BACKGROUND);
 		System.out.println("=============== GENERATE NEW CASH REPORT ===============");
@@ -528,7 +627,7 @@ public class MenuAdm {
 			System.out.println(cashReport.getMessage());
 			System.out.println(ANSI_RESET);
 			gym.addReport(new CashReport());
-		}catch (NullPointerException e){
+		} catch (NullPointerException e) {
 			System.out.println(ANSI_RED_BACKGROUND);
 			System.out.println("Error: register more members and employees!");
 			System.out.println(ANSI_RESET);
@@ -546,14 +645,14 @@ public class MenuAdm {
 			System.out.println(frequencyReport.getMessage());
 			System.out.println(ANSI_RESET);
 			gym.addReport(new CashReport());
-		}catch (NullPointerException e){
+		} catch (NullPointerException e) {
 			System.out.println(ANSI_RED_BACKGROUND);
 			System.out.println("Error: register more members");
 			System.out.println(ANSI_RESET);
 			return;
 		}
 	}
-	
+
 	private void showAllReports() {
 		System.out.println(ANSI_CYAN_BACKGROUND);
 		System.out.println("=============== SHOW ALL REPORTS ===============");
@@ -561,9 +660,11 @@ public class MenuAdm {
 		try {
 			List<Report> reports = gym.getReports();
 			for (Report report : reports) {
+				System.out.println(ANSI_GREEN_BACKGROUND);
 				System.out.println(report);
+				System.out.println(ANSI_RESET);
 			}
-		}catch (NullPointerException e){
+		} catch (NullPointerException e) {
 			System.out.println(ANSI_RED_BACKGROUND);
 			System.out.println("Error: No one report generated yet");
 			System.out.println(ANSI_RESET);

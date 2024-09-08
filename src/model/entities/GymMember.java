@@ -1,16 +1,13 @@
 package model.entities;
 
 import model.services.MembershipPlan;
+import model.services.Train;
 
 public class GymMember {
 
 	private String name;
 	private String cpf;
-	private String instructorName;
-	private String[][] trainList = {
-		    {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"},
-		    null
-		};
+	private Train train;
 	private MembershipPlan membershipPlan;
 	private String password;
 	private boolean checkIn;
@@ -36,22 +33,6 @@ public class GymMember {
 		return cpf;
 	}
 
-	public String getInstructorName() {
-		return instructorName;
-	}
-
-	public void setInstructorName(String instructorName) {
-		this.instructorName = instructorName;
-	}
-
-	public String[][] getTrainList() {
-		return trainList;
-	}
-
-	public void setTrainList(String[][] trainList) {
-		this.trainList = trainList;
-	}
-
 	public MembershipPlan getPlan() {
 		return membershipPlan;
 	}
@@ -72,7 +53,17 @@ public class GymMember {
 	public boolean getCheckIn() {
 		return checkIn;
 	}
-	
-    
-    
+
+	public Train getTrain() {
+		return train;
+	}
+
+	public void setCheckIn(boolean checkIn) {
+		this.checkIn = checkIn;
+	}
+
+	@Override
+	public String toString() {
+		return "Member\n" + "Name: " + name + "\nCPF: " + cpf + "\nPassword: " + password + "\nCheckIn : " + checkIn;
+	}
 }

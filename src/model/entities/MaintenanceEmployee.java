@@ -19,4 +19,9 @@ public class MaintenanceEmployee extends Employee{
 		return new MaintenanceReport(message);
 	}
 	
+	@Override
+	public String toString() {
+		return "Maintenance employee\n" + "Name: " + getName() + "\nCPF: " + getCpf() + "\nPassword: " + getPassword() + "\nWage: " + payment();
+	}
+	
 }

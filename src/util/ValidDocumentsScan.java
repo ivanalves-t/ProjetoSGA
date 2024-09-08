@@ -29,8 +29,7 @@ public class ValidDocumentsScan implements DocumentsRepository {
 				return cpf;
 			} catch (CpfRangeException | CpfAlreadyExistsException e) {
 				if (tries > 1) {
-					System.out.println(
-							"Erro: " + e.getMessage() + "\nYou got " + (tries - 1) + " tryies remaining");
+					System.out.println("\u001B[41mError: " + e.getMessage() + "\nYou got " + (tries - 1) + " tryies remaining\u001B[0m");
 				}
 				tries--;
 			}
@@ -53,7 +52,7 @@ public class ValidDocumentsScan implements DocumentsRepository {
 				DocumentsRepository.documents.add(cpf);
 				return cpf;
 			} catch (CpfRangeException | CpfAlreadyExistsException e) {
-				System.out.println("Error: " + e.getMessage());
+				System.out.println("\u001B[41mError: " + e.getMessage() + "\u001B[0m");
 			}
 		}
 		return null;
@@ -75,7 +74,7 @@ public class ValidDocumentsScan implements DocumentsRepository {
 
 				return cnpj;
 			} catch (CnpjRangeException | CnpjAlreadyExistsException e) {
-				System.out.println("Error: " + e.getMessage());
+				System.out.println("\u001B[41mError: " + e.getMessage() + "\u001B[0m");
 			}
 		}
 		return null;
@@ -97,7 +96,7 @@ public class ValidDocumentsScan implements DocumentsRepository {
 			} catch (CpfRangeException | CpfDoesntMatchException e) {
 				if (tries > 1) {
 					System.out.println(
-							"Erro: " + e.getMessage() + "\nYou got " + (tries - 1) + " tryies remaining");
+							"\u001B[41mError: " + e.getMessage() + "\nYou got " + (tries - 1) + " tryies remaining\u001B[0m");
 				}
 				tries--;
 			}
@@ -122,7 +121,7 @@ public class ValidDocumentsScan implements DocumentsRepository {
 
 				valid = true;
 			} catch (IllegalArgumentException e) {
-				System.out.println("Erro: " + e.getMessage());
+				System.out.println("\u001B[41mError: " + e.getMessage() + "\u001B[0m");
 			}
 		}
 
@@ -136,7 +135,7 @@ public class ValidDocumentsScan implements DocumentsRepository {
 		while (tries > 0) {
 			try {
 				cpf = sc.next();
-				if (cpf.length() != 14 || !cpf.matches("\\d+")) {
+				if (cpf.length() != 11 || !cpf.matches("\\d+")) {
 					throw new CnpjRangeException("CPF must be exactly 11 numerical digits!");
 				}
 				if (!DocumentsRepository.documents.contains(cpf)) {
@@ -148,7 +147,7 @@ public class ValidDocumentsScan implements DocumentsRepository {
 			} catch (CnpjRangeException | CnpjDoesntMatchException e) {
 				if (tries > 1) {
 					System.out.println(
-							"Erro: " + e.getMessage() + "\nYou got " + (tries - 1) + " tryies remaining");
+							"\u001B[41mError: " + e.getMessage() + "\nYou got " + (tries - 1) + " tryies remaining\u001B[0m");
 				}
 				tries--;
 			}
@@ -176,7 +175,7 @@ public class ValidDocumentsScan implements DocumentsRepository {
 			} catch (CnpjRangeException | CnpjDoesntMatchException e) {
 				if (tries > 1) {
 					System.out.println(
-							"Erro: " + e.getMessage() + "\nYou got " + (tries - 1) + " tryies remaining");
+							"\u001B[41mError: " + e.getMessage() + "\nYou got " + (tries - 1) + " tryies remaining\u001B[0m");
 				}
 				tries--;
 			}

@@ -1,30 +1,46 @@
 package model.services;
 
-import model.entities.GymMember;
-
 public class Train {
 
-	private GymMember gymMember;
+	private String instructorName;
+	
 	private String[][] trainList = {
 		    {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"},
 		    null
 		};
-	public Train(GymMember gymMember, String[][] trainList) {
+	
+	public Train(String instructorName, String[][] trainList) {
 		super();
-		this.gymMember = gymMember;
+		this.instructorName = instructorName;
 		this.trainList = trainList;
 	}
-	public GymMember getGymMember() {
-		return gymMember;
-	}
-	public void setGymMember(GymMember gymMember) {
-		this.gymMember = gymMember;
-	}
+	
 	public String[][] getTrainList() {
 		return trainList;
 	}
+	
 	public void setTrainList(String[][] trainList) {
 		this.trainList = trainList;
+	}
+	
+	@Override
+	public String toString(){
+		StringBuilder sb = new StringBuilder();
+		if (trainList[1] == null) {
+		    throw new IllegalArgumentException("The train has not been created yet!");
+		}
+		sb.append("\n");
+        for (int i = 0; i < trainList.length; i++) {
+            for (int j = 0; j < trainList[i].length; j++) {
+                sb.append(trainList[i][j] + "\t");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+	}
+
+	public String getInstructorName() {
+		return instructorName;
 	}
 	
 	
