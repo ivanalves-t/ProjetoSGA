@@ -9,7 +9,7 @@ import model.entities.Employee;
 import model.entities.Gym;
 import model.entities.GymMember;
 import model.entities.Instructor;
-import model.entities.MaintenanceEmployee;
+import model.entities.MaintenanceMan;
 import model.exceptions.CpfDoesntMatchException;
 import model.exceptions.MinimumWageException;
 import model.services.CashReport;
@@ -385,10 +385,10 @@ public class AdmMenu {
 			if (members.isEmpty()) {
 				throw new NullPointerException("Register some members");
 			} else {
-				sb.append("Name\tCPF\tTrain\tMemberPlan\n");
+				sb.append("Name\tCPF\tMonthlyType\tMonthlyKind\tPassword\tFreq\n");
 				for (GymMember gm : members) {
-					sb.append(gm.getName()).append("\t").append(gm.getCpf()).append("\t").append(gm.getTrain())
-							.append("\t").append(gm.getMembershipPlan().getMonthly()).append("\n");
+					sb.append(gm.getName()).append("\t").append(gm.getCpf()).append("\t").append(gm.getMembershipPlan().getMonthly())
+							.append("\t").append(gm.getMembershipPlan().getKind()).append("\t").append(gm.getPassword()).append("\t").append(gm.getCheckIn()).append("\n");
 				}
 			}
 		} catch (NullPointerException e) {
@@ -422,10 +422,9 @@ public class AdmMenu {
 			System.out.println(ANSI_CYAN_BACKGROUND);
 			System.out.println("=============== EMPLOYEE MANAGEMENT ===============");
 			System.out.println("|  1 - Register new instructor                    |");
-			System.out.println("|  2 - Remove an instructor                       |");
-			System.out.println("|  3 - Register new maintenance employee          |");
-			System.out.println("|  4 - Remove a maintenance employee              |");
-			System.out.println("|  5 - List all employees                         |");
+			System.out.println("|  2 - Register new maintenance employee          |");
+			System.out.println("|  3 - Remove an employee                         |");
+			System.out.println("|  4 - List all employees                         |");
 			System.out.println("|  0 - Previous menu                              |");
 			System.out.println("===================================================");
 			System.out.println(ANSI_RESET);
@@ -442,19 +441,16 @@ public class AdmMenu {
 					break;
 				case 2:
 					running = false;
-					removeInstructor();
+					addMaintenanceEmployee();
 					break;
 				case 3:
 					running = false;
-					addMaintenanceEmployee();
+					removeAnEmployee();
 					break;
 				case 4:
 					running = false;
-					removeMaintenanceEmployee();
-					break;
-				case 5:
-					running = false;
 					listAllEmployees();
+					break;
 				case 0:
 					running = false;
 					System.out.println("Going back to previous menu...");
@@ -546,7 +542,7 @@ public class AdmMenu {
 				sc.nextLine();
 			}
 		}
-		gym.addMaintenanceEmployee(new MaintenanceEmployee(name, cpf, wage));
+		gym.addMaintenanceEmployee(new MaintenanceMan(name, cpf, wage));
 		System.out.println(ANSI_GREEN_BACKGROUND);
 		System.out.printf("Maintenance Employee %s was added successfully!\n", name);
 		System.out.println(ANSI_RESET);
@@ -554,30 +550,38 @@ public class AdmMenu {
 	}
 
 	private void listAllEmployees() {
-		System.out.println(ANSI_CYAN_BACKGROUND);
-		System.out.println("=============== LIST EMPLOYEES ===============");
-		System.out.println(ANSI_RESET);
-		StringBuilder sb = new StringBuilder();
-		try {
-			List<Employee> employees = gym.getEmployees();
-			for (Employee e : employees) {
-				sb.append(e + "\n");
-			}
-			System.out.println("List of employees\n" + sb);
+	    StringBuilder sb = new StringBuilder();
+	    try {
+	    	
+	    	List<Employee> employees = gym.getEmployees();
+	    	sb.append("\n======= EMPLOYEES DATA =======\n");
+	    	if (employees.isEmpty()) {
+	    		sb.append("No employees data\n");
+	    		throw new NullPointerException("Please register some employees before.");
+	    	} else {
+	    		sb.append(String.format("%-15s%-15s%-15s%-15s%-15s\n", "Name", "CPF", "Type", "Payment", "Password"));
+	    		for (Employee e : employees) {
+	    			sb.append(String.format("%-15s%-15s%-15s%-15.2f%-15s\n",
+	    					e.getName(), e.getCpf(), e.getClass().getSimpleName(), e.payment(), e.getPassword()));
+	    		}
+	    	}
+	    }catch (NullPointerException e) {
+	    	System.out.println(ANSI_RED_BACKGROUND);
+			System.out.println("Error: " + e.getMessage());
+			System.err.println(ANSI_RESET);
 			employeeManagement();
-		} catch (NullPointerException e) {
-			System.out.println("Error: register some employees.");
-			employeeManagement();
-			return;
 		}
+
+	    System.out.println(sb);
+	    employeeManagement();
 	}
 
-	private void removeInstructor() {
+	private void removeAnEmployee() {
 		System.out.println(ANSI_CYAN_BACKGROUND);
-		System.out.println("=============== REMOVE INSTRUCTOR ===============");
+		System.out.println("=============== REMOVE EMPLOYEE ===============");
 		System.out.println(ANSI_RESET);
 
-		System.out.print("Enter instructor's CPF: ");
+		System.out.print("Enter employee's CPF: ");
 		String cpf = ValidDocumentsScan.readCpfVal();
 
 		if (cpf == null) {
@@ -587,39 +591,10 @@ public class AdmMenu {
 		}
 		List<Employee> employees = gym.getEmployees();
 		for (Employee e : employees) {
-			if (e instanceof Instructor && e.getCpf().equals(cpf)) {
+			if (e.getCpf().equals(cpf)) {
 				gym.removeEmployee(e);
 				System.out.println(ANSI_GREEN_BACKGROUND);
-				System.out.printf("Instructor %s was removed successfully!\n", e.getName());
-				System.out.println(ANSI_RESET);
-				ValidDocumentsScan.deleteCpf(cpf);
-				employeeManagement();
-				return;
-			}
-		}
-		System.out.println("Employee doesn't exists on system.");
-		employeeManagement();
-	}
-
-	private void removeMaintenanceEmployee() {
-		System.out.println(ANSI_CYAN_BACKGROUND);
-		System.out.println("=============== REMOVE MAINTENANCE EMPLOYEE ===============");
-		System.out.println(ANSI_RESET);
-
-		System.out.print("Enter maintenance employee's CPF: ");
-		String cpf = ValidDocumentsScan.readCpfVal();
-
-		if (cpf == null) {
-			System.out.println("Try again later.");
-			employeeManagement();
-			return;
-		}
-		List<Employee> employees = gym.getEmployees();
-		for (Employee e : employees) {
-			if (e instanceof MaintenanceEmployee && e.getCpf().equals(cpf)) {
-				gym.removeEmployee(e);
-				System.out.println(ANSI_GREEN_BACKGROUND);
-				System.out.printf("Maintenance employee %s was removed successfully!\n", e.getName());
+				System.out.printf("Employee %s was removed successfully!\n", e.getName());
 				System.out.println(ANSI_RESET);
 				ValidDocumentsScan.deleteCpf(cpf);
 				employeeManagement();
@@ -662,6 +637,10 @@ public class AdmMenu {
 					running = false;
 					showAllReports();
 					break;
+				case 4:
+					running = false;
+					removeAllReports();
+					break;
 				case 0:
 					running = false;
 					System.out.println("Going back to previous menu...");
@@ -688,9 +667,7 @@ public class AdmMenu {
 		System.out.println(ANSI_RESET);
 		try {
 			CashReport cashReport = new CashReport();
-			System.out.println(ANSI_GREEN_BACKGROUND);
 			System.out.println(cashReport.getMessage());
-			System.out.println(ANSI_RESET);
 			gym.addReport(new CashReport());
 			reportManagement();
 		} catch (NullPointerException e) {
@@ -708,9 +685,7 @@ public class AdmMenu {
 		System.out.println(ANSI_RESET);
 		try {
 			FrequencyReport frequencyReport = new FrequencyReport();
-			System.out.println(ANSI_GREEN_BACKGROUND);
 			System.out.println(frequencyReport.getMessage());
-			System.out.println(ANSI_RESET);
 			gym.addReport(new CashReport());
 			reportManagement();
 		} catch (NullPointerException e) {
@@ -729,9 +704,7 @@ public class AdmMenu {
 		try {
 			List<Report> reports = gym.getReports();
 			for (Report report : reports) {
-				System.out.println(ANSI_GREEN_BACKGROUND);
 				System.out.println(report);
-				System.out.println(ANSI_RESET);
 			}
 			reportManagement();
 		} catch (NullPointerException e) {
@@ -743,4 +716,14 @@ public class AdmMenu {
 		}
 	}
 
+	private void removeAllReports() {
+		System.out.println(ANSI_CYAN_BACKGROUND);
+		System.out.println("=============== REMOVE ALL REPORTS ===============");
+		System.out.println(ANSI_RESET);
+		gym.removeReports();
+		System.out.println(ANSI_GREEN_BACKGROUND);
+		System.out.println("All reports deleted!");
+		System.out.println(ANSI_RESET);
+		reportManagement();
+	}
 }

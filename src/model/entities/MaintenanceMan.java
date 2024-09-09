@@ -2,10 +2,10 @@ package model.entities;
 
 import model.services.MaintenanceReport;
 
-public class MaintenanceEmployee extends Employee{
+public class MaintenanceMan extends Employee{
 	private double dailyPayment;
 	
-	public MaintenanceEmployee(String name, String cpf, double dailyPayment) {
+	public MaintenanceMan(String name, String cpf, double dailyPayment) {
 		super(name, cpf);
 		this.dailyPayment = dailyPayment;
 	}

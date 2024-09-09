@@ -24,7 +24,7 @@ public class Train {
 	}
 	
 	@Override
-	public String toString(){
+	public String toString()throws IllegalArgumentException{
 		StringBuilder sb = new StringBuilder();
 		if (trainList[1] == null) {
 		    throw new IllegalArgumentException("The train has not been created yet!");

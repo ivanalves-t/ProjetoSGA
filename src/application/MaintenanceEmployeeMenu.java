@@ -4,12 +4,12 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import model.entities.Gym;
-import model.entities.MaintenanceEmployee;
+import model.entities.MaintenanceMan;
 
 public class MaintenanceEmployeeMenu {
 
 	private Gym gym;
-	private MaintenanceEmployee currentlyME;
+	private MaintenanceMan currentlyME;
 	private static Scanner sc = new Scanner(System.in);
 	
 	public static final String ANSI_RESET = "\u001B[0m";
@@ -26,11 +26,10 @@ public class MaintenanceEmployeeMenu {
 
 		while (running) {
 			System.out.println(ANSI_WHITE_BACKGROUND);
-			System.out.println("=============== INSTRUCTOR MENU ===============");
-			System.out.println("|  1 - Sign in instructor account             |");
-			System.out.println("|  2 - Show current members frequency         |");
-			System.out.println("|  0 - Back to previous menu                  |");
-			System.out.println("===============================================");
+			System.out.println("=============== MAINTENANCE MAN MENU ===============");
+			System.out.println("|  1 - Sign in MaintenanceMan menu                 |");
+			System.out.println("|  0 - Back to previous menu                       |");
+			System.out.println("====================================================");
 			System.out.println(ANSI_RESET);
 
 			System.out.print("Type your option: ");
