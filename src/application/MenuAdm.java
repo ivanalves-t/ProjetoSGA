@@ -167,7 +167,7 @@ public class MenuAdm {
 			System.out.print("Type your CPF: ");
 			String cpf = ValidDocumentsScan.readCpfVal();
 			if (cpf == null) {
-				System.out.println("Try again later.");
+				System.out.println("Error: Try again later.");
 				displayMenu();
 				return;
 			}
