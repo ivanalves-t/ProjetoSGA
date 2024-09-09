@@ -13,11 +13,11 @@ public class GymMember {
 	private boolean checkIn;
 
 
-	public GymMember(String name, String cpf, MembershipPlan membershipPlan, String password) {
+	public GymMember(String name, String cpf, MembershipPlan membershipPlan) {
 		this.name = name;
 		this.cpf = cpf;
 		this.membershipPlan = membershipPlan;
-		this.password = password;
+		this.password = cpf;
 		this.checkIn = false;
 	}
 
@@ -66,8 +66,15 @@ public class GymMember {
 		this.checkIn = checkIn;
 	}
 
+	
+	
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	@Override
 	public String toString() {
-		return "Member\n" + "Name: " + name + "\nCPF: " + cpf + "\nPassword: " + password + "\nCheckIn : " + checkIn;
+		return "Name: " + name + "\nCPF: " + cpf + "\nPassword: " + password
+				+ "\nCheckIn : " + checkIn + "\nMembership kind: " + membershipPlan.getKind() + "\nPrice: R$ " + membershipPlan.getMonthly();
 	}
 }

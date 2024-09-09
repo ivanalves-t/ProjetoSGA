@@ -23,8 +23,8 @@ public class MembershipPlan {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append(kind + "\n");
-		sb.append("R$: " + value + "\n");
+		sb.append(kind + " ");
+		sb.append("R$: ").append(String.format("%.2f", value));
 		
 		return sb.toString();
 	}

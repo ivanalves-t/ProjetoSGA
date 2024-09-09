@@ -11,23 +11,21 @@ import model.entities.GymMember;
 import model.entities.Instructor;
 import model.entities.MaintenanceEmployee;
 import model.exceptions.CpfDoesntMatchException;
+import model.exceptions.MinimumWageException;
 import model.services.CashReport;
 import model.services.FrequencyReport;
 import model.services.MembershipPlan;
 import model.services.Report;
 import util.ValidDocumentsScan;
+
 // done
-public class MenuAdm {
+public class AdmMenu {
 
-	// Singleton instances. Unique multi instances
-
-	private static MenuAdm instance;
 	private static Scanner sc = new Scanner(System.in);
-	private static Gym gym;
+	private Gym gym;
 	private static Administrator adm;
 
-	private MenuAdm() {
-
+	public AdmMenu() {
 	}
 
 	// Background colors
@@ -37,13 +35,6 @@ public class MenuAdm {
 	public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
 	public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
 
-	public static MenuAdm getInstance() {
-		if (instance == null) {
-			instance = new MenuAdm();
-		}
-		return instance;
-	}
-
 	// Adm main menu
 
 	public void displayMenu() {
@@ -51,11 +42,11 @@ public class MenuAdm {
 
 		while (running) {
 			System.out.println(ANSI_CYAN_BACKGROUND);
-			System.out.println("=============== ADM MENU ===============");
-			System.out.println("|  1 - Create an admin account         |");
-			System.out.println("|  2 - Sign in the admin account       |");
-			System.out.println("|  0 - Back to previous menu           |");
-			System.out.println("========================================");
+			System.out.println("================ ADM MENU ================");
+			System.out.println("|   1 - Create an admin account          |");
+			System.out.println("|   2 - Sign in the admin account        |");
+			System.out.println("|   0 - Back to previous menu            |");
+			System.out.println("==========================================");
 			System.out.println(ANSI_RESET);
 			System.out.println("Type your option: ");
 			try {
@@ -79,12 +70,12 @@ public class MenuAdm {
 				case 0:
 					running = false;
 					System.out.println("Going back to main menu...\n\n");
-					Program.main(null);
+					MainMenu.main(null);
 					break;
 				default:
-					System.out.println("\u001B[41m");
+					System.out.println(ANSI_RED_BACKGROUND);
 					System.out.println("Error: Invalid value! Type a number between the valid options!");
-					System.out.println("\u001B[0m");
+					System.out.println(ANSI_RESET);
 					break;
 				}
 
@@ -96,6 +87,7 @@ public class MenuAdm {
 				System.out.println(ANSI_RED_BACKGROUND);
 				System.out.println("Error: Please, enter a number inside the range of options!");
 				System.out.println(ANSI_RESET);
+				sc.nextLine();
 			}
 		}
 	}
@@ -109,10 +101,6 @@ public class MenuAdm {
 		String cpf = ValidDocumentsScan.readNewCpf();
 		System.out.print("Type your name: ");
 		String name = ValidDocumentsScan.readName();
-		System.out.print("Create an password: ");
-		String password = ValidDocumentsScan.readPassword();
-
-		adm = new Administrator(name, cpf, password);
 		System.out.println(ANSI_GREEN_BACKGROUND);
 		System.out.println("Admin account created successfully!");
 		System.out.println(ANSI_RESET);
@@ -152,6 +140,7 @@ public class MenuAdm {
 			}
 		}
 		gym = Gym.createGym(gymName, ownerCnpj, monthly);
+		adm = new Administrator(name, cpf, gym);
 		System.out.println(ANSI_GREEN_BACKGROUND);
 		System.out.printf("%s's Gym was registered successfully!\n", gymName);
 		System.out.println(ANSI_RESET);
@@ -186,6 +175,7 @@ public class MenuAdm {
 			System.out.println(ANSI_RED_BACKGROUND);
 			System.out.println("Error: " + e.getMessage());
 			System.out.println(ANSI_RESET);
+			System.out.println("Tip: first acces? you password could be your CPF");
 			displayMenu();
 			return;
 		}
@@ -194,6 +184,7 @@ public class MenuAdm {
 	// second adm menu
 	private void menuAdm2() {
 		boolean running = true;
+//		gym = Gym.getInstance();
 
 		while (running) {
 
@@ -203,6 +194,7 @@ public class MenuAdm {
 			System.out.println("|  2 - Manage employees                   |");
 			System.out.println("|  3 - Manage Reports                     |");
 			System.out.println("|  4 - Display adm data                   |");
+			System.out.println("|  5 - Modify password                    |");
 			System.out.println("|  0 - Previous menu                      |");
 			System.out.println("===========================================");
 			System.out.println(ANSI_RESET);
@@ -228,9 +220,13 @@ public class MenuAdm {
 				case 4:
 					System.out.println(adm);
 					break;
-				case 0:
-					System.out.println("Going back to previous menu...");
+				case 5:
 					running = false;
+					alterPassword();
+					break;
+				case 0:
+					running = false;
+					System.out.println("Going back to previous menu...");
 					displayMenu();
 					break;
 				default:
@@ -243,12 +239,12 @@ public class MenuAdm {
 				System.out.println(ANSI_RED_BACKGROUND);
 				System.out.println("Error: Please, enter a number inside the range of options.");
 				System.out.println(ANSI_RESET);
+				sc.nextLine();
 			}
 		}
 	}
 
 	// MEMBER MANAGEMENT LOGIC
-
 	private void memberManagement() {
 		boolean running = true;
 
@@ -282,8 +278,8 @@ public class MenuAdm {
 					break;
 				case 0:
 					running = false;
-					menuAdm2();
 					System.out.println("Going back to previous menu...");
+					menuAdm2();
 					break;
 				default:
 					System.out.println(ANSI_RED_BACKGROUND);
@@ -295,9 +291,25 @@ public class MenuAdm {
 				System.out.println(ANSI_RED_BACKGROUND);
 				System.out.println("Error: Please, enter a number inside the range of options.");
 				System.out.println(ANSI_RESET);
+				sc.nextLine();
 			}
 		}
 
+	}
+
+	private void alterPassword() {
+		System.out.println(ANSI_CYAN_BACKGROUND);
+		System.out.println("=============== SET NEW PASSWORD ===============");
+		System.out.println(ANSI_RESET);
+
+		System.out.print("Please, enter your new password: ");
+		String password = ValidDocumentsScan.readPassword();
+		adm.setPassword(password);
+		System.out.println(ANSI_GREEN_BACKGROUND);
+		System.out.println("New password modified successfully!");
+		System.out.println(ANSI_RESET);
+		System.out.println("Please sign in again to confirm your new password.");
+		displayMenu();
 	}
 
 	private void addMember() {
@@ -318,22 +330,21 @@ public class MenuAdm {
 		System.out.print("Enter gymMembership: 'M' to monthly, 'Q' to quarterly and 'A' to annual: ");
 		String plan = ValidDocumentsScan.readPlan();
 
-		MembershipPlan mp;
+		MembershipPlan mp = null;
+		double values[] = new double[3];
+		values = gym.generatePlan();
 		if (plan.equals("m")) {
-			mp = new MembershipPlan("Monthly, no one discount", gym.generatePlan()[0]);
-		} else if (plan.equals("t")) {
-			mp = new MembershipPlan("Quarterly, 10% off", gym.generatePlan()[1]);
+			mp = new MembershipPlan("monthly", values[0]);
+		} else if (plan.equals("q")) {
+			mp = new MembershipPlan("quarterly", values[1]);
 		} else {
-			mp = new MembershipPlan("Annual, 30% off", gym.generatePlan()[2]);
+			mp = new MembershipPlan("annual", values[2]);
 		}
-
-		System.out.print("Create an password to the new member: ");
-		String password = ValidDocumentsScan.readPassword();
 
 		System.out.println(ANSI_GREEN_BACKGROUND);
 		System.out.printf("Gym member %s was added successfully!\n", name);
 		System.out.println(ANSI_RESET);
-		gym.addMember(new GymMember(name, cpf, mp, password));
+		gym.addMember(new GymMember(name, cpf, mp));
 		memberManagement();
 	}
 
@@ -352,10 +363,9 @@ public class MenuAdm {
 		for (GymMember gm : gMs) {
 			if (gm.getCpf().equals(cpf)) {
 				gym.removeGymMember(gm);
-				System.out.println(ANSI_GREEN_BACKGROUND);
-				System.out.printf("Member %s was removed successfully!\n", gm.getName());
-				System.out.println(ANSI_RESET);
-				cpf = ValidDocumentsScan.deleteCpf();
+				System.out.printf(ANSI_GREEN_BACKGROUND + "Member %s was removed successfully!\n",
+						gm.getName() + ANSI_RESET);
+				ValidDocumentsScan.deleteCpf(cpf);
 				memberManagement();
 				return;
 			}
@@ -367,28 +377,43 @@ public class MenuAdm {
 	}
 
 	private void listAllMembers() {
-		System.out.println(ANSI_CYAN_BACKGROUND);
-		System.out.println("=============== LIST MEMBERS ===============");
-		System.out.println(ANSI_RESET);
 		StringBuilder sb = new StringBuilder();
 		try {
 			List<GymMember> members = gym.getMembers();
+			sb.append("\n==================== MEMBERS DATA =====================\n");
+
 			if (members.isEmpty()) {
 				throw new NullPointerException("Register some members");
+			} else {
+				sb.append("Name\tCPF\tTrain\tMemberPlan\n");
+				for (GymMember gm : members) {
+					sb.append(gm.getName()).append("\t").append(gm.getCpf()).append("\t").append(gm.getTrain())
+							.append("\t").append(gm.getMembershipPlan().getMonthly()).append("\n");
+				}
 			}
-			for (GymMember gm : members) {
-				sb.append(gm + "\n");
-			}
-			System.out.println("Gym Member List:\n" + sb);
-			memberManagement();
 		} catch (NullPointerException e) {
 			System.out.println(ANSI_RED_BACKGROUND);
-			System.out.println("Error: No one members registered yet. " + e.getMessage());
+			System.out.println("Error: " + e.getMessage());
 			System.out.println(ANSI_RESET);
 			memberManagement();
-			return;
 		}
+
+		String table = sb.toString();
+		String[] rows = table.split("\n");
+		StringBuilder result = new StringBuilder();
+
+		for (String row : rows) {
+			String[] columns = row.split("\t");
+			for (String column : columns) {
+				result.append(String.format("%-15s", column));
+			}
+			result.append("\n");
+		}
+
+		System.out.println(result);
+		memberManagement();
 	}
+
 	// EMPLOYEE MANAGEMENT LOGIC
 	private void employeeManagement() {
 		boolean running = true;
@@ -442,9 +467,10 @@ public class MenuAdm {
 					break;
 				}
 			} catch (InputMismatchException e) {
-				System.out.println("\u001B[41m");
+				System.out.println(ANSI_RED_BACKGROUND);
 				System.out.println("Error: Please, enter a number inside the range of options.");
-				System.out.println("\u001B[0m");
+				System.out.println(ANSI_RESET);
+				sc.nextLine();
 			}
 
 		}
@@ -463,27 +489,25 @@ public class MenuAdm {
 			employeeManagement();
 			return;
 		}
-		System.out.print("Create a passwod to the new instructor");
-		String password = ValidDocumentsScan.readPassword();
-		System.out.print("Enter instructor's wage");
+		System.out.print("Enter instructor's wage: ");
 		Double wage = null;
 		boolean valid = false;
 		while (!valid) {
 			try {
 				wage = sc.nextDouble();
 				if (wage < 0) {
-					throw new IllegalArgumentException("Please enter a bigger value than 0!");
+					throw new MinimumWageException("Please enter a bigger value than 0!");
 				}
 				valid = true;
 			} catch (InputMismatchException e) {
 				System.out.println("\u001B[43mError: Please, enter a numerical value!\u001B[0m");
 				sc.nextLine();
-			} catch (IllegalArgumentException e) {
-				System.out.println("\u001B[43mError: " + e.getMessage() + "\u001B[0m");
+			} catch (MinimumWageException e) {
+				System.out.println("\u001B[43mError: " + e.getMessage() + ANSI_RESET);
 				sc.nextLine();
 			}
 		}
-		gym.addInstructor(new Instructor(name, cpf, password, wage));
+		gym.addInstructor(new Instructor(name, cpf, wage));
 
 		System.out.println(ANSI_GREEN_BACKGROUND);
 		System.out.printf("Instructor %s was added successfully!\n", name);
@@ -495,18 +519,16 @@ public class MenuAdm {
 		System.out.println(ANSI_CYAN_BACKGROUND);
 		System.out.println("=============== ADD MAINTENANCE WORKER ===============");
 		System.out.println(ANSI_RESET);
-		System.out.print("Enter name of maintenance employee");
+		System.out.print("Enter name of maintenance employee: ");
 		String name = ValidDocumentsScan.readName();
-		System.out.print("Enter CPF of maintenance employee");
+		System.out.print("Enter CPF of maintenance employee: ");
 		String cpf = ValidDocumentsScan.readNewCpfOpt();
 		if (cpf == null) {
 			System.out.println("Try again later.");
 			employeeManagement();
 			return;
 		}
-		System.out.print("Enter password of maintenance employee");
-		String password = ValidDocumentsScan.readPassword();
-		System.out.print("Enter daily payment of the maintenance employee");
+		System.out.print("Enter daily payment of the maintenance employee: ");
 		Double wage = null;
 		boolean valid = false;
 		while (!valid) {
@@ -520,11 +542,11 @@ public class MenuAdm {
 				System.out.println("\u001B[43mError: Please, enter a numerical value!\u001B[0m");
 				sc.nextLine();
 			} catch (IllegalArgumentException e) {
-				System.out.println("\u001B[43mError: " + e.getMessage() + "\u001B[0m");
+				System.out.println("\u001B[43mError: " + e.getMessage() + ANSI_RESET);
 				sc.nextLine();
 			}
 		}
-		gym.addMaintenanceEmployee(new MaintenanceEmployee(name, cpf, password, wage));
+		gym.addMaintenanceEmployee(new MaintenanceEmployee(name, cpf, wage));
 		System.out.println(ANSI_GREEN_BACKGROUND);
 		System.out.printf("Maintenance Employee %s was added successfully!\n", name);
 		System.out.println(ANSI_RESET);
@@ -555,7 +577,7 @@ public class MenuAdm {
 		System.out.println("=============== REMOVE INSTRUCTOR ===============");
 		System.out.println(ANSI_RESET);
 
-		System.out.print("Enter instructor's CPF");
+		System.out.print("Enter instructor's CPF: ");
 		String cpf = ValidDocumentsScan.readCpfVal();
 
 		if (cpf == null) {
@@ -570,7 +592,7 @@ public class MenuAdm {
 				System.out.println(ANSI_GREEN_BACKGROUND);
 				System.out.printf("Instructor %s was removed successfully!\n", e.getName());
 				System.out.println(ANSI_RESET);
-				cpf = ValidDocumentsScan.deleteCpf();
+				ValidDocumentsScan.deleteCpf(cpf);
 				employeeManagement();
 				return;
 			}
@@ -584,7 +606,7 @@ public class MenuAdm {
 		System.out.println("=============== REMOVE MAINTENANCE EMPLOYEE ===============");
 		System.out.println(ANSI_RESET);
 
-		System.out.print("Enter maintenance employee's CPF");
+		System.out.print("Enter maintenance employee's CPF: ");
 		String cpf = ValidDocumentsScan.readCpfVal();
 
 		if (cpf == null) {
@@ -599,7 +621,7 @@ public class MenuAdm {
 				System.out.println(ANSI_GREEN_BACKGROUND);
 				System.out.printf("Maintenance employee %s was removed successfully!\n", e.getName());
 				System.out.println(ANSI_RESET);
-				cpf = ValidDocumentsScan.deleteCpf();
+				ValidDocumentsScan.deleteCpf(cpf);
 				employeeManagement();
 				return;
 			}
@@ -607,7 +629,7 @@ public class MenuAdm {
 		System.out.println("Employee doesn't exists on system.");
 		employeeManagement();
 	}
-	
+
 	// REPORT MANAGEMENT LOGIC
 	private void reportManagement() {
 		boolean running = true;
@@ -653,8 +675,9 @@ public class MenuAdm {
 				}
 			} catch (InputMismatchException e) {
 				System.out.println(ANSI_RED_BACKGROUND);
-				System.out.println("Error: Please, enter a number!");
+				System.out.println("Error: Please, enter a number inside the range of options!");
 				System.out.println(ANSI_RESET);
+				sc.nextLine();
 			}
 		}
 	}
@@ -719,4 +742,5 @@ public class MenuAdm {
 			return;
 		}
 	}
+
 }

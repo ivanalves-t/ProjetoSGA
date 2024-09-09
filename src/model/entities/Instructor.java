@@ -8,8 +8,8 @@ public class Instructor extends Employee{
 	private ArrayList<GymMember> listMembers = new ArrayList<>();
 	
 	
-	public Instructor (String name,String cpf, String password, double wage) {
-		super(name, cpf, password);
+	public Instructor (String name,String cpf, double wage) {
+		super(name, cpf);
 		this.wage = wage;
 		this.listMembers = new ArrayList<GymMember>();
 	}
