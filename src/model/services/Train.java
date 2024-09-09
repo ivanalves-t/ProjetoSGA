@@ -3,14 +3,14 @@ package model.services;
 public class Train {
 
 	private String instructorName;
-	
+	private String memberName;
 	private String[][] trainList = {
 		    {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"},
 		    null
 		};
 	
-	public Train(String instructorName, String[][] trainList) {
-		super();
+	public Train(String instructorName, String memberName, String[][] trainList) {
+		this.memberName = memberName;
 		this.instructorName = instructorName;
 		this.trainList = trainList;
 	}
@@ -42,6 +42,11 @@ public class Train {
 	public String getInstructorName() {
 		return instructorName;
 	}
+
+	public String getMemberName() {
+		return memberName;
+	}
+	
 	
 	
 }

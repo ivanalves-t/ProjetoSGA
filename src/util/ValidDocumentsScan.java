@@ -13,6 +13,63 @@ public class ValidDocumentsScan implements DocumentsRepository {
 
 	private static Scanner sc = new Scanner(System.in);
 
+	public static String readTrain() {
+		boolean valid = false;
+		String name;
+		
+		while(!valid) {
+			try {
+				name = sc.nextLine();
+		        if (name == null || name.isEmpty() || name.trim().length() < 10) {
+		            throw new IllegalArgumentException("The name of train cannot be empty. Train must be longer than 10 caracters.");
+		        }
+		        valid = true;
+		        return name;
+		    }catch(IllegalArgumentException e) {
+		    	System.out.println("\u001B[41mError: " + e.getMessage() + "\u001B[0m");
+		    }
+		}
+		return null;
+	}
+	
+	public static String readName() {
+		boolean valid = false;
+		String name;
+		
+		while(!valid) {
+			try {
+				name = sc.nextLine();
+		        if (name == null || name.isEmpty() || name.trim().length() < 5) {
+		            throw new IllegalArgumentException("The name must be longer than 5 caracters");
+		        }
+		        valid = true;
+		        return name;
+		    }catch(IllegalArgumentException e) {
+		    	System.out.println("\u001B[41mError: " + e.getMessage() + "\u001B[0m");
+		    }
+		}
+		return null;
+	}
+	
+	public static String readPassword() {
+		boolean valid = false;
+		String name;
+		
+		while(!valid) {
+			try {
+				name = sc.nextLine();
+		        if (name == null || name.isEmpty() || name.trim().length() < 5) {
+		            throw new IllegalArgumentException("The password must be longer than 5 caracters");
+		        }
+		        valid = true;
+		        return name;
+		    }catch(IllegalArgumentException e) {
+		    	System.out.println("\u001B[41mError: " + e.getMessage() + "\u001B[0m");
+		    }
+		}
+		return null;
+	}
+	
 	public static String readNewCpfOpt() {
 		int tries = 4;
 		String cpf;

@@ -57,6 +57,10 @@ public class GymMember {
 	public Train getTrain() {
 		return train;
 	}
+	
+	public void setTrain(Train train) {
+		this.train = train;
+	}
 
 	public void setCheckIn(boolean checkIn) {
 		this.checkIn = checkIn;

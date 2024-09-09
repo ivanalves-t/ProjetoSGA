@@ -14,8 +14,7 @@ public class MenuGymMember {
 	private String currentlyCpf;
 	private static MenuGymMember instance;
 	private static Scanner sc = new Scanner(System.in);
-	private Gym gym;
-	private List<GymMember> members = gym.getMembers();
+	private static Gym gym;
 
 	public static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
 	public static final String ANSI_RESET = "\u001B[0m";
@@ -50,14 +49,17 @@ public class MenuGymMember {
 
 				switch (opt) {
 				case 1:
+					running = false;
 					accessValidateGymMemberAccount();
 					break;
 				case 2:
+					running = false;
 					showCurrentlyMembers();
 					break;
 				case 0:
 					running = false;
-					System.out.println("Going back to previous menu...");
+					System.out.println("Going back to main menu...");
+					Program.main(null);
 					break;
 				default:
 					System.out.println(ANSI_RED_BACKGROUND);
@@ -78,12 +80,14 @@ public class MenuGymMember {
 		System.out.println("=============== CURRENTLY MEMBERS ===============");
 		System.out.println(ANSI_RESET);
 		int sum = 0;
+		List<GymMember> members = gym.getMembers();
 		for (GymMember gm : members) {
 			if (gm.getCheckIn() == true) {
 				sum++;
 			}
 		}
 		System.out.println("Total currently members on gym: " + sum);
+		displayMenu();
 	}
 
 	private void accessValidateGymMemberAccount() {
@@ -91,11 +95,13 @@ public class MenuGymMember {
 		String cpf = ValidDocumentsScan.readCpfVal();
 		if (cpf == null) {
 			System.out.println("Error: Member doesn't registered on system!");
+			displayMenu();
 			return;
 		}
 		System.out.print("Type your password: ");
 		String password = sc.nextLine();
 		try {
+			List<GymMember> members = gym.getMembers();
 			for (GymMember gymMember : members) {
 				if (!gymMember.getCpf().equals(cpf)) {
 					throw new CpfDoesntMatchException(" Wrong cpf!");
@@ -111,6 +117,7 @@ public class MenuGymMember {
 			System.out.println(ANSI_RED_BACKGROUND);
 			System.out.println("Error: " + e.getMessage());
 			System.out.println(ANSI_RESET);
+			displayMenu();
 		}
 	}
 
@@ -134,12 +141,15 @@ public class MenuGymMember {
 				switch (opt) {
 				
 				case 1:
+					running = false;
 					showTrain();
 					break;
 				case 2:
+					running = false;
 					showInstructorName();
 					break;
 				case 3:
+					running = false;
 					showCurrentlyMembershipPlan();
 				case 0:
 					running = false;
@@ -166,7 +176,7 @@ public class MenuGymMember {
 		System.out.println("=============== YOUR TRAIN LIST ===============");
 		System.out.println(ANSI_RESET);
 		Train train = null;
-
+		List<GymMember> members = gym.getMembers();
 		for (GymMember member : members) {
 			if (member.getCpf().equals(this.currentlyCpf)) {
 				train = member.getTrain();
@@ -177,9 +187,11 @@ public class MenuGymMember {
 			System.out.println(ANSI_RED_BACKGROUND);
 			System.out.println("No one instructor made your train list yet");
 			System.out.println(ANSI_RESET);
+			accessAccountGymMember();
 			return;
 		}
 		System.out.println(train);
+		accessAccountGymMember();
 	}
 	
 	private void showInstructorName() {
@@ -187,6 +199,7 @@ public class MenuGymMember {
 		System.out.println("=============== INSTRUCTOR NAME ===============");
 		System.out.println(ANSI_RESET);
 		String name = null;
+		List<GymMember> members = gym.getMembers();
 		for (GymMember member : members) {
 			if (member.getCpf().equals(this.currentlyCpf)) {
 				name = member.getTrain().getInstructorName();
@@ -197,9 +210,11 @@ public class MenuGymMember {
 			System.out.println(ANSI_RED_BACKGROUND);
 			System.out.println("No one instructor made your train list yet");
 			System.out.println(ANSI_RESET);
+			accessAccountGymMember();
 			return;
 		}
 		System.out.println(name);
+		accessAccountGymMember();
 	}
 	
 	private void showCurrentlyMembershipPlan() {
@@ -207,11 +222,13 @@ public class MenuGymMember {
 		System.out.println("=============== MEMBERSHIP PLAN ===============");
 		System.out.println(ANSI_RESET);
 		String membership = null;
+		List<GymMember> members = gym.getMembers();
 		for (GymMember member : members) {
 			if (member.getCpf().equals(this.currentlyCpf)) {
 				membership = member.getMembershipPlan().toString();
 			}
 		}
 		System.out.println(membership);
+		accessAccountGymMember();
 	}
 }
