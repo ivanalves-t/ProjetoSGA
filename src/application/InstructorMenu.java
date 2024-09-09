@@ -90,34 +90,40 @@ public class InstructorMenu {
 	}
 
 	private void accessValidateInstructorAccount() {
-		System.out.print("Type your CPF: ");
-		String cpf = ValidDocumentsScan.readCpfVal();
-		if (cpf == null) {
-			System.out.println("Error: Ask to your admin to register you!");
-			displayMenu();
-			return;
-		}
-		System.out.print("Type your password: ");
-		String password = sc.nextLine();
-		try {
-			List<Employee> employees = gym.getEmployees();
-			for (Employee employee : employees) {
-				if (!employee.getCpf().equals(cpf) && !(employee instanceof Instructor)) {
-					throw new CpfDoesntMatchException(" Wrong cpf!");
-				}
-				if (!employee.getPassword().equals(password)) {
-					throw new IllegalArgumentException(" Wrong Password!");
-				}
-				currentlyInstructor = (Instructor) employee;
-				accessAccountInstructor();
-			}
-
-		} catch (CpfDoesntMatchException | IllegalArgumentException e) {
-			System.out.println(ANSI_RED_BACKGROUND);
-			System.out.println("Error: " + e.getMessage());
-			System.out.println(ANSI_RESET);
-			displayMenu();
-		}
+	    System.out.print("Type your CPF: ");
+	    String cpf = ValidDocumentsScan.readCpfVal();
+	    if (cpf == null) {
+	        System.out.println("Error: Ask to your admin to register you!");
+	        displayMenu();
+	        return;
+	    }
+	    System.out.print("Type your password: ");
+	    String password = ValidDocumentsScan.readPassword();
+	    try {
+	        List<Employee> employees = gym.getEmployees();
+	        Employee foundEmployee = null;
+	        for (Employee employee : employees) {
+	            if (employee.getCpf().equals(cpf) && employee instanceof Instructor) {
+	                foundEmployee = employee;
+	                break;
+	            }
+	        }
+	        if (foundEmployee == null) {
+	            throw new CpfDoesntMatchException("Wrong CPF!");
+	        }
+	        if (!foundEmployee.getPassword().equals(password)) {
+	            throw new IllegalArgumentException("Wrong Password!");
+	        }
+	        currentlyInstructor = (Instructor) foundEmployee;
+	        accessAccountInstructor();
+	        
+	    } catch (CpfDoesntMatchException | IllegalArgumentException e) {
+	        System.out.println(ANSI_RED_BACKGROUND);
+	        System.out.println("Error: " + e.getMessage());
+	        System.out.println(ANSI_RESET);
+	        System.out.println("Tip: first access? your password could be your CPF");
+	        displayMenu();
+	    }
 	}
 
 	private void accessAccountInstructor() {

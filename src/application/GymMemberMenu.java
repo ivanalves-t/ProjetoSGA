@@ -7,11 +7,13 @@ import java.util.Scanner;
 import model.entities.Gym;
 import model.entities.GymMember;
 import model.exceptions.CpfDoesntMatchException;
+import model.services.FeedbackReport;
 import model.services.Train;
 import util.ValidDocumentsScan;
 //done
 public class GymMemberMenu {
 	private String currentlyCpf;
+	private GymMember currenGymMember;
 	private static Scanner sc = new Scanner(System.in);
 	private Gym gym;
 
@@ -53,6 +55,7 @@ public class GymMemberMenu {
 					running = false;
 					System.out.println("Going back to main menu...");
 					currentlyCpf = null;
+					currenGymMember = null;
 					MainMenu.main(null);
 					break;
 				default:
@@ -91,36 +94,43 @@ public class GymMemberMenu {
 	}
 
 	private void accessValidateGymMemberAccount() {
-		System.out.print("Type your CPF: ");
-		String cpf = ValidDocumentsScan.readCpfVal();
-		if (cpf == null) {
-			System.out.println("Error: Ask to your admin to register you!");
-			displayMenu();
-			return;
-		}
-		System.out.print("Type your password: ");
-		String password = ValidDocumentsScan.readPassword();
-		try {
-			List<GymMember> members = gym.getMembers();
-			for (GymMember gymMember : members) {
-				if (!gymMember.getCpf().equals(cpf)) {
-					throw new CpfDoesntMatchException(" Wrong cpf!");
-				}
-				if (!gymMember.getPassword().equals(password)) {
-					throw new IllegalArgumentException(" Wrong Password!");
-				}
-				currentlyCpf = gymMember.getCpf();
-				accessAccountGymMember();
-			}
-			
-		}catch(CpfDoesntMatchException | IllegalArgumentException e) {
-			System.out.println(ANSI_RED_BACKGROUND);
-			System.out.println("Error: " + e.getMessage());
-			System.out.println(ANSI_RESET);
-			System.out.println("Tip: first acces? you password could be your CPF");
-			displayMenu();
-		}
+	    System.out.print("Type your CPF: ");
+	    String cpf = ValidDocumentsScan.readCpfVal();
+	    if (cpf == null) {
+	        System.out.println("Error: Ask to your admin to register you!");
+	        displayMenu();
+	        return;
+	    }
+	    System.out.print("Type your password: ");
+	    String password = ValidDocumentsScan.readPassword();
+	    try {
+	        List<GymMember> members = gym.getMembers();
+	        GymMember foundMember = null;
+	        for (GymMember gymMember : members) {
+	            if (gymMember.getCpf().equals(cpf)) {
+	                foundMember = gymMember;
+	                break;
+	            }
+	        }
+	        if (foundMember == null) {
+	            throw new CpfDoesntMatchException("Wrong CPF!");
+	        }
+	        if (!foundMember.getPassword().equals(password)) {
+	            throw new IllegalArgumentException("Wrong Password!");
+	        }
+	        currentlyCpf = foundMember.getCpf();
+	        currenGymMember = foundMember;
+	        accessAccountGymMember();
+	        
+	    } catch (CpfDoesntMatchException | IllegalArgumentException e) {
+	        System.out.println(ANSI_RED_BACKGROUND);
+	        System.out.println("Error: " + e.getMessage());
+	        System.out.println(ANSI_RESET);
+	        System.out.println("Tip: first access? your password could be your CPF");
+	        displayMenu();
+	    }
 	}
+
 
 	private void accessAccountGymMember() {
 
@@ -133,6 +143,7 @@ public class GymMemberMenu {
 			System.out.println("|  2 - Show linked instructor's name      |");
 			System.out.println("|  3 - Show currently membership plan     |");
 			System.out.println("|  4 - Modify password                    |");
+			System.out.println("|  5 - Leave your feedback                |");
 			System.out.println("|  0 - Back to previous menu              |");
 			System.out.println("===========================================");
 			System.out.println(ANSI_RESET);
@@ -153,9 +164,15 @@ public class GymMemberMenu {
 				case 3:
 					running = false;
 					showCurrentlyMembershipPlan();
+					break;
 				case 4:
 					running = false;
 					alterPassword();
+					break;
+				case 5:
+					running = false;
+					feedback();
+					break;
 				case 0:
 					running = false;
 					currentlyCpf = null;
@@ -198,29 +215,35 @@ public class GymMemberMenu {
 	}
 	
 	private void showTrain() {
-		try {
-			System.out.println(ANSI_BLUE_BACKGROUND);
-			System.out.println("=============== YOUR TRAIN LIST ===============");
-			System.out.println(ANSI_RESET);
-			Train train = null;
-			List<GymMember> members = gym.getMembers();
-			for (GymMember member : members) {
-				if (member.getCpf().equals(this.currentlyCpf)) {
-					train = member.getTrain();
-				}
-			}
-			if (train == null) {
-				throw new NullPointerException("Empty. Ask a instructor to train you.");
-			}
-			System.out.println(train);
-			accessAccountGymMember();
-			
-		}catch (NullPointerException e) {
-			System.out.println(ANSI_RED_BACKGROUND);
-			System.out.println("Error: " + e.getMessage());
-			System.out.println(ANSI_RESET);
-			accessAccountGymMember();
-		}
+	    try {
+	        System.out.println(ANSI_BLUE_BACKGROUND);
+	        System.out.println("=============== YOUR TRAIN LIST ===============");
+	        System.out.println(ANSI_RESET);
+	        Train train = null;
+	        List<GymMember> members = gym.getMembers();
+
+	        if (members != null) {
+	            for (GymMember member : members) {
+	                if (member.getCpf().equals(this.currentlyCpf)) {
+	                    train = member.getTrain();
+	                    break; // Encontra o treino e sai do loop
+	                }
+	            }
+	        }
+
+	        if (train == null) {
+	            throw new NullPointerException("Empty. Ask an instructor to train you.");
+	        }
+
+	        System.out.println(train); // Imprime a representação tabular do treino
+	        accessAccountGymMember();
+	        
+	    } catch (NullPointerException | IllegalArgumentException e) {
+	        System.out.println(ANSI_RED_BACKGROUND);
+	        System.out.println("Error: " + e.getMessage());
+	        System.out.println(ANSI_RESET);
+	        accessAccountGymMember();
+	    }
 	}
 	
 	private void showInstructorName() {
@@ -235,15 +258,12 @@ public class GymMemberMenu {
 				name = member.getTrain().getInstructorName();
 			}
 		}
-			if(name == null) {
-				throw new NullPointerException("No one instructor made your train list yet");
-			}
 			System.out.println(name);
 			accessAccountGymMember();
 			
 		}catch(NullPointerException e) {
 			System.out.println(ANSI_RED_BACKGROUND);
-			System.out.println("Error: " + e.getMessage());
+			System.out.println("Error: No one instructor made your train list yet.");
 			System.out.println(ANSI_RESET);
 			accessAccountGymMember();
 		}
@@ -261,6 +281,43 @@ public class GymMemberMenu {
 			}
 		}
 		System.out.println(membership);
+		accessAccountGymMember();
+	}
+	
+	private void feedback() {
+		System.out.println(ANSI_BLUE_BACKGROUND);
+		System.out.println("=============== MEMBERSHIP FEEDBACK ===============");
+		System.out.println(ANSI_RESET);
+		System.out.println("Please, enter a grade between 0 and 5.");
+		boolean valid = false;
+		Integer grade = null;
+		while (!valid) {
+			try {
+				grade = sc.nextInt();
+				sc.nextLine();
+				if (grade < 0 || grade > 5) {
+					throw new IllegalArgumentException("Enter a number between 0 and 5 to grade.");
+				}
+				valid = true;
+			}catch(IllegalArgumentException e) {
+				System.out.println("Error: " + e.getMessage());
+			}
+		}
+		valid = false;
+		System.out.println("Please entrer your feedback about us.");
+		String feedback = null;
+		while(!valid) {
+			try {
+				feedback = sc.nextLine();
+				if (feedback.trim().length() < 30) {
+					throw new IllegalArgumentException("Please, enter at minimum 30 caracters feedback message!");
+				}
+				valid = true;
+			}catch(IllegalArgumentException e) {
+				System.out.println("Error: " + e.getMessage());
+			}
+		}
+		gym.addReport(new FeedbackReport(grade, feedback, currenGymMember.getName()));
 		accessAccountGymMember();
 	}
 }

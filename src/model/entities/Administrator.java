@@ -36,60 +36,7 @@ public class Administrator implements DocumentsRepository {
 	public String getPassword() {
 		return password;
 	}
-
-//	@Override
-//	public String toString() {
-//	    StringBuilder sb = new StringBuilder();
-//	    sb.append("\n======= ADMIN DATA =======\n")
-//	      .append("Admin Name: ").append(name).append("\n")
-//	      .append("Admin CPF: ").append(cpf).append("\n")
-//	      .append("Admin password: ").append(password).append("\n\n");
-//
-//	    List<Employee> employees = gym.getEmployees();
-//	    List<GymMember> members = gym.getMembers();
-//	    sb.append("\n==================== MEMBERS DATA =====================\n");
-//	    if (members.isEmpty()) {
-//	        sb.append("No members data\n");
-//	    } else {
-//	        sb.append("Name\tCPF\tType\tMonthly\tPasword\n");
-//	        for (GymMember gm : members) {
-//	            sb.append(gm.getName()).append("\t")
-//	              .append(gm.getCpf()).append("\t")
-//	              .append(gm.getMembershipPlan()).append("\t")
-//	              .append(gm.getMembershipPlan().getMonthly()).append("\t")
-//	             .append(gm.getPassword()).append("\n");
-//	        }
-//	    }
-//
-//	    sb.append("\n======= EMPLOYEES DATA =======\n");
-//	    if (employees.isEmpty()) {
-//	        sb.append("No employees data\n");
-//	    } else {
-//	        sb.append("Name\tCPF\tType\tPayment\tPassword\n");
-//	        for (Employee e : employees) {
-//	            sb.append(e.getName()).append("\t")
-//	              .append(e.getCpf()).append("\t")
-//	              .append(e.getClass().getSimpleName()).append("\t")
-//	              .append(e.payment()).append("\t")
-//	              .append(e.getPassword()).append("\n");
-//	        }
-//	    }
-//
-//	    String table = sb.toString();
-//	    String[] rows = table.split("\n");
-//	    StringBuilder result = new StringBuilder();
-//
-//	    for (String row : rows) {
-//	        String[] columns = row.split("\t");
-//	        for (String column : columns) {
-//	            result.append(String.format("%-15s", column));
-//	        }
-//	        result.append("\n");
-//	    }
-//
-//	    return result.toString();
-//	}
-	
+	@Override
 	public String toString() {
 	    StringBuilder sb = new StringBuilder();
 	    sb.append("\n======= ADMIN DATA =======\n")

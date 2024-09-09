@@ -71,7 +71,7 @@ public class Gym {
         employees.add(instructor);
     }
     
-    public void addMaintenanceEmployee(MaintenanceEmployee mE) {
+    public void addMaintenanceEmployee(MaintenanceMan mE) {
         employees.add(mE);
     }
 
@@ -105,5 +105,9 @@ public class Gym {
 
     public List<Report> getReports() {
         return reports;
+    }
+    
+    public void removeReports() {
+    	this.reports = new ArrayList<>();
     }
 }
