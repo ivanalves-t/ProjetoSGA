@@ -12,8 +12,7 @@ public class CashReport implements Report {
 
 	private String message;
 	private String reportDate; // Armazena a data de geração do relatório
-	private Gym gym;
-	
+	private static Gym gym;
 	
 	public CashReport() {
 

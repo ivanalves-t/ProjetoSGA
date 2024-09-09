@@ -12,10 +12,10 @@ import model.exceptions.CpfDoesntMatchException;
 import model.services.Train;
 import util.ValidDocumentsScan;
 
-public class MenuInstructor {
-	private static Gym gym;
+public class InstructorMenu {
+	private Gym gym;
 	private Instructor currentlyInstructor;
-	private static MenuInstructor instance;
+
 	private static Scanner sc = new Scanner(System.in);
 	private GymMember gmTrainee;
 	public static final String ANSI_RESET = "\u001B[0m";
@@ -23,16 +23,9 @@ public class MenuInstructor {
 	public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
 	public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
 	public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
-
-	private MenuInstructor() {
-
-	}
-
-	public static MenuInstructor getInstance() {
-		if (instance == null) {
-			instance = new MenuInstructor();
-		}
-		return instance;
+//done
+	public InstructorMenu() {
+		gym = Gym.getInstance();
 	}
 
 	public void displayMenu() {
@@ -50,6 +43,7 @@ public class MenuInstructor {
 			System.out.print("Type your option: ");
 			try {
 				int opt = sc.nextInt();
+				sc.nextLine();
 
 				switch (opt) {
 				case 1:
@@ -63,7 +57,9 @@ public class MenuInstructor {
 				case 0:
 					running = false;
 					System.out.println("Going back to main menu...\n\n");
-					Program.main(null);
+					currentlyInstructor = null;
+					gmTrainee = null;
+					MainMenu.main(null);
 					break;
 				default:
 					System.out.println(ANSI_RED_BACKGROUND);
@@ -75,6 +71,7 @@ public class MenuInstructor {
 				System.out.println(ANSI_RED_BACKGROUND);
 				System.out.println("Error: Please, enter a number inside the range of options!");
 				System.out.println(ANSI_RESET);
+				sc.nextLine();
 			}
 		}
 	}
@@ -111,6 +108,7 @@ public class MenuInstructor {
 				if (!employee.getPassword().equals(password)) {
 					throw new IllegalArgumentException(" Wrong Password!");
 				}
+				currentlyInstructor = (Instructor) employee;
 				accessAccountInstructor();
 			}
 
@@ -154,6 +152,8 @@ public class MenuInstructor {
 					validateAlterTrain();
 				case 0:
 					running = false;
+					currentlyInstructor = null;
+					gmTrainee = null;
 					displayMenu();
 					break;
 				default:
@@ -167,6 +167,7 @@ public class MenuInstructor {
 				System.out.println(ANSI_RED_BACKGROUND);
 				System.out.println("Error: Please, enter a number inside the range of options.");
 				System.out.println(ANSI_RESET);
+				sc.nextLine();
 			}
 
 		}

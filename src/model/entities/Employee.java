@@ -6,10 +6,10 @@ public abstract class Employee {
 	private String cpf;
 	private String password;
 
-	public Employee(String name, String cpf, String password) {
+	public Employee(String name, String cpf) {
 		this.name = name;
 		this.cpf = cpf;
-		this.password = password;
+		this.password = cpf;
 	}
 
 	public abstract double payment();
@@ -26,5 +26,10 @@ public abstract class Employee {
 		return password;
 	}
 
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	
 	
 }

@@ -11,31 +11,37 @@ public class Gym {
     private String gymName;
     private ArrayList<GymMember> members;
     private ArrayList<Employee> employees;
-	private double monthlyValue;
+    private double monthlyValue;
     private ArrayList<Report> reports;
     
-    // Construtor privado
-    private Gym(String gymName, String ownerCNPJ) {
+    // Construtor privado para garantir que não pode ser chamado externamente
+    private Gym(String gymName, String ownerCNPJ, double monthlyValue) {
         this.gymName = gymName;
         this.ownerCNPJ = ownerCNPJ;
+        this.monthlyValue = monthlyValue;
         this.members = new ArrayList<>();
         this.employees = new ArrayList<>();
+        this.reports = new ArrayList<>();
     }
 
-    // Método para criar a academia
+    // Método para criar a academia ou retornar a instância existente
     public static Gym createGym(String gymName, String ownerCNPJ, double monthlyValue) {
         if (instance == null) {
-            instance = new Gym(gymName, ownerCNPJ);
-        } else {
-            System.out.println("Gym already registered!");
+            instance = new Gym(gymName, ownerCNPJ, monthlyValue);
         }
         return instance;
+    }
+    
+    private Gym() {
+        this.members = new ArrayList<>();
+        this.employees = new ArrayList<>();
+        this.reports = new ArrayList<>();
     }
 
     // Método para obter a instância única da academia
     public static Gym getInstance() {
         if (instance == null) {
-            System.out.println("Gym was not registered yet.");
+            throw new IllegalStateException("Gym ainda não foi criada. Utilize createGym() primeiro.");
         }
         return instance;
     }
@@ -58,7 +64,7 @@ public class Gym {
     }
 
     public ArrayList<Employee> getEmployees() {
-        return employees;
+        return new ArrayList<>(employees);
     }
 
     public void addInstructor(Instructor instructor) {
@@ -66,39 +72,38 @@ public class Gym {
     }
     
     public void addMaintenanceEmployee(MaintenanceEmployee mE) {
-    	employees.add(mE);
+        employees.add(mE);
     }
-    
-	public double[] generatePlan() {
-		double[] plan = new double[3];
-		plan[0] = this.monthlyValue;
-		plan[1] = (this.monthlyValue * 3) - (this.monthlyValue * 3 * 0.1);
-		plan[2] = (this.monthlyValue * 12) - (this.monthlyValue * 12 * 0.3);
-		return plan;
-	}
-	
-	public double getMonthlyValue() {
-		return monthlyValue;
-	}
-	
-	public void removeEmployee(Employee e) {
-		employees.remove(e);
-	}
-    
+
+    public double[] generatePlan() {
+        double[] plan = new double[3];
+        plan[0] = this.monthlyValue;
+        plan[1] = ((this.monthlyValue * 3) - (this.monthlyValue * 3 * 0.1)) / 3;
+        plan[2] = ((this.monthlyValue * 12) - (this.monthlyValue * 12 * 0.3)) / 12;
+        return plan;
+    }
+
+    public double getMonthlyValue() {
+        return monthlyValue;
+    }
+
+    public void removeEmployee(Employee e) {
+        employees.remove(e);
+    }
+
     public void removeGymMember(GymMember gm) {
-    	members.remove(gm);
+        members.remove(gm);
     }
-    
+
     public void addReport(Report report) {
-    	reports.add(report);
+        reports.add(report);
     }
-    
+
     public void removeReport(Report report) {
-    	reports.remove(report);
+        reports.remove(report);
     }
-    
-    public List<Report> getReports(){
-    	return reports;
+
+    public List<Report> getReports() {
+        return reports;
     }
-    
 }
