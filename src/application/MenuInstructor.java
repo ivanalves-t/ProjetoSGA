@@ -9,18 +9,19 @@ import model.entities.Gym;
 import model.entities.GymMember;
 import model.entities.Instructor;
 import model.exceptions.CpfDoesntMatchException;
+import model.services.Train;
 import util.ValidDocumentsScan;
 
 public class MenuInstructor {
 	private static Gym gym;
-	private List<Employee> employees = gym.getEmployees();
 	private Instructor currentlyInstructor;
-	private String currentlyCpf;
 	private static MenuInstructor instance;
 	private static Scanner sc = new Scanner(System.in);
+	private GymMember gmTrainee;
 	public static final String ANSI_RESET = "\u001B[0m";
 	public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
 	public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
+	public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
 
 	private MenuInstructor() {
 
@@ -51,14 +52,17 @@ public class MenuInstructor {
 
 				switch (opt) {
 				case 1:
+					running = false;
 					accessValidateInstructorAccount();
 					break;
 				case 2:
+					running = false;
 					showCurrentlyMembers();
 					break;
 				case 0:
 					running = false;
-					System.out.println("Going back to previous menu...");
+					System.out.println("Going back to main menu...");
+					Program.main(null);
 					break;
 				default:
 					System.out.println(ANSI_RED_BACKGROUND);
@@ -73,31 +77,32 @@ public class MenuInstructor {
 			}
 		}
 	}
-	
+
 	private void showCurrentlyMembers() {
 		System.out.println(ANSI_PURPLE_BACKGROUND);
 		System.out.println("=============== CURRENTLY MEMBERS ===============");
 		System.out.println(ANSI_RESET);
-		int sum = 0;
 		List<GymMember> members = gym.getMembers();
 		for (GymMember gm : members) {
 			if (gm.getCheckIn() == true) {
-				sum++;
+				System.out.println(gm);
 			}
 		}
-		System.out.println("Total currently members on gym: " + sum);
+		displayMenu();
 	}
-	
+
 	private void accessValidateInstructorAccount() {
 		System.out.print("Type your CPF: ");
 		String cpf = ValidDocumentsScan.readCpfVal();
 		if (cpf == null) {
 			System.out.println("Error: Employee doesn't registered on system!");
+			displayMenu();
 			return;
 		}
 		System.out.print("Type your password: ");
 		String password = sc.nextLine();
 		try {
+			List<Employee> employees = gym.getEmployees();
 			for (Employee employee : employees) {
 				if (!employee.getCpf().equals(cpf) && !(employee instanceof Instructor)) {
 					throw new CpfDoesntMatchException(" Wrong cpf!");
@@ -105,18 +110,17 @@ public class MenuInstructor {
 				if (!employee.getPassword().equals(password)) {
 					throw new IllegalArgumentException(" Wrong Password!");
 				}
-				currentlyCpf = employee.getCpf();
-				currentlyInstructor = (Instructor) employee;
 				accessAccountInstructor();
 			}
-			
-		}catch(CpfDoesntMatchException | IllegalArgumentException e) {
+
+		} catch (CpfDoesntMatchException | IllegalArgumentException e) {
 			System.out.println(ANSI_RED_BACKGROUND);
 			System.out.println("Error: " + e.getMessage());
 			System.out.println(ANSI_RESET);
+			displayMenu();
 		}
 	}
-	
+
 	private void accessAccountInstructor() {
 
 		boolean running = true;
@@ -124,9 +128,9 @@ public class MenuInstructor {
 		while (running == true) {
 			System.out.println(ANSI_PURPLE_BACKGROUND);
 			System.out.println("=============== MENU MEMBER ===============");
-			System.out.println("|  1 - Show train list                    |");
-			System.out.println("|  2 - Show linked instructor's name      |");
-			System.out.println("|  3 - Show currently membership plan     |");
+			System.out.println("|  1 - Create a train                     |");
+			System.out.println("|  2 - Delete a train                     |");
+			System.out.println("|  3 - Modify a train                     |");
 			System.out.println("|  0 - Back to previous menu              |");
 			System.out.println("===========================================");
 			System.out.println(ANSI_RESET);
@@ -135,18 +139,21 @@ public class MenuInstructor {
 				int opt = sc.nextInt();
 				sc.nextLine();
 				switch (opt) {
-				
+
 				case 1:
-					showTrain();
+					running = false;
+					validateCreateTrain();
 					break;
 				case 2:
-					showInstructorName();
+					running = false;
+					deleteTrain();
 					break;
 				case 3:
-					showCurrentlyMembershipPlan();
+					running = false;
+					validateAlterTrain();
 				case 0:
 					running = false;
-					currentlyCpf = null;
+					displayMenu();
 					break;
 				default:
 					System.out.println(ANSI_RED_BACKGROUND);
@@ -154,13 +161,144 @@ public class MenuInstructor {
 					System.out.println(ANSI_RESET);
 					break;
 				}
-				
-			}catch(InputMismatchException e) {
+
+			} catch (InputMismatchException e) {
 				System.out.println(ANSI_RED_BACKGROUND);
 				System.out.println("Error: Please, enter a number inside the range of options.");
 				System.out.println(ANSI_RESET);
 			}
 
 		}
+	}
+
+	private void validateCreateTrain() {
+		System.out.print("Type the CPF of your trainee member: ");
+		String cpfTrainee = ValidDocumentsScan.readCpfVal();
+		if (cpfTrainee == null) {
+			System.out.println("Try again later.");
+			accessAccountInstructor();
+			return;
+		}
+		boolean found = false;
+		List<GymMember> members = gym.getMembers();
+		for (GymMember gymMember : members) {
+			if (gymMember.getCpf().equals(cpfTrainee)) {
+				gmTrainee = gymMember;
+				found = true;
+				createTrain();
+			}
+		}
+		if (!found) {
+			System.out.println(ANSI_RED_BACKGROUND);
+			System.out.println("Error: Member doesn't registered on system.");
+			System.out.println(ANSI_RESET);
+			accessAccountInstructor();
+			return;
+		}
+	}
+	
+	private void validateAlterTrain() {
+		System.out.print("Type the CPF of your trainee member: ");
+		String cpfTrainee = ValidDocumentsScan.readCpfVal();
+		if (cpfTrainee == null) {
+			System.out.println("Try again later.");
+			accessAccountInstructor();
+			return;
+		}
+		boolean found = false;
+		List<GymMember> members = gym.getMembers();
+		for (GymMember gymMember : members) {
+			if (gymMember.getCpf().equals(cpfTrainee)) {
+				gmTrainee = gymMember;
+				found = true;
+				alterTrain();
+			}
+		}
+		if (!found) {
+			System.out.println(ANSI_RED_BACKGROUND);
+			System.out.println("Error: Member doesn't registered on system.");
+			System.out.println(ANSI_RESET);
+			accessAccountInstructor();
+			return;
+		}
+	}
+	
+	private void createTrain() {
+		System.out.println(ANSI_PURPLE_BACKGROUND);
+		System.out.println("=============== CREATE TRAIN ===============");
+		System.out.println(ANSI_RESET);
+		String[] daysOfWeek = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+		String[] exercises = new String[7];
+		
+		System.out.println("Please, enter a train for each day on week:");
+		for (int i = 0; i < daysOfWeek.length; i++) {
+			System.out.print(daysOfWeek[i] + ": ");
+			exercises[i] = ValidDocumentsScan.readTrain();
+		}
+		String[][] trainList = {daysOfWeek, exercises};
+		Train train = new Train(currentlyInstructor.getName(), gmTrainee.getName(), trainList);
+		for (GymMember gymMember : gym.getMembers()) {
+			if (gymMember.getCpf().equals(gmTrainee.getCpf())) {
+				gymMember.setTrain(train);				
+			}
+		}
+		System.out.println(ANSI_GREEN_BACKGROUND);
+		System.out.println("The train was created successfully!");
+		System.out.println(ANSI_RESET);
+		accessAccountInstructor();
+	}
+	
+	private void deleteTrain() {
+		System.out.println(ANSI_PURPLE_BACKGROUND);
+		System.out.println("=============== DELETE TRAIN ===============");
+		System.out.println(ANSI_RESET);
+		System.out.print("Type the CPF of your trainee member: ");
+		String cpfTrainee = ValidDocumentsScan.readCpfVal();
+		if (cpfTrainee == null) {
+			System.out.println("Try again later.");
+			displayMenu();
+			return;
+		}
+		boolean found = false;
+		for (GymMember gymMember : gym.getMembers()) {
+			if (gymMember.getCpf().equals(cpfTrainee)) {
+				gmTrainee = gymMember;
+				found = true;
+				gymMember.setTrain(null);
+			}
+		}
+		if (!found) {
+			System.out.println(ANSI_RED_BACKGROUND);
+			System.out.println("Error: Member doesn't registered on system.");
+			System.out.println(ANSI_RESET);
+			accessAccountInstructor();
+			return;
+		}
+	}
+	
+	
+	private void alterTrain() {
+		System.out.println(ANSI_PURPLE_BACKGROUND);
+		System.out.println("=============== ALTER TRAIN ===============");
+		System.out.println(ANSI_RESET);
+		String[] daysOfWeek = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+		String[] exercises = new String[7];
+		
+		System.out.println("Please, enter a train for each day on week:");
+		for (int i = 0; i < daysOfWeek.length; i++) {
+			System.out.print(daysOfWeek[i] + ": ");
+			exercises[i] = ValidDocumentsScan.readTrain();
+		}
+		String[][] trainList = {daysOfWeek, exercises};
+		Train train = new Train(currentlyInstructor.getName(), gmTrainee.getName(), trainList);
+		for (GymMember gymMember : gym.getMembers()) {
+			if (gymMember.getCpf().equals(gmTrainee.getCpf())) {
+				gymMember.setTrain(train);				
+			}
+		}
+		System.out.println(ANSI_GREEN_BACKGROUND);
+		System.out.println("The train was deleted successfully!");
+		System.out.println(ANSI_RESET);
+		accessAccountInstructor();
 	}
 }

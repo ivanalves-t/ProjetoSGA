@@ -10,6 +10,7 @@ public class Program {
 	private static MenuInstructor menuInstructor;
 
 	public static void main(String[] args) {
+		
 		menuAdm = MenuAdm.getInstance();  
 		menuGymMember = MenuGymMember.getInstance();  
 		menuInstructor = MenuInstructor.getInstance();  
@@ -27,7 +28,7 @@ public class Program {
 			System.out.println("|  0 - Exit                            |");
 			System.out.println("========================================");
 			System.out.println("\u001B[0m");  
-			System.out.print("Type your option:");
+			System.out.print("Type your option: ");
 
 			try {
 				int opt = sc.nextInt();
@@ -35,12 +36,15 @@ public class Program {
 
 				switch (opt) {
 					case 1:
+						running = false;
 						menuAdm.displayMenu();
 						break;
 					case 2:
+						running = false;
 						menuInstructor.displayMenu();
 						break;
 					case 3:
+						running = false;
 						menuGymMember.displayMenu();
 						break;
 					case 0:
