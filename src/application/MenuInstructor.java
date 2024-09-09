@@ -19,6 +19,7 @@ public class MenuInstructor {
 	private static Scanner sc = new Scanner(System.in);
 	private GymMember gmTrainee;
 	public static final String ANSI_RESET = "\u001B[0m";
+	
 	public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
 	public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
 	public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
@@ -61,7 +62,7 @@ public class MenuInstructor {
 					break;
 				case 0:
 					running = false;
-					System.out.println("Going back to main menu...");
+					System.out.println("Going back to main menu...\n\n");
 					Program.main(null);
 					break;
 				default:
@@ -95,7 +96,7 @@ public class MenuInstructor {
 		System.out.print("Type your CPF: ");
 		String cpf = ValidDocumentsScan.readCpfVal();
 		if (cpf == null) {
-			System.out.println("Error: Employee doesn't registered on system!");
+			System.out.println("Error: Ask to your admin to register you!");
 			displayMenu();
 			return;
 		}

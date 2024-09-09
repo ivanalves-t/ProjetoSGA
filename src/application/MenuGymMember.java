@@ -94,7 +94,7 @@ public class MenuGymMember {
 		System.out.print("Type your CPF: ");
 		String cpf = ValidDocumentsScan.readCpfVal();
 		if (cpf == null) {
-			System.out.println("Error: Member doesn't registered on system!");
+			System.out.println("Error: Ask to your admin to register you!");
 			displayMenu();
 			return;
 		}
