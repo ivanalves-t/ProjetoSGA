@@ -77,17 +77,34 @@ public class InstructorMenu {
 	}
 
 	private void showCurrentlyMembers() {
-		System.out.println(ANSI_PURPLE_BACKGROUND);
-		System.out.println("=============== CURRENTLY MEMBERS ===============");
-		System.out.println(ANSI_RESET);
-		List<GymMember> members = gym.getMembers();
-		for (GymMember gm : members) {
-			if (gm.getCheckIn() == true) {
-				System.out.println(gm);
-			}
-		}
-		displayMenu();
+	    System.out.println(ANSI_PURPLE_BACKGROUND);
+	    System.out.println("=============== CURRENTLY MEMBERS ===============");
+	    System.out.println(ANSI_RESET);
+	    
+	    StringBuilder sb = new StringBuilder();
+	    try {
+	    	List<GymMember> members = gym.getMembers();
+	    	if (members.isEmpty()) {
+	    		sb.append("No members data\n");
+	    	} else {
+	    		// Corrigi o cabeçalho para incluir "NeedTrain"
+	    		sb.append(String.format("%-20s%-20s%-20s%-20s\n", "Name", "CPF", "Freq", "NeedTrain"));
+	    		for (GymMember gm : members) {
+	    			// Ajustei o formato para não incluir o ".2f" na coluna "NeedTrain"
+	    			sb.append(String.format("%-20s%-20s%-20.2f%-20s\n",
+	    					gm.getName(), gm.getCpf(), gm.getCheckIn(), gm.getTrain() == null ? "yes" : "no"));
+	    		}
+	    	}
+	    }catch (NullPointerException e) {
+	    	System.out.println("Error: " + "No one member registered yet.");
+	    	displayMenu();
+	    }
+	    
+	    System.out.print(sb.toString()); // Exibe a construção finalizada
+	    displayMenu();
 	}
+
+
 
 	private void accessValidateInstructorAccount() {
 	    System.out.print("Type your CPF: ");
@@ -132,10 +149,11 @@ public class InstructorMenu {
 
 		while (running == true) {
 			System.out.println(ANSI_PURPLE_BACKGROUND);
-			System.out.println("=============== MENU MEMBER ===============");
+			System.out.println("============= INSTRUCTOR MENU =============");
 			System.out.println("|  1 - Create a train                     |");
 			System.out.println("|  2 - Delete a train                     |");
 			System.out.println("|  3 - Modify a train                     |");
+			System.out.println("|  4 - Modify Password                    |");
 			System.out.println("|  0 - Back to previous menu              |");
 			System.out.println("===========================================");
 			System.out.println(ANSI_RESET);
@@ -156,6 +174,11 @@ public class InstructorMenu {
 				case 3:
 					running = false;
 					validateAlterTrain();
+					break;
+				case 4:
+					running = false;
+					modifyPassword();
+					break;
 				case 0:
 					running = false;
 					currentlyInstructor = null;
@@ -173,10 +196,28 @@ public class InstructorMenu {
 				System.out.println(ANSI_RED_BACKGROUND);
 				System.out.println("Error: Please, enter a number inside the range of options.");
 				System.out.println(ANSI_RESET);
-				sc.nextLine();
+				sc.nextLine(); // limpar o buffer
 			}
 
 		}
+	}
+	private void modifyPassword() {
+		System.out.println(ANSI_PURPLE_BACKGROUND);
+		System.out.println("=============== SET NEW PASSWORD ===============");
+		System.out.println(ANSI_RESET);
+		
+		System.out.print("Please, enter your new password: ");
+		String password = ValidDocumentsScan.readPassword();
+		for (Employee employee : gym.getEmployees()) {
+			if (employee.getCpf().equals(currentlyInstructor.getCpf())){
+				employee.setPassword(password);
+			}
+		}
+		System.out.println(ANSI_GREEN_BACKGROUND);
+		System.out.println("Password modified successfully!");
+		System.out.println(ANSI_RESET);
+		System.out.println("Please sign in again.");
+		displayMenu();
 	}
 
 	private void validateCreateTrain() {
@@ -264,7 +305,7 @@ public class InstructorMenu {
 		String cpfTrainee = ValidDocumentsScan.readCpfVal();
 		if (cpfTrainee == null) {
 			System.out.println("Try again later.");
-			displayMenu();
+			accessAccountInstructor();
 			return;
 		}
 		boolean found = false;
@@ -273,6 +314,10 @@ public class InstructorMenu {
 				gmTrainee = gymMember;
 				found = true;
 				gymMember.setTrain(null);
+				System.out.println(ANSI_GREEN_BACKGROUND);
+				System.out.println("The train was deleted successfully!");
+				System.out.println(ANSI_RESET);
+				accessAccountInstructor();
 			}
 		}
 		if (!found) {

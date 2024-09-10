@@ -87,8 +87,8 @@ public class GymMemberMenu {
 			}
 			System.out.println("Total currently members on gym: " + sum);
 			displayMenu();
-		}catch(Exception e ) {
-			e.printStackTrace();
+		}catch(NullPointerException e ) {
+			System.out.println("Error: No one member registered yet.");
 			displayMenu();
 		}
 	}
@@ -139,11 +139,12 @@ public class GymMemberMenu {
 		while (running == true) {
 			System.out.println(ANSI_BLUE_BACKGROUND);
 			System.out.println("=============== MENU MEMBER ===============");
-			System.out.println("|  1 - Show train list                    |");
-			System.out.println("|  2 - Show linked instructor's name      |");
-			System.out.println("|  3 - Show currently membership plan     |");
-			System.out.println("|  4 - Modify password                    |");
-			System.out.println("|  5 - Leave your feedback                |");
+			System.out.println("|  1 - CheckIn / Checkout                 |");
+			System.out.println("|  2 - Show train list                    |");
+			System.out.println("|  3 - Show linked instructor's name      |");
+			System.out.println("|  4 - Show currently membership plan     |");
+			System.out.println("|  5 - Modify password                    |");
+			System.out.println("|  6 - Leave your feedback                |");
 			System.out.println("|  0 - Back to previous menu              |");
 			System.out.println("===========================================");
 			System.out.println(ANSI_RESET);
@@ -155,21 +156,25 @@ public class GymMemberMenu {
 				
 				case 1:
 					running = false;
-					showTrain();
+					doCheckIn();
 					break;
 				case 2:
 					running = false;
-					showInstructorName();
+					showTrain();
 					break;
 				case 3:
 					running = false;
-					showCurrentlyMembershipPlan();
+					showInstructorName();
 					break;
 				case 4:
 					running = false;
-					alterPassword();
+					showCurrentlyMembershipPlan();
 					break;
 				case 5:
+					running = false;
+					alterPassword();
+					break;
+				case 6:
 					running = false;
 					feedback();
 					break;
@@ -192,6 +197,26 @@ public class GymMemberMenu {
 				sc.nextLine();
 			}
 
+		}
+	}
+	
+	private void doCheckIn() {
+		System.out.println(ANSI_BLUE_BACKGROUND);
+		System.out.println("=============== CHECKIN/CHECKOUT ===============");
+		System.out.println(ANSI_RESET);
+		boolean check = false;
+		for (GymMember gymMember : gym.getMembers()) {
+			if (gymMember.getCpf().equals(currentlyCpf)) {
+				gymMember.setCheckIn();
+				check = gymMember.getCheckIn();
+			}
+		}
+		if (!check) {
+			System.out.println("Goodbye, have a nice day!");
+			displayMenu();
+		}else {
+			System.out.println("Welcome to our gym :) ");
+			displayMenu();
 		}
 	}
 	

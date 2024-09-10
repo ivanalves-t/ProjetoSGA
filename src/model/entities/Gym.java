@@ -13,6 +13,7 @@ public class Gym {
     private ArrayList<Employee> employees;
     private double monthlyValue;
     private ArrayList<Report> reports;
+    private ArrayList<Device> devices;
     
     // Construtor privado para garantir que não pode ser chamado externamente
     private Gym(String gymName, String ownerCNPJ, double monthlyValue) {
@@ -40,9 +41,9 @@ public class Gym {
 
     // Método para obter a instância única da academia
     public static Gym getInstance() {
-        if (instance == null) {
-            throw new IllegalStateException("Gym ainda não foi criada. Utilize createGym() primeiro.");
-        }
+//        if (instance == null) {
+//            throw new IllegalStateException("Gym was not created yet. Utilize createGym() first.");
+//        }
         return instance;
     }
 
@@ -109,5 +110,17 @@ public class Gym {
     
     public void removeReports() {
     	this.reports = new ArrayList<>();
+    }
+    
+    public void addDevice(Device device) {
+    	devices.add(device);
+    }
+    
+    public void removeDevice(Device device) {
+    	devices.remove(device);
+    }
+    
+    public List<Device> getDevices(){
+    	return devices;
     }
 }

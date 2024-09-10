@@ -11,7 +11,7 @@ public class FrequencyReport implements Report {
     
     private String message;
     private String reportDate; // Armazena a data de geração do relatório
-    private static Gym gym = Gym.getInstance(); // Inicializa a instância de Gym
+    private Gym gym = Gym.getInstance(); // Inicializa a instância de Gym
 
     public FrequencyReport() {
         // Captura a data e hora atuais
