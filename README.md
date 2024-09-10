@@ -1,4 +1,4 @@
-System.out.Println("Welcome to our project");
+# System.out.Println("Welcome to our project");
 
 GMS PROJECT
 
@@ -9,10 +9,9 @@ furthermore to see the training plan maked by himself instructor.
 Instructors can make, delete and alter a train to a specific member.
 Maintenance Man's can register and delete a device.
 
-This project contains entire content seen in OOP discipline.
-
+This project contains entire content seen in OOP discipline:
 inheritance, polymorph, interface, exceptions, encapsulation, abstract methods, abstrack class, exceptions with throw and try catch.
 
-java 17 LTS is required to run
------------------------------------
+[java 17 LTS is required to run](https://www.azul.com/downloads/?package=jdk#zulu)
+
 Students: Ivanilson Timóteo, Maria Eduarda Melo, Maria Máyra
