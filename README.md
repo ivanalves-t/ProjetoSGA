@@ -1,6 +1,6 @@
 System.out.Println("Welcome to our project");
 
-SGA PROJECT
+GMS PROJECT
 
 The project is a simple gym management, with focus on the gym owner account.
 The administrator can register and monitoring the entire gym.
