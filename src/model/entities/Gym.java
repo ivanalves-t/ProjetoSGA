@@ -16,34 +16,23 @@ public class Gym {
     private ArrayList<Device> devices;
     
     // Construtor privado para garantir que não pode ser chamado externamente
-    private Gym(String gymName, String ownerCNPJ, double monthlyValue) {
-        this.gymName = gymName;
-        this.ownerCNPJ = ownerCNPJ;
-        this.monthlyValue = monthlyValue;
-        this.members = new ArrayList<>();
-        this.employees = new ArrayList<>();
-        this.reports = new ArrayList<>();
-    }
-
-    // Método para criar a academia ou retornar a instância existente
-    public static Gym createGym(String gymName, String ownerCNPJ, double monthlyValue) {
-        if (instance == null) {
-            instance = new Gym(gymName, ownerCNPJ, monthlyValue);
-        }
-        return instance;
-    }
-    
     private Gym() {
         this.members = new ArrayList<>();
         this.employees = new ArrayList<>();
-        this.reports = new ArrayList<>();
+    }
+
+    // Método para criar a academia ou retornar a instância existente
+    public void createGym(String gymName, String ownerCNPJ, double monthlyValue) {
+       this.gymName = gymName;
+       this.ownerCNPJ = ownerCNPJ;
+       this.monthlyValue = monthlyValue;
     }
 
     // Método para obter a instância única da academia
     public static Gym getInstance() {
-//        if (instance == null) {
-//            throw new IllegalStateException("Gym was not created yet. Utilize createGym() first.");
-//        }
+        if (instance == null) {
+            instance = new Gym();
+        }
         return instance;
     }
 

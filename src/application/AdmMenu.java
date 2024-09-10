@@ -26,6 +26,7 @@ public class AdmMenu {
 	private static Administrator adm;
 
 	public AdmMenu() {
+		this.gym = Gym.getInstance();
 	}
 
 	// Background colors
@@ -139,7 +140,7 @@ public class AdmMenu {
 				sc.nextLine();
 			}
 		}
-		gym = Gym.createGym(gymName, ownerCnpj, monthly);
+		gym.createGym(gymName, ownerCnpj, monthly);
 		adm = new Administrator(name, cpf, gym);
 		System.out.println(ANSI_GREEN_BACKGROUND);
 		System.out.printf("%s's Gym was registered successfully!\n", gymName);
@@ -162,7 +163,7 @@ public class AdmMenu {
 			}
 
 			System.out.print("Type your password: ");
-			String password = ValidDocumentsScan.readPassword();
+			String password = sc.nextLine();
 
 			if (!adm.getCpf().equals(cpf)) {
 				throw new CpfDoesntMatchException(" Wrong cpf!");
@@ -363,8 +364,9 @@ public class AdmMenu {
 		for (GymMember gm : gMs) {
 			if (gm.getCpf().equals(cpf)) {
 				gym.removeGymMember(gm);
-				System.out.printf(ANSI_GREEN_BACKGROUND + "Member %s was removed successfully!\n",
-						gm.getName() + ANSI_RESET);
+				System.out.println(ANSI_GREEN_BACKGROUND);
+				System.out.printf("Member %s was removed successfully!\n",gm.getName());
+				System.out.println(ANSI_RESET);
 				ValidDocumentsScan.deleteCpf(cpf);
 				memberManagement();
 				return;
@@ -379,8 +381,8 @@ public class AdmMenu {
 	private void listAllMembers() {
 		StringBuilder sb = new StringBuilder();
 		try {
-			List<GymMember> members = gym.getMembers();
 			sb.append("\n==================== MEMBERS DATA =====================\n");
+			List<GymMember> members = gym.getMembers();
 
 			if (members.isEmpty()) {
 				throw new NullPointerException("Register some members");
@@ -698,18 +700,18 @@ public class AdmMenu {
 	}
 
 	private void showAllReports() {
-		System.out.println(ANSI_CYAN_BACKGROUND);
-		System.out.println("=============== SHOW ALL REPORTS ===============");
-		System.out.println(ANSI_RESET);
 		try {
 			List<Report> reports = gym.getReports();
+			System.out.println(ANSI_CYAN_BACKGROUND);
+			System.out.println("=============== SHOW ALL REPORTS ===============");
+			System.out.println(ANSI_RESET);
 			for (Report report : reports) {
 				System.out.println(report);
 			}
 			reportManagement();
 		} catch (NullPointerException e) {
 			System.out.println(ANSI_RED_BACKGROUND);
-			System.out.println("Error: No one report generated yet");
+			System.out.println("No one report generated yet");
 			System.out.println(ANSI_RESET);
 			reportManagement();
 			return;

@@ -12,8 +12,12 @@ public class MainMenu {
 		System.out.println("Please, type what you are: ");
 		
 	}
-
+	
 	public static void main(String[] args) {
+		AdmMenu admMenu = new AdmMenu();
+		GymMemberMenu gymMemberMenu = new GymMemberMenu();
+		InstructorMenu instructorMenu = new InstructorMenu();
+		MaintenanceEmployeeMenu maintenanceEmployeeMenu = new MaintenanceEmployeeMenu();
 
 		boolean running = true;
 		
@@ -36,22 +40,18 @@ public class MainMenu {
 				switch (opt) {
 					case 1:
 						running = false;
-						AdmMenu admMenu = new AdmMenu();
 						admMenu.displayMenu();  // Chama o método display do administrador
 						break;
 					case 2:
 						running = false;
-						GymMemberMenu gymMemberMenu = new GymMemberMenu();
 						gymMemberMenu.displayMenu();  // Chama o método display do membro
 						break;
 					case 3:
 						running = false;
-						InstructorMenu instructorMenu = new InstructorMenu();
 						instructorMenu.displayMenu();  // Chama o método display do instrutor
 						break;
 					case 4:
 						running = false;
-						MaintenanceEmployeeMenu maintenanceEmployeeMenu = new MaintenanceEmployeeMenu();
 						maintenanceEmployeeMenu.displayMenu();  // Chama o método display do empregado de manutenção
 						break;
 					case 0:

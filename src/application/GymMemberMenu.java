@@ -102,7 +102,7 @@ public class GymMemberMenu {
 	        return;
 	    }
 	    System.out.print("Type your password: ");
-	    String password = ValidDocumentsScan.readPassword();
+	    String password = sc.nextLine();
 	    try {
 	        List<GymMember> members = gym.getMembers();
 	        GymMember foundMember = null;
@@ -213,10 +213,10 @@ public class GymMemberMenu {
 		}
 		if (!check) {
 			System.out.println("Goodbye, have a nice day!");
-			displayMenu();
+			accessAccountGymMember();
 		}else {
 			System.out.println("Welcome to our gym :) ");
-			displayMenu();
+			accessAccountGymMember();
 		}
 	}
 	

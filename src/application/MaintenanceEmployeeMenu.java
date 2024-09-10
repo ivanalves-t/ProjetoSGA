@@ -77,7 +77,7 @@ public class MaintenanceEmployeeMenu {
 			return;
 		}
 		System.out.print("Type your password: ");
-		String password = ValidDocumentsScan.readPassword();
+		String password = sc.nextLine();
 		try {
 			List<Employee> employees = gym.getEmployees();
 			Employee foundEmployee = null;

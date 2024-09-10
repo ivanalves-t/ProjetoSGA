@@ -12,27 +12,94 @@ import model.exceptions.RangeNameException;
 
 public class ValidDocumentsScan implements DocumentsRepository {
 
-	public static String readTrain() {
-		Scanner sc = new Scanner(System.in);
-		boolean valid = false;
-		String train = null;
+    private static final String[][] EXERCISES = {
+            {"Running", "Cardio"},
+            {"Walking", "Cardio"},
+            {"Swimming", "Cardio"},
+            {"Cycling", "Cardio"},
+            {"Jump Rope", "Cardio"},
+            {"Dancing", "Cardio"},
+            {"Climbing", "Cardio"},
+            {"Weightlifting", "Strength"},
+            {"Push-ups", "Strength"},
+            {"Sit-ups", "Strength"},
+            {"Rowing", "Strength"},
+            {"Shoulder Press", "Strength"},
+            {"Kettlebell", "Strength"},
+            {"Burpees", "Functional"},
+            {"Plyometric Jumps", "Functional"},
+            {"Medicine Ball Exercises", "Functional"},
+            {"Plank", "Functional"},
+            {"Mountain Climbers", "Functional"},
+            {"Yoga", "Flexibility"},
+            {"Pilates", "Flexibility"},
+            {"Stretching", "Flexibility"},
+            {"Football", "Sport"},
+            {"Basketball", "Sport"},
+            {"Tennis", "Sport"},
+            {"Volleyball", "Sport"},
+            {"Martial Arts", "Sport"},
+            {"Boxing", "Sport"},
+            {"Resistance Training", "Strength"}
+        };
 
-		while (!valid) {
-			try {
-				train = sc.nextLine();
-				if (train == null || train.isEmpty() || train.trim().length() < 10) {
-					throw new IllegalArgumentException(
-							"The train of train cannot be empty. Train must be longer than 10 caracters.");
-				}
-				valid = true;
-				return train;
-			} catch (IllegalArgumentException e) {
-				System.out.println("\u001B[41mError: " + e.getMessage() + "\u001B[0m");
-			}
-		}
+        public static String readTrain() {
+            Scanner sc = new Scanner(System.in);
+            boolean valid = false;
+            String train = null;
 
-		return null;
-	}
+            while (!valid) {
+                try {
+                    // Imprimir a lista de exercícios e seus tipos
+                    printExerciseTable();
+
+                    // Solicitar a entrada do usuário
+                    System.out.println("Enter the exercise you want to choose:");
+                    train = sc.nextLine().trim();
+
+                    if (train.isEmpty() || train.length() < 15) {
+                        throw new IllegalArgumentException(
+                                "The exercise name cannot be empty. It must be longer than 15 characters.");
+                    }
+
+                    boolean isValidExercise = false;
+                    for (String[] exercise : EXERCISES) {
+                        if (exercise[0].equalsIgnoreCase(train)) {
+                            isValidExercise = true;
+                            break;
+                        }
+                    }
+
+                    if (!isValidExercise) {
+                        throw new IllegalArgumentException("Invalid exercise. Please choose a valid exercise from the list.");
+                    }
+
+                    valid = true;
+                } catch (IllegalArgumentException e) {
+                    System.out.println("\u001B[41mError: " + e.getMessage() + "\u001B[0m");
+                }
+            }
+
+            return train;
+        }
+
+        private static void printExerciseTable() {
+            StringBuilder sb = new StringBuilder();
+            int columnWidth = 30;
+
+            // Cabeçalho
+            sb.append(String.format("%-" + columnWidth + "s%-" + columnWidth + "s\n", "Exercise", "Type"));
+            sb.append(String.format("%-" + columnWidth + "s%-" + columnWidth + "s\n",
+                    "-".repeat(columnWidth), "-".repeat(columnWidth)));
+
+            // Dados dos exercícios
+            for (String[] exercise : EXERCISES) {
+                sb.append(String.format("%-" + columnWidth + "s%-" + columnWidth + "s\n",
+                        exercise[0], exercise[1]));
+            }
+
+            System.out.println(sb.toString());
+        }
 
 	public static String readName() {
 		Scanner sc = new Scanner(System.in);
