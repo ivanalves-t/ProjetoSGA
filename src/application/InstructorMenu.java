@@ -83,26 +83,27 @@ public class InstructorMenu {
 	    
 	    StringBuilder sb = new StringBuilder();
 	    try {
-	    	List<GymMember> members = gym.getMembers();
-	    	if (members.isEmpty()) {
-	    		sb.append("No members data\n");
-	    	} else {
-	    		// Corrigi o cabeçalho para incluir "NeedTrain"
-	    		sb.append(String.format("%-20s%-20s%-20s%-20s\n", "Name", "CPF", "Freq", "NeedTrain"));
-	    		for (GymMember gm : members) {
-	    			// Ajustei o formato para não incluir o ".2f" na coluna "NeedTrain"
-	    			sb.append(String.format("%-20s%-20s%-20.2f%-20s\n",
-	    					gm.getName(), gm.getCpf(), gm.getCheckIn(), gm.getTrain() == null ? "yes" : "no"));
-	    		}
-	    	}
-	    }catch (NullPointerException e) {
-	    	System.out.println("Error: " + "No one member registered yet.");
-	    	displayMenu();
+	        List<GymMember> members = gym.getMembers();
+	        if (members.isEmpty()) {
+	            sb.append("No members data\n");
+	        } else {
+	            // Corrigi o cabeçalho para incluir "NeedTrain"
+	            sb.append(String.format("%-20s%-20s%-20s%-20s\n", "Name", "CPF", "CheckIn", "NeedTrain"));
+	            for (GymMember gm : members) {
+	                // Ajustei o formato para "CheckIn" como booleano e "NeedTrain" como string
+	                sb.append(String.format("%-20s%-20s%-20s%-20s\n",
+	                    gm.getName(), gm.getCpf(), gm.getCheckIn() ? "true" : "false", gm.getTrain() == null ? "yes" : "no"));
+	            }
+	        }
+	    } catch (NullPointerException e) {
+	        System.out.println("Error: " + "No one member registered yet.");
+	        displayMenu();
 	    }
 	    
 	    System.out.print(sb.toString()); // Exibe a construção finalizada
 	    displayMenu();
 	}
+
 
 
 
@@ -115,7 +116,7 @@ public class InstructorMenu {
 	        return;
 	    }
 	    System.out.print("Type your password: ");
-	    String password = ValidDocumentsScan.readPassword();
+	    String password = sc.nextLine();
 	    try {
 	        List<Employee> employees = gym.getEmployees();
 	        Employee foundEmployee = null;
