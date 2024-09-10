@@ -122,9 +122,9 @@ public class AdmMenu {
 		while (!valid) {
 			try {
 				monthly = sc.nextDouble();
-				if (monthly < 110.50) {
+				if (monthly < 50.00) {
 					throw new IllegalArgumentException(
-							"Please enter a bigger value, we suggest you put at least R$ 110.50 for monthly value.");
+							"Please enter a bigger value, we suggest you put at least R$ 50.00 for monthly value.");
 				}
 				valid = true;
 			} catch (InputMismatchException e) {
@@ -317,7 +317,7 @@ public class AdmMenu {
 		System.out.println("=============== NEW MEMBER ===============");
 		System.out.println(ANSI_RESET);
 		System.out.print("Enter member name: ");
-		String name = ValidDocumentsScan.readName();
+		String name = ValidDocumentsScan.readNameOpt();
 
 		System.out.print("Enter member CPF: ");
 		String cpf = ValidDocumentsScan.readNewCpfOpt();
@@ -477,7 +477,7 @@ public class AdmMenu {
 		System.out.println("=============== ADD INSTRUCTOR ===============");
 		System.out.println(ANSI_RESET);
 		System.out.print("Enter instructor name: ");
-		String name = ValidDocumentsScan.readName();
+		String name = ValidDocumentsScan.readNameOpt();
 		System.out.print("Enter instructor CPF: ");
 		String cpf = ValidDocumentsScan.readNewCpfOpt();
 		if (cpf == null) {
@@ -491,8 +491,8 @@ public class AdmMenu {
 		while (!valid) {
 			try {
 				wage = sc.nextDouble();
-				if (wage < 0) {
-					throw new MinimumWageException("Please enter a bigger value than 0!");
+				if (wage < 0 || wage > 1412.10) {
+					throw new MinimumWageException("Please enter a bigger value than 0 and lower than R$ 1412,10");
 				}
 				valid = true;
 			} catch (InputMismatchException e) {
@@ -516,7 +516,7 @@ public class AdmMenu {
 		System.out.println("=============== ADD MAINTENANCE WORKER ===============");
 		System.out.println(ANSI_RESET);
 		System.out.print("Enter name of maintenance employee: ");
-		String name = ValidDocumentsScan.readName();
+		String name = ValidDocumentsScan.readNameOpt();
 		System.out.print("Enter CPF of maintenance employee: ");
 		String cpf = ValidDocumentsScan.readNewCpfOpt();
 		if (cpf == null) {
@@ -530,8 +530,8 @@ public class AdmMenu {
 		while (!valid) {
 			try {
 				wage = sc.nextDouble();
-				if (wage < 0) {
-					throw new IllegalArgumentException("Please enter a bigger value than 0!");
+				if (wage < 0 || wage > 300) {
+					throw new IllegalArgumentException("Please enter a bigger value than 0 and lower than R$ 301,00");
 				}
 				valid = true;
 			} catch (InputMismatchException e) {
