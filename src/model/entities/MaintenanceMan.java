@@ -1,7 +1,5 @@
 package model.entities;
 
-import model.services.MaintenanceReport;
-
 public class MaintenanceMan extends Employee{
 	private double dailyPayment;
 	
@@ -13,10 +11,6 @@ public class MaintenanceMan extends Employee{
 	@Override
 	public double payment() {
 		return dailyPayment;
-	}
-	
-	public MaintenanceReport generateMaintenanceReport(String message) {
-		return new MaintenanceReport(message);
 	}
 	
 	@Override

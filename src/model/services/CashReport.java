@@ -14,7 +14,7 @@ public class CashReport implements Report {
 
     private String message;
     private String reportDate; // Armazena a data de geração do relatório
-    private static Gym gym;
+    private Gym gym;
 
     public CashReport() {
         // Certifique-se de que a instância de Gym está inicializada
